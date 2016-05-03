@@ -1,2 +1,2 @@
 # whoami
-Who is he though?
+Who is he?
