@@ -1,9 +1,12 @@
+/* expanded css file for easy reading */
+
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
   text-align: center;
 }
+
 .holder, .first, .second, .third {
   height: 100vh;
   width: 100vw;
@@ -25,7 +28,7 @@ body {
 
 .first {
   animation: first 10s infinite;
-  background: linear-gradient(#aab7f8, #4546b8);
+  background: linear-gradient(#9ba6df, #4546b8);
   z-index: 10;
 }
   @keyframes first {
@@ -64,7 +67,7 @@ body {
 .third {
   animation: third 10s infinite;
   animation-delay: 8s;
-  background: linear-gradient(#5ff8ca, #60e069);
+  background: linear-gradient(#5ff8ca, #3fa646);
   z-index: 30;
 }
   @keyframes third {
@@ -81,8 +84,14 @@ body {
     100% {opacity: 0;}
   }
 
-.txt {
+.displaytag {
   margin-top: calc(50vh - 43px);
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+}
+
+.buttons {
   position: absolute;
   width: 100%;
   z-index: 1000;
@@ -92,8 +101,29 @@ h1 {
   font-size: 40px;
   font-weight: 400;
   margin: 0;
+  color: #fff;
 }
 
 p {
   font-size: .6em;
+}
+
+.ghostbutton {
+  display: inline-block;
+  width: 100px;
+  padding: 8px;
+  color: #fff;
+  border: 2px solid #fff;
+  text-align: center;
+  outline: none;
+  text-decoration: none;
+  transition: background-color 0.2s ease-out,
+              color 0.2s ease-out;
+}
+.ghostbutton:hover,
+.ghostbutton:active {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
 }
