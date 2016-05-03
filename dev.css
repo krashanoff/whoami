@@ -4,30 +4,28 @@ body {
   font-family: 'Roboto', sans-serif;
   text-align: center;
 }
-.holder,
-.first,
-.second,
-.third {
+.holder, .first, .second, .third {
   height: 100vh;
   width: 100vw;
 }
-.first,
-.second,
-.third {
+
+.first, .second, .third {
   position: absolute;
 }
-.second,
-.third {
+
+.second, .third {
   opacity: 0;
 }
+
 .holder {
   height: 100vh;
   position: relative;
   z-index: 1;
 }
+
 .first {
   animation: first 10s infinite;
-  background: linear-gradient(#5ff8ca, #60e08c);
+  background: linear-gradient(#aab7f8, #4546b8);
   z-index: 10;
 }
   @keyframes first {
@@ -66,7 +64,7 @@ body {
 .third {
   animation: third 10s infinite;
   animation-delay: 8s;
-  background: linear-gradient(#aab7f8, #ff75c6);
+  background: linear-gradient(#5ff8ca, #60e069);
   z-index: 30;
 }
   @keyframes third {
@@ -89,11 +87,13 @@ body {
   width: 100%;
   z-index: 1000;
 }
+
 h1 {
   font-size: 40px;
   font-weight: 400;
   margin: 0;
 }
+
 p {
-  font-size: .5em;
+  font-size: .6em;
 }
