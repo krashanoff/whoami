@@ -85,16 +85,14 @@ body {
   }
 
 .displaytag {
-  margin-top: calc(50vh - 43px);
+  margin-top: calc(50vh - 75px);
   position: absolute;
   width: 100%;
   z-index: 1000;
 }
 
-.buttons {
-  position: absolute;
-  width: 100%;
-  z-index: 1000;
+#buttons {
+  margin-top: 1vh;
 }
 
 h1 {
