@@ -4,20 +4,20 @@ $(document).ready(function(){
   particlesJS("particles-js", {
     "particles": {
       "number": {
-        "value": 80,
+        "value": 50,
         "density": {
           "enable": true,
           "value_area": 800
         }
       },
       "color": {
-        "value": "#ffffff"
+        "value": "#fff"
       },
       "shape": {
         "type": "circle",
         "stroke": {
           "width": 0,
-          "color": "#000000"
+          "color": "#000"
         },
         "polygon": {
           "nb_sides": 5
@@ -46,7 +46,7 @@ $(document).ready(function(){
       "line_linked": {
         "enable": true,
         "distance": 150,
-        "color": "#ffffff",
+        "color": "#fff",
         "opacity": 0.4,
         "width": 1
       },
