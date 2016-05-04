@@ -5,7 +5,6 @@ the organization is very unclear, but it goes something like:
   2. base rules
   3. class rules
   4. id specific rules
-  5. mobile rules
 */
 
 @import "https://fonts.googleapis.com/css?family=Roboto";
@@ -176,10 +175,4 @@ p {
   background-size: cover;
   background-position: 50% 50%;
   z-index: 1000;
-}
-
-@media only screen {
-  #particles-js {
-    display: none;
-  }
 }
