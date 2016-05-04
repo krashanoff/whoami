@@ -67,7 +67,7 @@ body {
 .third {
   animation: third 10s infinite;
   animation-delay: 8s;
-  background: linear-gradient(#5ff8ca, #3fa646);
+  background: linear-gradient(#ed5555, #3fa646);
   z-index: 30;
 }
   @keyframes third {
