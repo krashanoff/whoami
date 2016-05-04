@@ -4,6 +4,7 @@ the organization is very unclear, but it goes something like:
   1. imports
   2. base rules
   3. class rules
+  4. id specific rules
 */
 
 @import "https://fonts.googleapis.com/css?family=Roboto";
@@ -119,9 +120,25 @@ p {
   display: none;
 }
 
+.title {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.title:hover {
+  cursor: default;
+}
+
 .textlink {
   display: block;
   margin-top: 1vh;
+}
+.textlink:hover {
+  cursor: hand;
+  cursor: pointer;
 }
 
 .ghostbutton {
@@ -162,4 +179,9 @@ p {
   color: #fff;
   transition: background-color 0.3s ease-in,
               color 0.3s ease-in;
+}
+
+#contactbutton:hover {
+  cursor: hand;
+  cursor: pointer;
 }
