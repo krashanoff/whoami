@@ -106,13 +106,6 @@ $(document).ready(function(){
     },
     "retina_detect": true
   });
-
-  $('#fronttitle').delay(100).typewrite({
-    'delay': 100,
-    'extra_char': '_',
-    'trim': false,
-    'callback': null
-  });
 });
 
 $("#contactbutton").click(function(){

@@ -186,10 +186,6 @@ p {
   cursor: pointer;
 }
 
-#fronttitle {
-  display: none;
-}
-
 #particles-js {
   position: absolute;
   width: 100%;
