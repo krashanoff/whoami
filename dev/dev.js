@@ -1,5 +1,11 @@
 /* expanded js */
 
+$("#contactbutton").click(function(){
+  $("#frontpage").fadeOut(500);
+  $("#contact").delay(500).fadeIn(1500);
+});
+
+/* Chart stuff
 var ctx = $("#myChart");
 
 var myChart = new Chart(ctx, {
@@ -21,3 +27,4 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+*/
