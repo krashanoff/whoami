@@ -5,6 +5,11 @@ $("#contactbutton").click(function(){
   $("#contact").delay(500).fadeIn(1500);
 });
 
+$("#textlink").click(function(){
+  $("#contact").fadeOut(500);
+  $("#frontpage").delay(500).fadeIn(1500);
+});
+
 /* Chart stuff
 var ctx = $("#myChart");
 
