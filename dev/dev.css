@@ -161,26 +161,6 @@ p {
               color 0.3s ease-in;
 }
 
-.darkghostbutton {
-  margin-top: 1vh;
-  display: inline-block;
-  width: 100px;
-  padding: 8px;
-  color: #000;
-  border: 2px solid #000;
-  text-align: center;
-  outline: none;
-  text-decoration: none;
-  transition: background-color 0.2s ease-out,
-              color 0.2s ease-out;
-}
-.darkghostbutton:hover, .darkghostbutton:active {
-  background-color: #000;
-  color: #fff;
-  transition: background-color 0.3s ease-in,
-              color 0.3s ease-in;
-}
-
 #contactbutton:hover {
   cursor: hand;
   cursor: pointer;
