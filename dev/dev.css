@@ -185,3 +185,7 @@ p {
   cursor: hand;
   cursor: pointer;
 }
+
+#fronttitle {
+  display: none;
+}
