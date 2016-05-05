@@ -1,12 +1,10 @@
 /* expanded js */
 
 $(document).ready(function(){
-  $('#displaytag').fadeIn(1500);
-
   particlesJS("particles-js", {
     "particles": {
       "number": {
-        "value": 10,
+        "value": 15,
         "density": {
           "enable": true,
           "value_area": 800
@@ -41,7 +39,7 @@ $(document).ready(function(){
         "anim": {
           "enable": false,
           "speed": 40,
-          "size_min": 0.1,
+          "size_min": 0.3,
           "sync": false
         }
       },
@@ -54,7 +52,7 @@ $(document).ready(function(){
       },
       "move": {
         "enable": true,
-        "speed": 6,
+        "speed": 2,
         "direction": "none",
         "random": false,
         "straight": false,
