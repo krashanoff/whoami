@@ -72,6 +72,9 @@ $(document).ready(function(){
           "enable": true,
           "mode": "grab"
         },
+        "onclick": {
+          "enable": false
+        },
         "resize": true
       },
       "modes": {
