@@ -24,7 +24,7 @@ $(document).ready(function(){
         },
       },
       "opacity": {
-        "value": 0.5,
+        "value": 0.75,
         "random": false,
         "anim": {
           "enable": false,
@@ -72,21 +72,14 @@ $(document).ready(function(){
           "enable": true,
           "mode": "grab"
         },
-        "onclick": {
-          "enable": true,
-          "mode": "push"
-        },
         "resize": true
       },
       "modes": {
         "grab": {
-          "distance": 140,
+          "distance": 150,
           "line_linked": {
             "opacity": 1
           }
-        },
-        "push": {
-          "particles_nb": 4
         }
       }
     },
