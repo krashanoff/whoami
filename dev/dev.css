@@ -32,56 +32,25 @@ p {
   font-weight: lighter;
 }
 
-.main, .gradone, .gradtwo {
+.holder, .first {
   height: 100vh;
   width: 100vw;
 }
 
-.main {
+.holder {
   position: relative;
   z-index: 1;
 }
 
-.gradone {
-  animation: first 10s infinite;
-  background: linear-gradient(#21b368, #cd3333);
+.first {
+  background: linear-gradient(#4ae6f0, #dd5ed8);
   z-index: 10;
   position: absolute;
 }
-  @keyframes first {
-    0% {opacity: 1.0;}
-    10% {opacity: 0.8;}
-    20% {opacity: 0.6;}
-    30% {opacity: 0.4;}
-    40% {opacity: 0.2;}
-    50% {opacity: 0.1;}
-    60% {opacity: 0.2;}
-    70% {opacity: 0.4;}
-    80% {opacity: 0.6;}
-    90% {opacity: 0.8;}
-    100% {opacity: 1.0;}
-  }
 
-.gradtwo {
-  animation: second 10s infinite;
-  animation-delay: 2s;
-  background: linear-gradient(#4ae6f0, #dd5ed8);
-  z-index: 20;
-  position: absolute;
-}
-  @keyframes second {
-    0% {opacity: 1.0;}
-    10% {opacity: 0.8;}
-    20% {opacity: 0.6;}
-    30% {opacity: 0.4;}
-    40% {opacity: 0.2;}
-    50% {opacity: 0.1;}
-    60% {opacity: 0.2;}
-    70% {opacity: 0.4;}
-    80% {opacity: 0.6;}
-    90% {opacity: 0.8;}
-    100% {opacity: 1.0;}
-  }
+/*.second {
+
+}*/
 
 .displaytag {
   margin-top: calc(50vh - 75px);
