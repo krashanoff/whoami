@@ -1,6 +1,8 @@
 /* expanded js */
 
 $(document).ready(function(){
+  $(document).fadeIn(1500);
+
   particlesJS("particles-js", {
     "particles": {
       "number": {
