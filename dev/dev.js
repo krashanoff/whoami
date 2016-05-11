@@ -44,7 +44,7 @@ $(document).ready(function(){
         }
       },
       "line_linked": {
-        "enable": false,
+        "enable": true,
         "distance": 150,
         "color": "#fff",
         "opacity": 0.4,
