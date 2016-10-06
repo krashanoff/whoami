@@ -43,14 +43,13 @@ p {
 }
 
 .first {
-  background: linear-gradient(#4ae6f0, #dd5ed8);
+  /* Shoutout to uigradients.com */
+  background: #c2e59c;
+  background: -webkit-linear-gradient(to left, #c2e59c , #64b3f4);
+  background: linear-gradient(to left, #c2e59c , #64b3f4);
   z-index: 10;
   position: absolute;
 }
-
-/*.second {
-
-}*/
 
 .displaytag {
   margin-top: calc(50vh - 75px);
