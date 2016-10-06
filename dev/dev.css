@@ -7,11 +7,11 @@ the organization is very unclear, but it goes something like:
   4. id specific rules
 */
 
-@import "https://fonts.googleapis.com/css?family=Roboto";
+@import "https://fonts.googleapis.com/css?family=Raleway";
 
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Raleway', sans-serif;
   text-align: center;
   /* NOTE TO SELF: Adjust this value when ready to add scrolling content */
   overflow: hidden;
