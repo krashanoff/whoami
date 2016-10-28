@@ -32,23 +32,52 @@ p {
   font-weight: lighter;
 }
 
-.holder, .first {
+.holder {
   height: 100vh;
   width: 100vw;
-}
-
-.holder {
   position: relative;
   z-index: 1;
 }
 
 .first {
   /* Shoutout to uigradients.com */
-  background: #c2e59c;
-  background: -webkit-linear-gradient(to left, #c2e59c , #64b3f4);
-  background: linear-gradient(to left, #c2e59c , #64b3f4);
+  background: #16222A;
+  background: -webkit-linear-gradient(to left, #16222A , #3A6073);
+  background: linear-gradient(to left, #16222A , #3A6073);
   z-index: 10;
   position: absolute;
+  height: 100vh;
+  width: 100vw;
+}
+
+.second {
+  background: #E6DADA;
+  background: -webkit-linear-gradient(to left, #E6DADA , #274046);
+  background: linear-gradient(to left, #E6DADA , #274046);
+  z-index: 10;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+}
+
+.third {
+  background: #4b6cb7;
+  background: -webkit-linear-gradient(to left, #4b6cb7 , #182848);
+  background: linear-gradient(to left, #4b6cb7 , #182848);
+  z-index: 10;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+}
+
+.fourth {
+  background: #2BC0E4;
+  background: -webkit-linear-gradient(to left, #2BC0E4 , #EAECC6);
+  background: linear-gradient(to left, #2BC0E4 , #EAECC6);
+  z-index: 10;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
 }
 
 .displaytag {

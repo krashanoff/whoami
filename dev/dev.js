@@ -1,10 +1,30 @@
 /* expanded js */
 
 $(document).ready(function(){
+  var rand = Math.random()*10;
+
+  if(rand < 2.5) {
+    $(".second").remove();
+    $(".third").remove();
+    $(".fourth").remove();
+  } else if (rand < 5) {
+    $(".first").remove();
+    $(".third").remove();
+    $(".fourth").remove();
+  } else if (rand < 7.5) {
+    $(".first").remove();
+    $(".second").remove();
+    $(".fourth").remove();
+  } else {
+    $(".first").remove();
+    $(".second").remove();
+    $(".third").remove();
+  }
+
   particlesJS("particles-js", {
     "particles": {
       "number": {
-        "value": 15,
+        "value": 20,
         "density": {
           "enable": true,
           "value_area": 800
