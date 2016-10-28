@@ -4,21 +4,21 @@ $(document).ready(function(){
   var rand = Math.random()*10;
 
   if(rand < 2.5) {
-    $(".second").remove();
-    $(".third").remove();
     $(".fourth").remove();
+    $(".third").remove();
+    $(".second").remove();
   } else if (rand < 5) {
-    $(".first").remove();
-    $(".third").remove();
     $(".fourth").remove();
+    $(".third").remove();
+    $(".first").remove();
   } else if (rand < 7.5) {
-    $(".first").remove();
-    $(".second").remove();
     $(".fourth").remove();
-  } else {
-    $(".first").remove();
     $(".second").remove();
+    $(".first").remove();
+  } else {
     $(".third").remove();
+    $(".second").remove();
+    $(".first").remove();
   }
 
   particlesJS("particles-js", {
