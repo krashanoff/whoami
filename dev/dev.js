@@ -2,23 +2,16 @@
 
 $(document).ready(function(){
   var rand = Math.random()*10;
+  var fadeTime = 2000;
 
   if(rand < 2.5) {
-    $(".fourth").remove();
-    $(".third").remove();
-    $(".second").remove();
+    $(".first").fadeIn(fadeTime);
   } else if (rand < 5) {
-    $(".fourth").remove();
-    $(".third").remove();
-    $(".first").remove();
+    $(".second").fadeIn(fadeTime);
   } else if (rand < 7.5) {
-    $(".fourth").remove();
-    $(".second").remove();
-    $(".first").remove();
+    $(".third").fadeIn(fadeTime);
   } else {
-    $(".third").remove();
-    $(".second").remove();
-    $(".first").remove();
+    $(".fourth").fadeIn(fadeTime);
   }
 
   particlesJS("particles-js", {
