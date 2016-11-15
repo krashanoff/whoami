@@ -39,49 +39,37 @@ p {
   z-index: 1;
 }
 
-.first {
-  /* Shoutout to uigradients.com */
+.gradient {
   position: absolute;
   display: none;
+  z-index: 10;
+  height: 100vh;
+  width: 100vw;
+}
+
+.first {
+  /* Shoutout to uigradients.com */
   background: #16222A;
   background: -webkit-linear-gradient(to left, #16222A , #3A6073);
   background: linear-gradient(to left, #16222A , #3A6073);
-  z-index: 10;
-  height: 100vh;
-  width: 100vw;
 }
 
 .second {
-  position: absolute;
-  display: none;
   background: #F1F2B5;
   background: -webkit-linear-gradient(to left, #F1F2B5 , #135058);
   background: linear-gradient(to left, #F1F2B5 , #135058);
-  z-index: 10;
-  height: 100vh;
-  width: 100vw;
 }
 
 .third {
-  position: absolute;
-  display: none;
   background: #003973;
   background: -webkit-linear-gradient(to left, #003973 , #E5E5BE);
   background: linear-gradient(to left, #003973 , #E5E5BE);
-  z-index: 10;
-  height: 100vh;
-  width: 100vw;
 }
 
 .fourth {
-  position: absolute;
-  display: none;
   background: #2BC0E4;
   background: -webkit-linear-gradient(to left, #2BC0E4 , #EAECC6);
   background: linear-gradient(to left, #2BC0E4 , #EAECC6);
-  z-index: 10;
-  height: 100vh;
-  width: 100vw;
 }
 
 .displaytag {
