@@ -15,6 +15,9 @@ body {
   text-align: center;
   /* NOTE TO SELF: Adjust this value when ready to add scrolling content */
   overflow: hidden;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
