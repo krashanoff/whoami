@@ -89,11 +89,11 @@ $(document).ready(function(){
 });
 
 $("#contactbutton").click(function(){
-  $("#frontpage").fadeOut(500);
+  $("#frontpage, #buttons").fadeOut(500);
   $("#contact").delay(500).fadeIn(1500);
 });
 
-$("#textlink").click(function(){
+$("#backlink").click(function(){
   $("#contact").fadeOut(500);
-  $("#frontpage").delay(500).fadeIn(1500);
+  $("#frontpage, #buttons").delay(500).fadeIn(1500);
 });

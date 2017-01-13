@@ -22,6 +22,7 @@ body {
 
 a {
   color: white;
+  font-size: 1.25em;
 }
 
 h1 {
@@ -119,12 +120,34 @@ p {
 }
 
 .textlink {
-  display: block;
-  margin-top: 1vh;
+  display: inline;
+  text-decoration: none;
 }
 .textlink:hover {
   cursor: hand;
   cursor: pointer;
+}
+
+#buttons {
+  bottom: 0;
+  position: absolute;
+  margin-left: calc(50vw - 2);
+  margin-bottom: 5vh;
+  width: 100vw;
+  z-index: 1000;
+}
+
+#github {
+  margin-right: 25vw;
+}
+
+#about {
+  margin-left: 25vw;
+}
+
+#backlink {
+  display: block;
+  margin-top: 1vh;
 }
 
 #contactbutton:hover {
