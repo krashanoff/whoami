@@ -10,6 +10,7 @@ the organization is very unclear, but it goes something like:
 @import "https://fonts.googleapis.com/css?family=Raleway";
 
 body {
+  color: #777;
   margin: 0;
   font-family: 'Raleway', sans-serif;
   text-align: center;
@@ -22,7 +23,7 @@ body {
 
 a {
   color: white;
-  font-size: 1.25em;
+  font-size: 1.75em;
 }
 
 h1 {
