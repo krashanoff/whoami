@@ -90,10 +90,10 @@ $(document).ready(function(){
 
 $("#contactbutton").click(function(){
   $("#frontpage, #buttons").fadeOut(500);
-  $("#contact").delay(500).fadeIn(1500);
+  $("#contact, #backlink").delay(500).fadeIn(1500);
 });
 
 $("#backlink").click(function(){
-  $("#contact").fadeOut(500);
+  $("#contact, #backlink").fadeOut(500);
   $("#frontpage, #buttons").delay(500).fadeIn(1500);
 });

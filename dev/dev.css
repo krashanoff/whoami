@@ -10,7 +10,6 @@ the organization is very unclear, but it goes something like:
 @import "https://fonts.googleapis.com/css?family=Raleway";
 
 body {
-  color: #777;
   margin: 0;
   font-family: 'Raleway', sans-serif;
   text-align: center;
@@ -90,6 +89,7 @@ p {
   width: 100px;
   padding: 8px;
   color: #fff;
+  font-size: 1em;
   border: 2px solid #fff;
   text-align: center;
   outline: none;
@@ -132,7 +132,6 @@ p {
 #buttons {
   bottom: 0;
   position: absolute;
-  margin-left: calc(50vw - 2);
   margin-bottom: 5vh;
   width: 100vw;
   z-index: 1000;
@@ -147,8 +146,12 @@ p {
 }
 
 #backlink {
+  margin-top: .5vh;
+  margin-bottom: 5vh;
+  position: absolute;
+  width: 100vw;
+  z-index: 1000;
   display: block;
-  margin-top: 1vh;
 }
 
 #contactbutton:hover {
