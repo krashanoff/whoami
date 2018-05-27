@@ -13,17 +13,9 @@ body {
     word-wrap: break-word;
 }
 
-.cardcontent {
-    position: relative;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    text-align: center;
-}
-
-#content {
-    background: var(--owhite);
+a, a:hover, a:visited, a:active {
+    color: var(--oblack);
+    text-decoration: none;
 }
 
 .card {
@@ -31,10 +23,46 @@ body {
     width: 100%;
 }
 
+.cardcontent {
+    position: relative;
+    margin: 0 2% 0 2%;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+#content {
+    background: var(--owhite);
+}
+
 #username {
     font-size: 3em;
 }
 
+#aboutdrop {
+    height: 90vh;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    float: right;
+    font-size: 2em;
+}
+
 #aboutflood {
-    margin: 0 2% 0 2%;
+    float: left;
+}
+
+#land {
+    text-align: center;
+}
+
+@media screen and (max-width: 900px), (max-height: 700px) {
+    body {
+        margin: .5em;
+        font-size: 1em;
+    }
+
+    #aboutdrop {
+        font-size: 1em !important;
+    }
 }
