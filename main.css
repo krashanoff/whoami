@@ -1,5 +1,6 @@
 :root {
     --oblack: #0f0f0f;
+    --grey: #3f3f3f;
     --owhite: #fdfdfd;
 }
 
@@ -8,14 +9,24 @@ body {
     color: var(--oblack);
     background: black;
     font-family: 'Inconsolata', monospace;
-    font-size: 2em;
+    font-size: 3em;
     line-height: 1.5;
     word-wrap: break-word;
 }
 
 a, a:hover, a:visited, a:active {
-    color: var(--oblack);
+    color: var(--grey);
     text-decoration: none;
+}
+
+#plot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -5;
+    overflow: hidden;
 }
 
 .card {
@@ -26,10 +37,6 @@ a, a:hover, a:visited, a:active {
 .cardcontent {
     position: relative;
     margin: 0 2% 0 2%;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
 }
 
 #content {
@@ -40,29 +47,21 @@ a, a:hover, a:visited, a:active {
     font-size: 3em;
 }
 
-#aboutdrop {
-    height: 90vh;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    float: right;
-    font-size: 2em;
-}
-
-#aboutflood {
-    float: left;
+#landcontainer {
+    background: none;
 }
 
 #land {
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
     text-align: center;
 }
 
-@media screen and (max-width: 900px), (max-height: 700px) {
+@media screen and (max-width: 500px), (max-height: 700px) {
     body {
-        margin: .5em;
+        margin: 1em;
         font-size: 1em;
-    }
-
-    #aboutdrop {
-        font-size: 1em !important;
     }
 }
