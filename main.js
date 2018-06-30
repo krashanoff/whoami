@@ -1,8 +1,4 @@
-/* TODO:
- * Smooth out camera tracking to mouse movements
- * Slow down the camera
- * Fix drawing of canvas on landing
- */
+// Eyecatch render
 
 var scene, camera, renderer, mouseX, mouseY, halfX, halfY, plot, material, sky;
 
@@ -13,7 +9,7 @@ animate();
 function init() {
     // New scene, camera
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, .1, 1000);
+    camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, .1, 1000);
 
     // Mouse position default
     mouseX = 0;
@@ -90,8 +86,8 @@ function onRS(event) {
 }
 
 function render() {
-    camera.position.x += (mouseX - camera.position.x) * .0001;
-    camera.position.y += (mouseY - camera.position.y) * .0001;
+    camera.position.x += (mouseX - camera.position.x) * .000001;
+    camera.position.y += (mouseY - camera.position.y) * .000001;
     camera.lookAt(scene.position);
 
     renderer.render(scene, camera);
