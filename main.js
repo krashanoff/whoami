@@ -81,7 +81,7 @@ function onRS(event) {
     halfX = window.innerWidth / 2;
     halfY = window.innerHeight / 2;
     camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionnMatrix();
+    camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
