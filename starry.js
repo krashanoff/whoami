@@ -57,8 +57,9 @@ function init() {
 
 // Listener calls for repositioning
 function onMM(event) {
-    mouseX = event.clientX - halfX;
-    mouseY = event.clientY - halfY;
+    // By subtracting one tenth of the window, the movement comes out much slower.
+    mouseX = event.clientX - (halfX/5);
+    mouseY = event.clientY - (halfY/5);
 }
 
 function onTS(event) {
@@ -77,7 +78,7 @@ function onTM(event) {
     }
 }
 
-function onRS(event) {
+function onRS() {
     halfX = window.innerWidth / 2;
     halfY = window.innerHeight / 2;
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -86,8 +87,8 @@ function onRS(event) {
 }
 
 function render() {
-    camera.position.x += (mouseX - camera.position.x) * .000001;
-    camera.position.y += (mouseY - camera.position.y) * .000001;
+    camera.position.x += (mouseX - camera.position.x) * .0001;
+    camera.position.y += (mouseY - camera.position.y) * .0001;
     camera.lookAt(scene.position);
 
     renderer.render(scene, camera);

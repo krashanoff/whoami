@@ -14,9 +14,13 @@ body {
     word-wrap: break-word;
 }
 
-a, a:hover, a:visited, a:active {
+a, a:visited, a:active {
     color: var(--grey);
     text-decoration: none;
+}
+
+a:hover {
+    color: calc(var(--grey) + #111111);
 }
 
 #plot {
@@ -32,15 +36,12 @@ a, a:hover, a:visited, a:active {
 .card {
     height: 100vh;
     width: 100%;
+    background: var(--owhite);
 }
 
 .cardcontent {
     position: relative;
-    margin: 0 2% 0 2%;
-}
-
-#content {
-    background: var(--owhite);
+    padding: 2%;
 }
 
 #username {
@@ -49,6 +50,8 @@ a, a:hover, a:visited, a:active {
 
 #landcontainer {
     background: none;
+    color: var(--owhite);
+    padding: 0;
 }
 
 #land {
@@ -59,9 +62,13 @@ a, a:hover, a:visited, a:active {
     text-align: center;
 }
 
-@media screen and (max-width: 500px), (max-height: 700px) {
+#rest {
+    opacity: 0;
+    transition: opacity 1.3s cubic-bezier(.27,.52,.86,.63);
+}
+
+@media screen and (max-aspect-ratio: 5/7) {
     body {
-        margin: 1em;
         font-size: 1em;
     }
 }
