@@ -46,6 +46,9 @@ a:hover {
 
 #username {
     font-size: 3em;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 #landcontainer {
