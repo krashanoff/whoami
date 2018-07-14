@@ -1,6 +1,6 @@
 :root {
     --oblack: #0f0f0f;
-    --grey: #3f3f3f;
+    --grey: #8f8f8f;
     --owhite: #fdfdfd;
 }
 
@@ -20,7 +20,7 @@ a, a:visited, a:active {
 }
 
 a:hover {
-    color: calc(var(--grey) + #111111);
+    color: calc(var(--grey) + #222222);
 }
 
 #plot {
@@ -34,7 +34,7 @@ a:hover {
 }
 
 .card {
-    height: 100vh;
+    min-height: 50vh;
     width: 100%;
     background: var(--owhite);
 }
@@ -55,6 +55,7 @@ a:hover {
     background: none;
     color: var(--owhite);
     padding: 0;
+    height: 100vh;
 }
 
 #land {
