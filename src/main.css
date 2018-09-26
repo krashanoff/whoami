@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300');
+
 :root {
     --oblack: #0f0f0f;
     --grey: #8f8f8f;
@@ -8,7 +10,7 @@ body {
     margin: 1em;
     color: var(--oblack);
     background: black;
-    font-family: 'Inconsolata', monospace;
+    font-family: 'Roboto Mono', monospace;
     font-size: 3em;
     line-height: 1.5;
     word-wrap: break-word;
