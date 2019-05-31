@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Lora');
+
+:root {
+	--bg: #f0eceb;
+	--fg: #62351f;
+	--rd: #e77d63;
+	--fn: 'Lora', sans-serif;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: var(--fn);
+	font-size: 2em;
+	line-height: .4;
+}
+
+div * {
+	display: block;
+}
+
+a {
+	color: var(--fg);
+	text-decoration: none;
+	transition: text-decoration .3s linear;
+}
+
+a:hover {
+	text-decoration: underline dotted var(--rd);
+}
+
+.accent {
+	color: var(--rd);
+}
+
+@media (min-width: 1000px) {
+	body {
+		font-size: 3em;
+	}
+}
+
+@media (min-width: 3000px) {
+	body {
+		font-size: 6em;
+	}
+}
