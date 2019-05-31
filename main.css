@@ -19,7 +19,7 @@ body {
 	background: var(--bg);
 	color: var(--fg);
 	font-family: var(--fn);
-	font-size: 2em;
+	font-size: 4vw;
 	line-height: .4;
 }
 
@@ -42,14 +42,8 @@ a:hover {
 	font-family: var(--jp);
 }
 
-@media (min-width: 1000px) {
+@media screen and (max-width: 500px) {
 	body {
-		font-size: 3em;
-	}
-}
-
-@media (min-width: 3000px) {
-	body {
-		font-size: 6em;
+		font-size: 2em;
 	}
 }
