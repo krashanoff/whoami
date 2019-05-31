@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Lora');
+@import url('https://fonts.googleapis.com/css?family=Lora|M+PLUS+Rounded+1c&display=swap&subset=japanese');
 
 :root {
 	--bg: #f0eceb;
 	--fg: #62351f;
 	--rd: #e77d63;
 	--fn: 'Lora', sans-serif;
+	--jp: 'M PLUS Rounded 1c', sans-serif;
 }
 
 body {
@@ -38,6 +39,7 @@ a:hover {
 
 .accent {
 	color: var(--rd);
+	font-family: var(--jp);
 }
 
 @media (min-width: 1000px) {
