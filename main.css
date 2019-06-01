@@ -6,11 +6,13 @@
 	--rd: #e77d63;
 	--fn: 'Lora', sans-serif;
 	--jp: 'M PLUS Rounded 1c', sans-serif;
+	--size: 4vw;
 }
 
 body {
 	margin: 0;
 	padding: 0;
+	overflow: hidden;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -19,7 +21,10 @@ body {
 	background: var(--bg);
 	color: var(--fg);
 	font-family: var(--fn);
-	font-size: 4vw;
+	font-size: var(--size);
+	font-smooth: always;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	line-height: .4;
 }
 
@@ -42,8 +47,20 @@ a:hover {
 	font-family: var(--jp);
 }
 
+#spotlight {
+	position: absolute;
+	width: calc(var(--size) * 4);
+	height: calc(var(--size) * 4);
+	pointer-events: none;
+	background: white;
+	border-radius: 100%;
+	mix-blend-mode: difference;
+	opacity: 0;
+	transition: opacity .4s ease-in;
+}
+
 @media screen and (max-width: 500px) {
-	body {
-		font-size: 2em;
+	:root {
+		--size: 2em;
 	}
 }
