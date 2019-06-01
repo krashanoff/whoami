@@ -1,4 +1,5 @@
 const mp = document.getElementById('spotlight');
+const opac = 1;
 
 var x, y, dim;
 
@@ -10,7 +11,7 @@ function mm(event) {
 	updateDim();
 	x = event.clientX - dim;
 	y = event.clientY - dim;
-	mp.style.opacity = 1;
+	mp.style.opacity = opac;
 	mp.style.left = x + 'px';
 	mp.style.top = y + 'px';
 }
@@ -19,12 +20,15 @@ function ts(event) {
 	if (event.touches.length == 1) {
 		event.preventDefault();
 		updateDim();
-		x = event.touches[0].pageX - dim;
-		y = event.touches[0].pageY - dim;
-		mp.style.opacity = 1;
+		x = event.touches[0].clientX - dim;
+		y = event.touches[0].clientY - dim;
+		mp.style.opacity = opac;
+		mp.style.left = x + 'px';
+		mp.style.top = y + 'px';
 	}
 }
 
 document.addEventListener('mousemove', mm, false);
 document.addEventListener('touchstart', ts, false);
 document.addEventListener('touchmove', ts, false);
+document.addEventListener('resize', updateDim, false);
