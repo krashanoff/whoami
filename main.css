@@ -20,6 +20,13 @@ body {
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
+
+	/*
+	Device-specific vh units with fallback. A great compatability hack from:
+	https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+	*/
+	height: calc(var(--vh, 1vh) * 100);
+
 	width: 100vw;
 	background: var(--bg);
 	color: var(--fg);
