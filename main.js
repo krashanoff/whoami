@@ -1,12 +1,13 @@
 const mp = document.getElementById('spotlight');
 const opac = 1;
+const rootEl = document.documentElement;
 
 var x, y, dim;
 
 // on resize of the window, update the size of our spotlight *and* the size of our vh unit.
 function updateDim() {
 	dim = parseInt(window.getComputedStyle(mp).getPropertyValue('width')) / 2;
-	document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+	rootEl.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
 }
 
 // updates the spotlight to follow the mouse pointer.

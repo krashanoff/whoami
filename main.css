@@ -1,15 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Lora|M+PLUS+Rounded+1c&display=swap');
 
 :root {
-	--bg: #0f1314;
+	--bgFallback: #0f1314;
+	--bg: linear-gradient(75deg, rgba(2,0,36,1) 0%, rgba(15,19,20,1) 31%, rgba(0,127,153,1) 100%);
 	--fg: #9dcae0;
-	--bl: #18829c;
-	--light-bg: #f0eceb;
-	--light-fg: #62351f;
-	--rd: #e77d63;
+	--alt: #18829c;
 	--fn: 'Lora', sans-serif;
 	--jp: 'M PLUS Rounded 1c', sans-serif;
-	--size: 4vw;
+	--size: 4.5vw;
 }
 
 body {
@@ -28,6 +26,7 @@ body {
 	height: calc(var(--vh, 1vh) * 100);
 
 	width: 100vw;
+	background: var(--bgFallback);
 	background: var(--bg);
 	color: var(--fg);
 	font-family: var(--fn);
@@ -49,11 +48,11 @@ a {
 }
 
 a:hover {
-	text-decoration: underline dotted var(--rd);
+	text-decoration: underline dotted var(--alt);
 }
 
 .accent {
-	color: var(--bl);
+	color: var(--alt);
 	font-family: var(--jp);
 }
 
