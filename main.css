@@ -7,7 +7,7 @@
 	--alt: #18829c;
 	--fn: 'Lora', sans-serif;
 	--jp: 'M PLUS Rounded 1c', sans-serif;
-	--size: 4.5vw;
+	--size: 3rem;
 }
 
 body {
@@ -34,7 +34,7 @@ body {
 	font-smooth: always;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	line-height: .4;
+	line-height: .95;
 }
 
 div * {
@@ -66,10 +66,4 @@ a:hover {
 	mix-blend-mode: difference;
 	opacity: 0;
 	transition: opacity .4s ease-in;
-}
-
-@media screen and (max-width: 500px) {
-	:root {
-		--size: 2em;
-	}
 }
