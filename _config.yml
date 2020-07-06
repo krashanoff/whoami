@@ -1,0 +1,8 @@
+title: leonid krashanoff
+description: レオ・クラシャナフ
+baseurl: ""
+
+permalink: /:year/:title
+
+markdown: kramdown
+highlighter: rouge

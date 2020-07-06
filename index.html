@@ -1,24 +1,28 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='utf-8'>
-  <title>Leonid Krashanoff</title>
-  <link rel='icon' href='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'>
-  <meta name='description' content='レオ・クラショナフ' />
-  <link rel='stylesheet' type='text/css' href='main.css'>
-</head>
+---
+layout: default
+---
 
-<body id='body'>
-  <div id='spotlight'></div>
+<div>
+    <h1>About</h1>
+    <div>
+        <p>
+            Hey there, <span class='brighter'>I'm Leo, a third year computer science undergrad at UCLA.</span> I write software.
+            <br /><br />
+            I tend to enjoy working on lower level stuff but I have a considerable amount of experience in fullstack and web development. In my free time, I study Japanese and write code for ants.
+            <br /><br />
+            If you're interested in what I'm up to, you can find a list of the big stuff below. If you're looking for the code behind my projects or my open source work, take a peek at my <a href='https://github.com/krashanoff' rel='noreferrer' target='_blank'>GitHub</a>. If you're looking to get in touch with me, feel free to reach me via the <a href='{{ site.baseurl }}/contact'>contact</a> link up top.
+        </p>
+    </div>
+</div>
 
-  <div>
-    <p>Leonid Krashanoff</p>
-    <p class='accent'>レオ・クラシャナフ</p>
-    <p><a href='https://github.com/krashanoff' target='_blank'>github</a></p>
-    <p><a href='https://blog.krashanoff.com' target='_blank'>blog</a></p>
-    <p><a href='mailto:leo@krashanoff.com' target='_blank'>contact</a></p>
-  </div>
-
-  <script src='main.js'></script>
-</body>
-</html>
+<div>
+    <h1>Projects &amp; Work</h1>
+    {% for project in site.data.projects %}
+    <div class='project'>
+        <h2>{{ project.title }}</h2>
+        <p>
+            {{ project.desc }}
+        </p>
+    </div>
+    {% endfor %}
+</div>

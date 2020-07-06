@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap');
+
+:root {
+    --fn: 'Fira Code', monospace;
+
+    --bg: #1d1d1d;
+    
+    --fg: #b7d5e4;
+    --darker: #18829c;
+    --darkest: #10596b;
+    --brighter: #64c7f8;
+
+    --accent: #C72EC7;
+
+    --div-pad: 1rem;
+    --border-size: .1rem;
+}
+
+::selection {
+    background: var(--brighter);
+    color: var(--darkest);
+}
+::-moz-selection {
+    background: var(--brighter);
+    color: var(--darkest);
+}
+
+.darker { color: var(--darker); }
+.brighter {	color: var(--brighter); }
+.accent { color: var(--accent); }
+
+body {
+    margin: var(--div-pad) auto;
+    max-width: 1000px;
+    padding: 0;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: baseline;
+
+    background: var(--bg);
+    color: var(--fg);
+    
+    font-family: var(--fn);
+
+    line-height: 1.5;
+    word-wrap: break-word;
+    
+    font-smooth: always;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 { margin: 0; }
+p { margin: 0; }
+hr { color: var(--accent); }
+img { object-fit: cover; }
+
+div {
+    padding: var(--div-pad);
+    border: var(--border-size) solid var(--fg);
+}
+
+/* even spacing. */
+div:not(:only-child) { margin-bottom: var(--div-pad); }
+div:last-child:not(:only-child) { margin-bottom: 0; }
+#content > div > h1 { /* kinda ugly, but evenly spaces "box headers" */
+    line-height: 1;
+    margin-bottom: var(--div-pad);
+}
+
+/* boxes */
+#content > div > div { border: var(--border-size) solid var(--darkest); }   
+#content > div { border: var(--border-size) solid var(--darker); }
+
+a {
+    color: var(--fg);
+    text-decoration: underline solid var(--fg);
+    transition: text-decoration .3s linear;
+}
+a:hover { text-decoration: underline solid var(--accent); }
+
+/* posts */
+blockquote { color: var(--brighter); }
+
+.post img {
+    width: calc(100% - (var(--div-pad) * 2));
+    padding: 0 var(--div-pad) 0 var(--div-pad);
+}
+
+.post p { margin-bottom: var(--div-pad); }
+
+@media only screen and (max-width: 768px) {
+    :root { --div-pad: .5rem; }
+}
