@@ -1,0 +1,11 @@
+- title: Dev Team Director, <a href='https://teachla.uclaacm.com/' rel='noreferrer' target='_blank'>ACM Teach LA</a>
+  desc: >-
+    As director, I oversee (and often PM) development of Teach LA's online ventures. We maintain an online code editor and create interactive learning modules to teach CS principles to schools throughout the LAUSD.
+    <br /><br />
+    <span class='accent'>We use React, Node, Go, Sass, and core web languages</span> in building our projects.
+- title: Backend Lead, <a href='https://teachla.uclaacm.com/' rel='noreferrer' target='_blank'>ACM Teach LA</a>
+  desc: >-
+    Although I am presently director, my first big project on the dev team was the backend of Teach LA's flagship online code editor, which I am presently the lead developer for. It serves as an intermediary to complex firebase operations. <span class='accent'>Written in Go.</span>
+- title: Instructor, Bruin Language Association
+  desc: >-
+    I teach weekly Japanese lessons to beginners. I produce all materials for the class. プリント欲しかったら、コンタクトページでメール送ってすぐ返事します。
