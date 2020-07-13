@@ -6,3 +6,9 @@ permalink: /:year/:title
 
 markdown: kramdown
 highlighter: rouge
+
+links:
+  - name: GitHub
+    href: https://github.com/krashanoff
+  - name: LinkedIn
+    href: https://linkedin.com/leonidrlk

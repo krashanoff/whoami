@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=M+PLUS+Rounded+1c&display=swap');
 
 :root {
-    --fn: 'Fira Code', monospace;
+    --fn: 'Fira Code', 'M PLUS Rounded 1c', monospace;
 
     --bg: #1d1d1d;
     
@@ -13,18 +13,13 @@
 
     --accent: #f77af7;
 
-    --div-pad: 1rem;
-    --border-size: .1rem;
-}
+    --div-pad: 0.75rem;
+    --border-size: thin;
 
-::selection {
-    background: var(--brighter);
-    color: var(--darkest);
+    --default-transition: 0.2s linear;
 }
-::-moz-selection {
-    background: var(--brighter);
-    color: var(--darkest);
-}
+::selection { background: var(--brighter); color: var(--darkest); }
+::-moz-selection { background: var(--brighter); color: var(--darkest); }
 
 .darker { color: var(--darker); }
 .brighter {	color: var(--brighter); }
@@ -32,9 +27,9 @@
 .accent { color: var(--accent); }
 
 body {
-    margin: var(--div-pad) auto;
-    max-width: 1000px;
-    padding: 0;
+    margin: auto;
+    max-width: 50rem;
+    padding: var(--div-pad);
 
     display: flex;
     flex-flow: column nowrap;
@@ -51,48 +46,45 @@ body {
     font-smooth: always;
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    transition: all var(--default-transition);
 }
 
-h1, h2, h3, h4, h5, h6 { margin: 0; }
-p { margin: 0; }
-hr { color: var(--accent); }
-img { object-fit: cover; }
+/* even spacing. */
+body :not(:only-child) { margin-bottom: var(--div-pad); }
+body :last-child:not(:only-child) { margin-bottom: 0; }
+div h1, h2, h3, h4, h5, h6 { line-height: 1; } /* remove default spacing for headers */
 
+/* boxes */
 div {
     padding: var(--div-pad);
     border: var(--border-size) solid var(--fg);
 }
+body > div { border: var(--border-size) solid var(--darkest); }
+body > div > div { border: var(--border-size) solid var(--darker); }   
 
-/* even spacing. */
-div:not(:only-child) { margin-bottom: var(--div-pad); }
-div:last-child:not(:only-child) { margin-bottom: 0; }
-#content > div > h1, h2, h3, h4 { /* kinda ugly, but evenly spaces "box headers" */
-    line-height: 1;
-    margin-bottom: var(--div-pad);
-}
-
-/* boxes */
-#content > div > div { border: var(--border-size) solid var(--darkest); }   
-#content > div { border: var(--border-size) solid var(--darker); }
+h1, h2, h3, h4, h5, h6, p, ul { margin: 0; }
+hr { color: var(--accent); }
+ul { padding: 0; }
+li { list-style: none; }
 
 a {
-    color: var(--brightest);
+    color: inherit;
     text-decoration: underline solid var(--fg);
-    transition: text-decoration .3s linear;
+    transition: text-decoration var(--default-transition);
 }
 a:hover { text-decoration: underline solid var(--accent); }
 
-/* posts */
-blockquote { color: var(--brighter); }
-
-.post img {
+img {
+    object-fit: cover;
     width: calc(100% - (var(--div-pad) * 2));
-    padding: 0 var(--div-pad) 0 var(--div-pad);
+    padding: 0 var(--div-pad);
 }
 
-.post p:not(:last-child) { margin-bottom: var(--div-pad); }
-
-ul { margin: 0; }
+blockquote {
+    color: var(--brighter);
+    margin: 0 var(--div-pad);
+}
 
 @media only screen and (max-width: 768px) {
     :root { --div-pad: .5rem; }

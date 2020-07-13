@@ -3,35 +3,34 @@ layout: default
 ---
 
 <div>
-    <h1>About</h1>
+    <h2>About</h2>
     <div>
         <p>
-            <span class='accent'>Third year computer science undergrad at UCLA.</span> I write software.
-            <br /><br />
-            I tend to enjoy working on lower level stuff but I have a considerable amount of experience in fullstack and web development. <span class='accent'>In my free time, I study Japanese and write code for ants.</span>
-            <br /><br />
-            <span class='accent'>If you're interested in what I'm up to, you can find a list of the big stuff below.</span> If you're looking for the code behind my projects or my open source work, take a peek at my <a href='https://github.com/krashanoff' rel='noreferrer' target='_blank'>GitHub</a>. If you're looking to get in touch with me, feel free to reach me via the <a href='{{ site.baseurl }}/contact'>contact</a> link up top.
+            <span class='accent'>Third year computer science undergrad at UCLA. I write software.</span>
+            <br />
+            I enjoy working on lower level stuff but I have a reasonable background in web development. <span class='accent'>In my free time, I study Japanese.</span>
+            <br />
+            If you're interested in what I'm up to, the code behind my projects, or my open source work, <span class='accent'>take a peek at my <a href='https://github.com/krashanoff' rel='noopener noreferrer' target='_blank'>GitHub</a>.</span> If you're looking to get in touch with me, use the <a href='{{ site.baseurl }}/links'>links</a> provided.
         </p>
     </div>
 </div>
 
 <div>
-    <h1>Current Positions</h1>
-    {% for project in site.data.current %}
-    <div class='project'>
-        <h2>{{ project.title }}</h2>
-        <p>
-            {{ project.desc }}
-        </p>
+    <h2>Current Positions</h2>
+    <div>
+        <ul>
+            {% for p in site.data.current %}
+            <li>{{ p.title }}, <a href='{{ p.href }}' rel='noopener noreferrer'>{{ p.org }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
-    {% endfor %}
-    <h1>Past Work &amp; Hobbies</h1>
-    {% for project in site.data.past %}
-    <div class='project'>
-        <h2>{{ project.title }} <span class='darker'>| {{ project.date }}</span></h2>
-        <p>
-            {{ project.desc }}
-        </p>
+
+    <h2>Past Work, Hobbies</h2>
+    <div>
+        <ul>
+            {% for p in site.data.past %}
+            <li>{{ p.title }}<span class='darker'> | {{ p.date }}</span></li>
+            {% endfor %}
+        </ul>
     </div>
-    {% endfor %}
 </div>

@@ -1,22 +1,8 @@
 - title: "code for ants"
   date: Jul '20
-  desc: >-
-    I bet you were wondering what that line meant.
-    <br /><br />
-    I've just started a small repo of coding challenges I create for myself. The goal is to build complex data structures and programs with minimal SLOC. I just started, but I'm pretty happy with the <a href='https://github.com/krashanoff/code-for-ants/blob/master/types/simpleTree.go' rel='noreferrer' target='_blank'>43 SLOC thread-safe search tree</a> I have on there right now. Also, it's just funny to say.
 - title: "welder"
   date: Apr '20
-  desc: >-
-    Discord bot that supports regex-driven querying and deletion of messages from a Discord server's message history. <span class='accent'>Written in Python.</span>
-    <br /><br />
-    It isn't something I maintain actively these days, but I make additions when the time is right.
-- title: SHHA Checkin
+- title: SHHA Check-In System
   date: Jun - Sept '19
-  desc: >-
-    Developed a fullstack solution for lifeguards to check in pool members and automatically record activity at the community center. The frontend was built with React, the backend in Python with Flask, while activity was pushed through Google Suite.
-    <br /><br />
-    I was the sole developer in this project, and reported directly to the head of the homes association and its existing membership system admin. The project was completed as a service to the community.
 - title: "JAC@UCLA翻訳会：「夜光雲のサリッサ」翻訳者"
   date: Dec '18 - Mar '19
-  desc: >-
-    I translated the first few chapters of an <a href='https://www.amazon.co.jp/dp/B07JB7VLZW' rel='noreferrer' target='_blank'>online webcomic</a> a while back. It's not my proudest work, but it was a lot of fun to read through and translate. Unfortunately, we never got around to typesetting this, so I currently just sit on the translated manuscript.

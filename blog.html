@@ -7,7 +7,7 @@ permalink: /blog
 <div>
     <div>
         <p>
-            Well, you made it. Welcome to my blog. I don't post here very often. Maybe that'll change soon.
+            Well, you made it. Welcome to my blog. I don't post here often. Maybe that'll change soon.
             <br />
             (´꒳`∗)
         </p>
@@ -16,6 +16,13 @@ permalink: /blog
 
 <div>
     <h1>Posts</h1>
+    {% if site.posts.size == 0 %}
+    <div>
+        <p>
+            Nothing is here (yet)
+        </p>
+    </div>
+    {% endif %}
     {% for post in site.posts %}
     <div class='postSummary'>
         <a class='postTitle' href='{{ post.url | prepend: site.baseurl }}'>{{ post.title }}</a>
