@@ -16,20 +16,23 @@ layout: default
 </div>
 
 <div>
-    <h2>Current Positions</h2>
+    <h2>Currently</h2>
     <div>
         <ul>
             {% for p in site.data.current %}
-            <li>{{ p.title }}, <a href='{{ p.href }}' rel='noopener noreferrer'>{{ p.org }}</a></li>
+            <li>{{ p.title }}, <a href='{{ p.href }}' rel='noopener noreferrer' target='_blank'>{{ p.org }}</a></li>
             {% endfor %}
         </ul>
     </div>
 
-    <h2>Past Work, Hobbies</h2>
+    <h2>Former</h2>
     <div>
         <ul>
             {% for p in site.data.past %}
-            <li>{{ p.title }}<span class='darker'> | {{ p.date }}</span></li>
+            <li>
+                {% if p.repo %}<a href='{{ p.repo }}' rel='noopener noreferrer'>{% endif %}{{ p.title }}{% if p.repo %}</a>{% endif %}
+                <span class='darker'> | {{ p.date }}</span>
+            </li>
             {% endfor %}
         </ul>
     </div>

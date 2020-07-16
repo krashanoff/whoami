@@ -61,7 +61,7 @@ div {
     border: var(--border-size) solid var(--fg);
 }
 body > div { border: var(--border-size) solid var(--darkest); }
-body > div > div { border: var(--border-size) solid var(--darker); }   
+body > div > div { border: var(--border-size) solid var(--darker); }
 
 h1, h2, h3, h4, h5, h6, p, ul { margin: 0; }
 hr { color: var(--accent); }
