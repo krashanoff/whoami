@@ -1,23 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=M+PLUS+Rounded+1c&display=swap');
-
 :root {
-    --fn: 'Fira Code', 'M PLUS Rounded 1c', monospace;
+    --fn: 'Fira Code', monospace;
 
-    --bg: #1d1d1d;
+    --bg: #f0eceb;
     
-    --fg: #b7d5e4;
-    --darker: #18829c;
-    --darkest: #10596b;
-    --brighter: #64c7f8;
-    --brightest: #e0f5ff;
+    --fg: #492b1d;
+    --darkest: #25160f;
+    --darker: #362015;
+    --brighter: #683d29;
+    --brightest: #75452f;
 
-    --accent: #f77af7;
+    --accent: #2c4d6c;
 
     --div-pad: 0.75rem;
     --border-size: thin;
 
     --default-transition: 0.2s linear;
 }
+
+@media only screen and (max-width: 768px) {
+    :root { --div-pad: .5rem; }
+}
+
 ::selection { background: var(--brighter); color: var(--darkest); }
 ::-moz-selection { background: var(--brighter); color: var(--darkest); }
 
@@ -39,14 +42,11 @@ body {
     color: var(--fg);
     
     font-family: var(--fn);
+    font-display: swap;
 
     line-height: 1.5;
     word-wrap: break-word;
     
-    font-smooth: always;
-    -webkit-font-smoothing: subpixel-antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
     transition: all var(--default-transition);
 }
 
@@ -84,8 +84,4 @@ img {
 blockquote {
     color: var(--brighter);
     margin: 0 var(--div-pad);
-}
-
-@media only screen and (max-width: 768px) {
-    :root { --div-pad: .5rem; }
 }
