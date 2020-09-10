@@ -1,0 +1,23 @@
+current:
+  - title: Dev Team Director
+    org: ACM Teach LA
+    href: https://teachla.uclaacm.com/
+  - title: Backend Lead
+    org: ACM Teach LA
+    href: https://teachla.uclaacm.com/
+  - title: Japanese Instructor
+    org: Bruin Language Association
+    href: https://www.facebook.com/bruinlanguageassociation/
+prior:
+  - title: welder
+    date: Apr '20
+    href: https://github.com/krashanoff/welder
+  - title: Check-In System Dev
+    org: SHHA
+    date: Jun - Sept '19
+  - title: "「夜光雲のサリッサ」翻訳者"
+    org: JAC@UCLA
+    date: Dec '18 - Mar '19
+  - title: to65536
+    date: Mar '16
+    href: https://github.com/krashanoff/to65536

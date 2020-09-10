@@ -21,8 +21,10 @@ layout: default
     <h2>Current</h2>
     <div>
         <ul>
-            {% for p in site.data.current %}
-            <li>{{ p.title }}, <a href='{{ p.href }}' rel='noopener noreferrer' target='_blank'>{{ p.org }}</a></li>
+            {% for p in site.data.positions.current %}
+            <li>
+                {{ p.title }}, <a href='{{ p.href }}' rel='noopener noreferrer' target='_blank'>{{ p.org }}</a>
+            </li>
             {% endfor %}
         </ul>
     </div>
@@ -32,9 +34,9 @@ layout: default
     <h2>Prior</h2>
     <div>
         <ul>
-            {% for p in site.data.past %}
+            {% for p in site.data.positions.prior %}
             <li>
-                {% if p.repo %}<a href='{{ p.repo }}' rel='noopener noreferrer'>{% endif %}{{ p.title }}{% if p.repo %}</a>{% endif %}
+                {% if p.href %}<a href='{{ p.href }}' rel='noopener noreferrer'>{% endif %}{{ p.title }}{% if p.href %}</a>{% endif %}
                 <span class='darker'> | {{ p.date }}</span>
             </li>
             {% endfor %}

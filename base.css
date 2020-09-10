@@ -2,13 +2,11 @@
     --fn: 'Fira Code', monospace;
 
     --bg: #f0eceb;
-    
     --fg: #492b1d;
     --darkest: #25160f;
     --darker: #362015;
     --brighter: #683d29;
     --brightest: #75452f;
-
     --accent: #2c4d6c;
 
     --div-pad: 0.75rem;
@@ -28,6 +26,8 @@
 .brighter {	color: var(--brighter); }
 .brightest { color: var(--brightest); }
 .accent { color: var(--accent); }
+
+html { font-size: 100%; }
 
 body {
     margin: auto;
