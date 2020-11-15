@@ -1,0 +1,129 @@
+---
+---
+
+$fn: 'Fira Code', monospace;
+$bg: #f0eceb;
+$fg: #492b1d;
+
+$darkest: #25160f;
+$brightest: #75452f;
+$darker: lighten($darkest, 25%);
+$brighter: darken($brightest, 25%);
+
+$accent: #2c4d6c;
+$border-size: thin;
+$default-transition: 0.2s linear;
+
+// Defines the even separation used.
+$div-pad: 0.75rem;
+@media only screen and (max-width: 768px) {
+    $div-pad: .5rem;
+}
+
+::selection {
+    background: $brighter;
+    color: $darkest;
+}
+::-moz-selection {
+    background: $brighter;
+    color: $darkest;
+}
+
+.darker {
+    color: $darker;
+}
+.brighter {
+    color: $brighter;
+}
+.brightest {
+    color: $brightest;
+}
+.accent {
+    color: $accent;
+}
+
+html {
+    font-size: 100%;
+}
+
+body {
+    margin: auto;
+    max-width: 50rem;
+    padding: $div-pad;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: baseline;
+
+    background: $bg;
+    color: $fg;
+    
+    font-family: $fn;
+    font-display: swap;
+
+    line-height: 1.5;
+    word-wrap: break-word;
+    
+    transition: all $default-transition;
+
+    // box definition
+    div {
+        border: $border-size solid $darkest;
+
+        div {
+            border: $border-size solid $darker;
+        }
+    }
+
+    :not(:only-child) {
+        margin-bottom: $div-pad;
+    }
+
+    :last-child:not(:only-child) {
+        margin-bottom: 0;
+    }
+}
+
+// boxes
+div {
+    padding: $div-pad;
+    border: $border-size solid $fg;
+
+    h1, h2, h3, h4, h5, h6 {
+        line-height: 1;
+    }
+}
+
+h1, h2, h3, h4, h5, h6, p, ul {
+    margin: 0;
+}
+hr {
+    color: $accent;
+}
+ul {
+    padding: 0;
+}
+li {
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: underline solid $fg;
+    transition: text-decoration $default-transition;
+
+    :hover {
+        text-decoration: underline solid $accent;
+    }
+}
+
+img {
+    object-fit: cover;
+    width: 50rem - $div-pad * 2;
+    padding: 0 $div-pad;
+}
+
+blockquote {
+    color: $brighter;
+    margin: 0 $div-pad;
+}
