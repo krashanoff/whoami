@@ -4,11 +4,13 @@ baseurl: ""
 
 permalink: /:year/:title
 
-markdown: kramdown
-highlighter: rouge
+avi: https://avatars2.githubusercontent.com/u/7704542
 
 links:
   - name: GitHub
     href: https://github.com/krashanoff
   - name: LinkedIn
     href: https://linkedin.com/in/leonidrlk
+
+markdown: kramdown
+highlighter: rouge

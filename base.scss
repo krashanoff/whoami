@@ -2,15 +2,15 @@
 ---
 
 $fn: 'Fira Code', monospace;
-$bg: #f0eceb;
-$fg: #492b1d;
+$bg: #fff;
+$fg: #050505;
 
-$darkest: #25160f;
-$brightest: #75452f;
-$darker: lighten($darkest, 25%);
-$brighter: darken($brightest, 25%);
+$darkest: lighten($fg, 25%);
+$brightest: darken($bg, 25%);
+$darker: lighten($darkest, 15%);
+$brighter: darken($brightest, 15%);
 
-$accent: #2c4d6c;
+$accent: mix($fg, #2c4d6c, 10%);
 $border-size: thin;
 $default-transition: 0.2s linear;
 
@@ -66,7 +66,7 @@ body {
     
     transition: all $default-transition;
 
-    // box definition
+    // boxes
     div {
         border: $border-size solid $darkest;
 
@@ -84,7 +84,6 @@ body {
     }
 }
 
-// boxes
 div {
     padding: $div-pad;
     border: $border-size solid $fg;
@@ -110,11 +109,6 @@ li {
 a {
     color: inherit;
     text-decoration: underline solid $fg;
-    transition: text-decoration $default-transition;
-
-    :hover {
-        text-decoration: underline solid $accent;
-    }
 }
 
 img {
