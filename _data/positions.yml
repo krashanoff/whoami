@@ -1,23 +1,40 @@
-current:
-  - title: Dev Team Director
-    org: ACM Teach LA
-    href: https://teachla.uclaacm.com/
-  - title: Backend Lead
-    org: ACM Teach LA
-    href: https://teachla.uclaacm.com/
-  - title: Japanese Instructor
-    org: Bruin Language Association
-    href: https://www.facebook.com/bruinlanguageassociation/
-prior:
-  - title: welder
-    date: Apr '20
-    href: https://github.com/krashanoff/welder
-  - title: Check-In System Dev
-    org: SHHA
-    date: Jun - Sept '19
-  - title: "「夜光雲のサリッサ」翻訳者"
-    org: JAC@UCLA
-    date: Dec '18 - Mar '19
+projects:
+  - title: parallel
+    href: https://github.com/krashanoff/parallel
+    desc: The tiny parallel batch-job processor.
+  - title: yukari
+    href: https://github.com/krashanoff/yukari
+    desc: The "everything" Discord bot.
+  - title: H
+    href: https://github.com/krashanoff/H
+    desc: For the dead week enjoyer.
+  - title: pair
+    href: https://github.com/krashanoff/pair
+    desc: Start to a simple collaborative editor.
   - title: to65536
     date: Mar '16
     href: https://github.com/krashanoff/to65536
+    desc: Convert between base65536 and back again.
+current:
+  - title: Editor Lead
+    org: ACM Teach LA
+    href: https://teachla.uclaacm.com/
+  - title: Screener
+    org: JAC@UCLA
+    href: https://jac.moe/
+prior:
+  - title: Dev Team Director
+    date: Mar - Sep '20
+    org: ACM Teach LA
+    href: https://teachla.uclaacm.com/
+  - title: Japanese Instructor
+    date: Sept '19 - Jun '20
+    org: Bruin Language Association
+    href: https://www.facebook.com/bruinlanguageassociation/
+  - title: Check-In System Dev
+    date: Jun - Sept '19
+    org: SHHA
+  - title: "「夜光雲のサリッサ」翻訳者"
+    date: Dec '18 - Mar '19
+    org: JAC@UCLA
+    href: https://jac.moe/
