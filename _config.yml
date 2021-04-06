@@ -1,5 +1,6 @@
 title: krashanoff
 description: Software and other things.
+domain: krashanoff.com
 baseurl: ""
 
 permalink: /:year/:title
@@ -7,10 +8,23 @@ permalink: /:year/:title
 avi: https://avatars2.githubusercontent.com/u/7704542
 
 links:
-  - name: GitHub
-    href: https://github.com/krashanoff
-  - name: LinkedIn
-    href: https://linkedin.com/in/leonidrlk
+- name: GitHub
+  href: https://github.com/krashanoff
+- name: LinkedIn
+  href: https://linkedin.com/in/leonidrlk
+
+collections:
+  go:
+    permalink: /:name
+    layout: go
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "go"
+    values:
+      layout: "go"
 
 markdown: kramdown
 highlighter: rouge
