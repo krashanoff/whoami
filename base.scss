@@ -113,8 +113,9 @@ a {
 
 img {
     object-fit: cover;
-    width: 50rem - $div-pad * 2;
-    padding: 0 $div-pad;
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
 }
 
 blockquote {
