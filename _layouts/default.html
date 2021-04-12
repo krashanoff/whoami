@@ -8,11 +8,11 @@
         <link rel="icon" href="data:,">
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
         <meta name='description' content='{{ site.description }}' />
-        {% if page.go %}
-        <meta name='go-import' content='{{ site.domain }}{{ page.url }} git {{ page.go }}'>
-        {% endif %}
         <link rel='stylesheet' type='text/css' href='{{ site.baseurl }}/base.css'>
         <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700'>
+        {% for pkg in site.data.go %}
+        <meta name='go-import' content='{{ site.domain }} git {{ pkg[1] }}'>
+        {% endfor %}
     </head>
 
     <body>
