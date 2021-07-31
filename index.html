@@ -6,13 +6,17 @@ layout: default
     <h2>About</h2>
     <div>
         <p>
-            <span class='accent'>Third year computer science undergrad at UCLA. I write software.</span>
+            <span class='accent'>Fourth year computer science undergrad at UCLA. I write software.</span>
         </p>
         <p>
-            I enjoy working on lower level stuff but I have a reasonable background in web development. In my free time, I study Japanese.
+            I like reading about programming languages and close-to-the-metal stuff, but I find myself
+            writing a lot of web applications. In my free time, I study Japanese.
         </p>
         <p>
-            If you're interested in what I'm up to, the code behind my projects, or my open source work, <span class='accent'>take a peek at my <a href='https://github.com/krashanoff' rel='noopener noreferrer' target='_blank'>GitHub</a>.</span> If you're looking to get in touch with me, use the <a href='{{ site.baseurl }}/links'>links</a> provided.
+            If you're interested in what I'm up to, <span class='accent'>take a peek at my
+            <a href='https://github.com/krashanoff' rel='noopener noreferrer' target='_blank'>GitHub</a>.
+            </span> If you're looking to get in touch with me, use the <a href='{{ site.baseurl }}/links'>links</a>
+            provided.
         </p>
     </div>
 </div>
@@ -53,7 +57,7 @@ layout: default
             {% for p in site.data.positions.prior %}
             <li>
                 {{ p.title }}{% if p.org %}, {% if p.href %}<a href='{{ p.href }}' rel='noopener noreferrer' target='_blank'>{% endif %}{{ p.org }}{% if p.href %}</a>{% endif %}{% endif %}
-                <span class='darker'> | {{ p.date }}</span>
+                ({{ p.date }})
             </li>
             {% endfor %}
         </ul>

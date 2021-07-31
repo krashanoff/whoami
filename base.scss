@@ -5,11 +5,6 @@ $fn: 'Fira Code', monospace;
 $bg: #fff;
 $fg: #050505;
 
-$darkest: lighten($fg, 25%);
-$brightest: darken($bg, 25%);
-$darker: lighten($darkest, 15%);
-$brighter: darken($brightest, 15%);
-
 $accent: mix($fg, #2c4d6c, 10%);
 $border-size: thin;
 $default-transition: 0.2s linear;
@@ -21,22 +16,22 @@ $div-pad: 0.75rem;
 }
 
 ::selection {
-    background: $brighter;
-    color: $darkest;
+    background: $fg;
+    color: $bg;
 }
 ::-moz-selection {
-    background: $brighter;
-    color: $darkest;
+    background: $fg;
+    color: $bg;
 }
 
 .darker {
-    color: $darker;
+    color: $fg;
 }
 .brighter {
-    color: $brighter;
+    color: $bg;
 }
 .brightest {
-    color: $brightest;
+    color: $bg;
 }
 .accent {
     color: $accent;
@@ -68,10 +63,10 @@ body {
 
     // boxes
     div {
-        border: $border-size solid $darkest;
+        border: $border-size solid $fg;
 
         div {
-            border: $border-size solid $darker;
+            border: $border-size solid $fg;
         }
     }
 
@@ -119,6 +114,6 @@ img {
 }
 
 blockquote {
-    color: $brighter;
+    color: $bg;
     margin: 0 $div-pad;
 }
