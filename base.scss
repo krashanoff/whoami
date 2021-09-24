@@ -79,6 +79,11 @@ body {
     }
 }
 
+code {
+    font-family: 'Fira Code';
+    color: $accent;
+}
+
 div {
     padding: $div-pad;
     border: $border-size solid $fg;
