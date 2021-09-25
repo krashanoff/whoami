@@ -14,11 +14,16 @@ emerged shortly after [Bell Labs](https://en.wikipedia.org/wiki/Bell_Labs) disso
 What's nice about BSD Unix is that most of them try to stay relatively
 true to the original Unix philosophy, and remain as free as they possibly
 can without sacrificing quality. Why not start, then, by dipping our toes into the
-water with the OS that claims to be the "most free"?
+water with the OS that claims to be ["all free"](https://www.openbsd.org/faq/faq1.html)?
 
 ## OpenBSD
 
 ...or maybe it was a leap.
+
+I set out on my OpenBSD expedition to build a router for my roommate and I while
+we were waiting on another, who had a router/wireless AP. Faced with a cable
+modem from our local ISP, we had no choice but to pursue making a router of our
+internet-facing machine.
 
 I browsed on over to the [OpenBSD website](https://www.openbsd.org/), likely
 bouncing off a few `(Free|Open)`BSD servers before hitting the OpenBSD box
@@ -31,13 +36,10 @@ introduced [W^X](https://en.wikipedia.org/wiki/W%5EX), and opportunistically int
 throughout. The team isn't afraid to tote this around -- they even have a page
 basically [flipping off a few governments](https://www.openbsd.org/crypto.html).
 
-I set out on my mission to use OpenBSD as a router for the apartment I had
-moved into with one of my roommates. Why, I hear you ask? We were waiting on
-another, who had a router/wireless AP. Faced with a passable cable modem from
-our local ISP, we had no choice but to pursue making a router of our internet-facing
-machine.
-
 ## UX
+
+Post-download, I imaged a flash drive, spun up the years-old hardware destined
+to become our temporary router and dove right in.
 
 The OpenBSD experience is classic. It's still using [`ffs(7)`](https://www.freebsd.org/cgi/man.cgi?query=ffs&sektion=7), has an
 exceedingly stable kernel with a [sizable lock](https://en.wikipedia.org/wiki/Giant_lock),
@@ -54,7 +56,7 @@ Luckily, the setup process is far from classic. The install is very, very
 smooth. Compared to something like [Gentoo](https://wiki.gentoo.org/), it's a breeze with just a few
 prompts mirroring what you'd see in your average Debian installation wizard.
 
-Once inside, OpenBSD is an incredibly well-documented, well-polished system with very few "huh?"
+Once inside, OpenBSD is a well-documented, well-polished system with very few "huh?"
 situations. By that, I mean situations where I found myself face-to-face with a
 bug the manpages didn't give me explicit instruction against -- it does a great
 job of easing the user into the operating system so that info dumps are more
@@ -73,7 +75,7 @@ filter would drop a few packets for maybe a half-second, even using the default
 configuration. Time to resolve this problem: we put down our manpages. We turn
 to Google.
 
-## Community? What For?
+## Community
 
 Googling around for a fix for that little half-second packet drop issue took
 me almost two days of inconclusive results, but I was *not* about to hop on
@@ -81,9 +83,7 @@ the mailing lists or forums and ask a question so broad.
 
 The community for OpenBSD is [dwarfed](https://distrowatch.com/table.php?distribution=freebsd) compared to [FreeBSD](https://www.freebsd.org/) or any Linux flavor.
 I'd compare it in size to something like [BunsenLabs Linux](https://www.bunsenlabs.org/).
-I would have had no problem with this had the community been more friendly.
-
-OpenBSD's community has a reputation of being *exceedingly* unyielding. A
+Unlike BunsenLabs, though, OpenBSD's community has a reputation of being *exceedingly* unyielding. A
 large part of this could be attributed to the personality of its
 leader, who, by Linus' account, is ["difficult"](https://www.forbes.com/2005/06/16/linux-bsd-unix-cz_dl_0616theo.html).
 
@@ -91,16 +91,16 @@ This is the argument that most people will give you, but, in my opinion,
 there's a much easier, less personal take.
 
 One of the downsides of having extensive documentation is that developers
-and users will, inevitably, grow frustrated reading questions answered in the docs
+and users may grow frustrated reading questions answered in the docs
 they just updated over and over again. For the new user, unfamiliar with
 mailing lists, past answers may not be as readily available. Mix these two
 together and you have a situation akin to the Linux mailing lists, but with
 less margin for discussion.
 
-## Allure of the Modern
+## Freedom and Software
 
 If I had to pick a straw that might break the camel's back for an OpenBSD
-novice such as myself, it's probably OpenBSD's lack of software.
+novice like me, it's probably OpenBSD's lack of software.
 
 I was trying to port my little file sharing server to the operating system
 earlier today. The problem is that it's written in Rust. I definitely
@@ -128,7 +128,7 @@ OpenBSD is an operating system that is built to run on hardware,
 [not virtualized](https://www.virtualbox.org/ticket/639).
 It is built for security, software freedom, and stability. It is
 easy to understand and secure by default. The issues I encountered in my experience
-with it were paltry compared to those I ran into on any Linux derivative.
+with it were pretty tame compared to those I ran into on any Linux derivative.
 
 Thinking back to something as elementary as rebooting my computer after my first
 Linux installation, I remember [getting softlocked at shutdown](https://unix.stackexchange.com/q/249654).
