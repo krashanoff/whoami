@@ -39,7 +39,7 @@ basically [flipping off a few governments](https://www.openbsd.org/crypto.html).
 ## UX
 
 Post-download, I imaged a flash drive, spun up the years-old hardware destined
-to become our temporary router and dove right in.
+to become our temporary router, and dove right in.
 
 The OpenBSD experience is classic. It's still using [`ffs(7)`](https://www.freebsd.org/cgi/man.cgi?query=ffs&sektion=7), has an
 exceedingly stable kernel with a [sizable lock](https://en.wikipedia.org/wiki/Giant_lock),
