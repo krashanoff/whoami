@@ -38,4 +38,4 @@ In my free time, I study Japanese.
 
 ***
 
-Looking for my old site? It's still available at [`old.krashanoff.com`](old.krashanoff.com).
+Need to email me? Email `leo` at this address.
