@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>krashanoff</title><link>https://krashanoff.com/</link><description>Recent content on krashanoff</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Sep 2021 00:00:00 -0700</lastBuildDate><atom:link href="https://krashanoff.com/index.xml" rel="self" type="application/rss+xml"/><item><title>An SSH Tarpit in 24 Lines</title><link>https://krashanoff.com/2021/an-ssh-tarpit-in-24-lines/</link><pubDate>Mon, 27 Sep 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/an-ssh-tarpit-in-24-lines/</guid><description>&lt;p>I found Chris Wellons' &lt;a href="https://nullprogram.com/blog/2019/03/22/">endlessh&lt;/a>
+to be very neat, so I wrote a short one in Rust. This compiles down to about
+337kB after stripping metadata on the &lt;code>current-thread&lt;/code> flavor of &lt;a href="https://tokio.rs/">&lt;code>tokio&lt;/code>&lt;/a>.&lt;/p>
+&lt;p>If you want to try it yourself, you can run it with &lt;code>./binname [PORT NUMBER]&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rs" data-lang="rs">&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">std&lt;/span>::&lt;span class="p">{&lt;/span>&lt;span class="n">env&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">time&lt;/span>::&lt;span class="n">Duration&lt;/span>&lt;span class="p">};&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">tokio&lt;/span>::&lt;span class="p">{&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">io&lt;/span>::&lt;span class="n">AsyncWriteExt&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">net&lt;/span>::&lt;span class="n">TcpListener&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">time&lt;/span>::&lt;span class="n">interval&lt;/span>&lt;span class="p">};&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="cp">#[tokio::main]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">async&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">port&lt;/span>: &lt;span class="nb">String&lt;/span> &lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">env&lt;/span>::&lt;span class="n">args&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">skip&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">collect&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">listener&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">TcpListener&lt;/span>::&lt;span class="n">bind&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">format&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;0.0.0.0:{}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">port&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">await&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">expect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;failed to bind to port&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">loop&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">Ok&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="k">mut&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">stream&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">_&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">listener&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">accept&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="k">await&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">tokio&lt;/span>::&lt;span class="n">spawn&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">async&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">move&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">mut&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">interval&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">interval&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Duration&lt;/span>::&lt;span class="n">from_secs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">loop&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">Err&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">stream&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">write&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">b&amp;#34;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="k">await&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">eprintln&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;{}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">interval&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">tick&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="k">await&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">});&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Exploring OpenBSD</title><link>https://krashanoff.com/2021/exploring-openbsd/</link><pubDate>Fri, 24 Sep 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/exploring-openbsd/</guid><description>&lt;p>I&amp;rsquo;m an operating systems enthusiast, and love &lt;a href="https://www.linux.org/">Linux&lt;/a>.&lt;/p>
+&lt;p>This said, there&amp;rsquo;s plenty of other operating systems out there to explore, and
+a significant fraction of those alternatives are labelled &amp;ldquo;BSD&amp;rdquo;, referring to
+the &lt;a href="https://en.wikipedia.org/wiki/Berkeley_Software_Distribution">Berkeley Software Distribution&lt;/a>
+derivatives of the &lt;a href="https://en.wikipedia.org/wiki/Unix">Unix&lt;/a> operating system that
+emerged shortly after &lt;a href="https://en.wikipedia.org/wiki/Bell_Labs">Bell Labs&lt;/a> dissolved.&lt;/p>
+&lt;p>What&amp;rsquo;s nice about BSD Unix is that most of them try to stay relatively
+true to the original Unix philosophy, and remain as free as they possibly
+can without sacrificing quality. Why not start, then, by dipping our toes into the
+water with the OS that claims to be &lt;a href="https://www.openbsd.org/faq/faq1.html">&amp;ldquo;all free&amp;rdquo;&lt;/a>?&lt;/p>
+&lt;h2 id="openbsd">OpenBSD&lt;/h2>
+&lt;p>&amp;hellip;or maybe it was a leap.&lt;/p>
+&lt;p>I set out on my OpenBSD expedition to build a router for my roommate and I while
+we were waiting on another, who had a router/wireless AP. Faced with a cable
+modem from our local ISP, we had no choice but to pursue making a router of our
+internet-facing machine.&lt;/p>
+&lt;p>I browsed on over to the &lt;a href="https://www.openbsd.org/">OpenBSD website&lt;/a>, likely
+bouncing off a few &lt;code>(Free|Open)&lt;/code>BSD servers before hitting the OpenBSD box
+hosting the site.&lt;/p>
+&lt;p>On the Internet, these BSD-derivatives are ubiquitous for critical systems. At least
+in the case of OpenBSD, this is for good reason: the
+operating system &lt;a href="https://www.openbsd.org/faq/upgrade63.html">relinks the kernel on boot&lt;/a>,
+introduced &lt;a href="https://en.wikipedia.org/wiki/W%5EX">W^X&lt;/a>, and opportunistically integrates cryptography
+throughout. The team isn&amp;rsquo;t afraid to tote this around &amp;ndash; they even have a page
+basically &lt;a href="https://www.openbsd.org/crypto.html">flipping off a few governments&lt;/a>.&lt;/p>
+&lt;h2 id="ux">UX&lt;/h2>
+&lt;p>Post-download, I imaged a flash drive, spun up the years-old hardware destined
+to become our temporary router, and dove right in.&lt;/p>
+&lt;p>The OpenBSD experience is classic. It&amp;rsquo;s still using &lt;a href="https://www.freebsd.org/cgi/man.cgi?query=ffs&amp;amp;sektion=7">&lt;code>ffs(7)&lt;/code>&lt;/a>, has an
+exceedingly stable kernel with a &lt;a href="https://en.wikipedia.org/wiki/Giant_lock">sizable lock&lt;/a>,
+and isn&amp;rsquo;t very quick to adopt
+the latest technologies (Intel&amp;rsquo;s &lt;a href="https://www.intel.com/content/www/us/en/architecture-and-technology/advanced-encryption-standard-aes/data-protection-aes-general-technology.html">AES-NI&lt;/a> comes to mind). If you do happen
+to have a few terabytes onboard your OpenBSD computer, it might take a couple
+hours to run &lt;a href="https://man.openbsd.org/fsck">&lt;code>fsck(8)&lt;/code>&lt;/a> if shit hits the fan.&lt;/p>
+&lt;p>These aren&amp;rsquo;t necessarily bad things. My little server
+does not need more than a few gigabytes of storage and two cores for what it&amp;rsquo;s
+doing, and all I really demand of an operating system for its purposes is stability.&lt;/p>
+&lt;p>Luckily, the setup process is far from classic. The install is very, very
+smooth. Compared to something like &lt;a href="https://wiki.gentoo.org/">Gentoo&lt;/a>, it&amp;rsquo;s a breeze with just a few
+prompts mirroring what you&amp;rsquo;d see in your average Debian installation wizard.&lt;/p>
+&lt;p>Once inside, OpenBSD is a well-documented, well-polished system with very few &amp;ldquo;huh?&amp;rdquo;
+situations. By that, I mean situations where I found myself face-to-face with a
+bug the manpages didn&amp;rsquo;t give me explicit instruction against &amp;ndash; it does a great
+job of easing the user into the operating system so that info dumps are more
+sparse, and the learning curve is gradual.&lt;/p>
+&lt;p>You will learn to use &lt;a href="https://man.openbsd.org/man.1">&lt;code>man(1)&lt;/code>&lt;/a>.
+You will learn what your &lt;a href="https://man.openbsd.org/hier">&lt;code>/etc&lt;/code>&lt;/a> directory is for.
+These are all good things.&lt;/p>
+&lt;p>I set up a router, firewall, and FTP server for our apartment with ease, and
+was even comfortable enough to set up a few network tunnels (see: &lt;a href="https://man.openbsd.org/tun.4">&lt;code>tun(4)&lt;/code>&lt;/a>)
+for certain applications.&lt;/p>
+&lt;p>The only &amp;ldquo;mystery bug&amp;rdquo; that I encountered was that every now and again, our packet
+filter would drop a few packets for maybe a half-second, even using the default
+configuration. Time to resolve this problem: we put down our manpages. We turn
+to Google.&lt;/p>
+&lt;h2 id="community">Community&lt;/h2>
+&lt;p>Googling around for a fix for that little half-second packet drop issue took
+me almost two days of inconclusive results, but I was &lt;em>not&lt;/em> about to hop on
+the mailing lists or forums and ask a question so broad.&lt;/p>
+&lt;p>The community for OpenBSD is &lt;a href="https://distrowatch.com/table.php?distribution=freebsd">dwarfed&lt;/a> compared to &lt;a href="https://www.freebsd.org/">FreeBSD&lt;/a> or any Linux flavor.
+I&amp;rsquo;d compare it in size to something like &lt;a href="https://www.bunsenlabs.org/">BunsenLabs Linux&lt;/a>.
+Unlike BunsenLabs, though, OpenBSD&amp;rsquo;s community has a reputation of being &lt;em>exceedingly&lt;/em> unyielding. A
+large part of this could be attributed to the personality of its
+leader, who, by Linus' account, is &lt;a href="https://www.forbes.com/2005/06/16/linux-bsd-unix-cz_dl_0616theo.html">&amp;ldquo;difficult&amp;rdquo;&lt;/a>.&lt;/p>
+&lt;p>This is the argument that most people will give you, but, in my opinion,
+there&amp;rsquo;s a much easier, less personal take.&lt;/p>
+&lt;p>One of the downsides of having extensive documentation is that developers
+and users may grow frustrated reading questions answered in the docs
+they just updated over and over again. For the new user, unfamiliar with
+mailing lists, past answers may not be as readily available. Mix these two
+together and you have a situation akin to the Linux mailing lists, but with
+less margin for discussion.&lt;/p>
+&lt;h2 id="freedom-and-software">Freedom and Software&lt;/h2>
+&lt;p>If I had to pick a straw that might break the camel&amp;rsquo;s back for an OpenBSD
+novice like me, it&amp;rsquo;s probably OpenBSD&amp;rsquo;s lack of software.&lt;/p>
+&lt;p>I was trying to port my little file sharing server to the operating system
+earlier today. The problem is that it&amp;rsquo;s written in Rust. I definitely
+could have written the program in another language like C or Go or something,
+but I felt like writing it in Rust.&lt;/p>
+&lt;p>Unfortunately, &lt;a href="https://rustup.rs/">&lt;code>rustup&lt;/code>&lt;/a> isn&amp;rsquo;t available on &lt;a href="https://openports.se/">OpenBSD ports&lt;/a>,
+and OpenBSD itself is a &lt;a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-3">tier 3 platform&lt;/a>
+for Rust compilation. This means that compiling Rust natively is painful, and
+cross-compiling Rust is next to impossible.&lt;/p>
+&lt;p>This is when the cracks in the facade start to show for OpenBSD. Compared
+to FreeBSD, which has a huge number of packages available for download and
+&lt;a href="https://docs.freebsd.org/en/books/handbook/linuxemu/">binary compatibility with Linux&lt;/a>,
+OpenBSD keeps their software repositories pretty tight
+to maintain their openness and keep their interoperability with older systems.
+They also discourage use of proprietary drivers.&lt;/p>
+&lt;p>That is, OpenBSD seems to place its focus in expanding the freedom of software,
+sometimes at expense of the user&amp;rsquo;s freedom of choice.&lt;/p>
+&lt;h2 id="purpose-built-proper-abstractions">Purpose Built; Proper Abstractions&lt;/h2>
+&lt;p>OpenBSD is an operating system that is built to run on hardware,
+&lt;a href="https://www.virtualbox.org/ticket/639">not virtualized&lt;/a>.
+It is built for security, software freedom, and stability. It is
+easy to understand and secure by default. The issues I encountered in my experience
+with it were pretty tame compared to those I ran into on any Linux derivative.&lt;/p>
+&lt;p>Thinking back to something as elementary as rebooting my computer after my first
+Linux installation, I remember &lt;a href="https://unix.stackexchange.com/q/249654">getting softlocked at shutdown&lt;/a>.&lt;/p>
+&lt;p>Reflecting on more recent experiences with Manjaro, I recall my configuration files
+for system-critical processes being scattered everywhere, and having too much power
+granted to me with too little knowledge. Garbage was left behind by packages without
+my knowledge, and without any clear way to locate it all.&lt;/p>
+&lt;p>A lot of these issues can be chalked up to Linux distributions getting filled with bloatware
+and one-off abstractions that fail to empower their users in efforts of being
+&amp;ldquo;the best OS&amp;rdquo;. Consider Ubuntu&amp;rsquo;s redundancies:
+&lt;a href="https://manpages.ubuntu.com/manpages/precise/en/man8/iptables.8.html">&lt;code>iptables(8)&lt;/code>&lt;/a>,
+&lt;a href="https://manpages.ubuntu.com/manpages/bionic/man8/ufw.8.html">&lt;code>ufw(8)&lt;/code>&lt;/a>,
+&lt;a href="https://manpages.ubuntu.com/manpages/xenial/man8/apt.8.html">&lt;code>apt(8)&lt;/code>&lt;/a>,
+&lt;a href="https://manpages.ubuntu.com/manpages/impish/en/man8/snap.8.html">&lt;code>snap(8)&lt;/code>&lt;/a>. Consider
+Gentoo&amp;rsquo;s behemoth &lt;a href="https://wiki.gentoo.org/wiki/Portage">&lt;code>portage(5)&lt;/code>&lt;/a>.&lt;/p>
+&lt;p>OpenBSD&amp;rsquo;s objectives, on the other hand, are precise, and it is a damn good
+solution to them.&lt;/p>
+&lt;blockquote>
+&lt;p>So does all of this mean that BSD is superior to Linux?&lt;/p>
+&lt;/blockquote>
+&lt;p>eh.&lt;/p></description></item></channel></rss>
