@@ -10,7 +10,7 @@ a few open-source projects. I'm not writing any math-heavy research papers, and 
 can't say that I'd jump to using Haskell. I had always found it a curiosity, and not much more.
 
 Every time I have a bunch of exams queued up, though, I find that I come
-around to trying to learn it, and then give up when I get to parts about Monads and
+around to trying to learn it, and then give up when I get to parts about monads and
 all this other category theory stuff.
 
 This October, I took another dive into it after getting burnt out writing a *lot* of
@@ -75,8 +75,7 @@ between the author and their reader.
 
 This is bad: brandishing its syntax can cause confusion.
 
-Here's a good example, where we increment an optional value if a value is present. Depending on
-how one writes it, its purpose is made more or less apparent.
+Here's a good example, where we increment an optional value.
 
 ```hs
 -- A naive use of case statement:
@@ -97,14 +96,16 @@ potentiallyIncrement = (=<<) $ Just . (+ 1)
 
 We are able to describe the action of *potentially* modifying a value under an abstraction with
 Haskell's `bind` (`>>=`) operator. There are a plethora of ways of approaching it, even in this
-simple example.
+simple example. Depending on which way one approaches it, the immediate meaning might change.
 
 In nontrivial codebases, Haskell's grammar will cause explosions in complexity. The voice of
 the author determines its maintainability -- whether it will become a bunch of `case` statements
 or clever function compositions[^1]. For more complicated Haskell programs, functions can reach tens of lines.
 Doesn't sound like much, except each line comes with this same exceptional information density.
 
-Looking over these functions after writing way too much Rust,
+## Rust Parallels
+
+Looking over these functions after writing a ton of Rust,
 I realized these semantics reminded me of a fundamental mechanic.
 
 ```rs
@@ -116,7 +117,7 @@ fn potentially_increment(u: Option<u32>) -> Option<u32> {
 In Rust, an `Option<T>` type can have its underlying value *potentially* modified with a call to
 `Option<T>::map`. Sound familiar to a certain operator?
 
-It was when I came to this parallel that I began noticing how many things in Rust are
+It was when I came to this parallel that I noticed how many things in Rust are
 near-direct analogs to Haskell. A `Tree` in Haskell, for example, might look like this:
 
 ```hs
@@ -177,29 +178,34 @@ This has a number of useful applications, though my most common exposure to it w
 through function declarations that are simply chains of others:
 
 ```
+Prelude> :t (=<<)
+(=<<) :: Monad m => (a -> m b) -> m a -> m b
+
 Prelude> potentiallyIncrement = (=<<) $ Just . (+ 1)
 Prelude> :t potentiallyIncrement 
 potentiallyIncrement :: Num b => Maybe b -> Maybe b
 ```
 
+I'd argue this drives the "flow" of the program.
+
 While Rust does not have out of the box support for currying[^3],
-it has its own sort of "flow mechanic": fluency. Rather than partial application of
+it has its own sort of "flow mechanic": functional fluency. Rather than partial application of
 functions generating new functions, we can partially apply attributes onto a struct
-through functions, generating new structs.
+through functions, generating new partial structs.
 
 ```rs
 let myfile = OpenOptions::new()
                         .read(true)
-                        .write(false)
+                        .write(false);
                         .open("filename.txt")
                         .unwrap();
 ```
 
-This allows for a more functional approach to common imperative operations.
+This adopts a functional approach to object-oriented operations.
 
 ## Monads vs. Results + Options
 
-I pinned down Monads as a container type in the same vein as `Option<T>`. For our examples,
+I pinned down monads as a container type in the same vein as `Option<T>`. For our examples,
 let's compare `Option<T>` to `Maybe`:
 
 Operation | Rust | Haskell
@@ -209,13 +215,20 @@ Modify underlying value | `.map()` | `>>=`
 Get first underlying value | `.iter().find()` | `msum`
 Map each underlying value in an iterator | `.iter().map(|x| x.map())` | `mapM`
 
-## Safety
+Where the two differ, though, is that monads are also their own `Result<T, E>`.
+Rather than keeping two separate types with uniform interfaces, Haskell instead has a single
+type with a single, more polymorphically powerful interface.
+
+## Functional v. Memory Safety
 
 In Rust, there's a powerful sense of polymorphism through its trait system. This
 same trait system exists in Haskell in the form of type classes, but Haskell goes
 takes some interesting liberties with the addition of Monads. Compared to Rust's
 focus on safety through memory guarantees, Haskell's focus on safety is executed
 through keeping code as purely functional as possible.
+
+Both have different approaches to bubble-wrapping code, each powerful in their
+own right.
 
 [^1]: The way the author explains their programming also matters. Literate Haskell places an emphasis on this. https://wiki.haskell.org/Literate_programming
 [^2]: Others have written about more direct similarities between Rust and Haskell:

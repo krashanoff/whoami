@@ -29,4 +29,4 @@ pygmentsUseClasses = true
     weight = 20
 
 [permalinks]
-  posts = "/:year/:title/"
+  posts = "/:year/:month/:day/:title/"
