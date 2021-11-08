@@ -1,4 +1,84 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on krashanoff</title><link>https://krashanoff.com/tags/</link><description>Recent content in Tags on krashanoff</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://krashanoff.com/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>An SSH Tarpit in 24 Lines</title><link>https://krashanoff.com/2021/09/27/an-ssh-tarpit-in-24-lines/</link><pubDate>Mon, 27 Sep 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/09/27/an-ssh-tarpit-in-24-lines/</guid><description>&lt;p>I found Chris Wellons' &lt;a href="https://nullprogram.com/blog/2019/03/22/">endlessh&lt;/a>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on krashanoff</title><link>https://krashanoff.com/tags/</link><description>Recent content in Tags on krashanoff</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://krashanoff.com/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>Idiomatic Semantics in Golang</title><link>https://krashanoff.com/2021/11/08/idiomatic-semantics-in-golang/</link><pubDate>Mon, 08 Nov 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/11/08/idiomatic-semantics-in-golang/</guid><description>&lt;p>I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.&lt;/p>
+&lt;p>A while back, when I was starting to learn Go, I stumbled onto this answer on StackOverflow referencing the Golang FAQ&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>.&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;The reason [the ternary operator] is absent from Go is that the language&amp;rsquo;s designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct.&amp;rdquo;&lt;/p>
+&lt;/blockquote>
+&lt;p>Let me emphasize a particular point here that I think really stands out to me:&lt;/p>
+&lt;blockquote>
+&lt;p>“&amp;hellip;the if-else form, although longer, is unquestionably clearer&amp;hellip;”&lt;/p>
+&lt;/blockquote>
+&lt;p>I think that’s the big selling point of Go as a programming language. The syntax strives to be idiomatic and easy-to-read, and the official toolchain isn’t afraid to enforce the shit out of this principle even if it means inflating your LOC and making your code a little more verbose than it needs to be. Terseness is secondary: good code in Go&amp;rsquo;s eyes is code that you read once, write once, and can immediately grasp.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="c1">// From: github.com/uclaacm/teach-la-go-backend
+&lt;/span>&lt;span class="c1">&lt;/span>
+&lt;span class="c1">// RequestBodyTo reads the request body and marshals it into
+&lt;/span>&lt;span class="c1">// the interface described by i.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="kd">func&lt;/span> &lt;span class="nf">RequestBodyTo&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">r&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">Request&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">i&lt;/span> &lt;span class="kd">interface&lt;/span>&lt;span class="p">{})&lt;/span> &lt;span class="kt">error&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="nx">json&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">NewDecoder&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">r&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">Body&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="nf">Decode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">i&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="nx">io&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">EOF&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="kc">nil&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">err&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is one of those things that &amp;ndash; while I was learning Go &amp;ndash; I had wished the language didn’t take so strongly to. Now that I’ve spent more time with the language, though, and worked on some larger projects, I’ve come to a point where I feel comfortable talking about these design decisions and how they reflect on everything else. You see&amp;hellip;&lt;/p>
+&lt;h2 id="go-wants-to-force-you-to-write-code-the-designers-like">Go wants to force you to write code the designers like.&lt;/h2>
+&lt;p>I think that this is the paradigm that makes everyone so uneasy. We aren’t presented with the amount of rigidity introduced to Go in any programming language that I know of, except for maybe Scratch, but that’s hardly a use case.&lt;/p>
+&lt;p>So what was going through the designers’ heads? And where the hell is my ternary? Look to the language designers’ presentations at SPLASH 2012 for some more context &amp;ndash; specifically, slide 10&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>:&lt;/p>
+&lt;blockquote>
+&lt;p>“My favorite feature isn’t in Go! Go Sucks!”&lt;/p>
+&lt;p>This misses the point.&lt;/p>
+&lt;/blockquote>
+&lt;p>A project with similar ideals can be found in &lt;a href="https://prettier.io/docs/en/why-prettier.html">Prettier&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>“By far the biggest reason for adopting Prettier is to stop all the on-going debates over styles.”&lt;/p>
+&lt;/blockquote>
+&lt;p>This is analogous to what Go does at a language level. Its language design &amp;ndash; and its appropriately unforgiving linter &amp;ndash; solve problems of maintainability at the source. Rather than concern oneself with what good code looks like, one writes code that will meet some bare minimum threshold of quality enforced by the axioms of the language itself. As with any language, it’s still possible to write unmaintainable spaghetti:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="kd">type&lt;/span> &lt;span class="nx">MyDB&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kd">map&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="kd">map&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="kd">map&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="kt">string&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">getValue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">db&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">MyDB&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">username&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="nx">db&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="nx">db&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;users&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// ...
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">db&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;users&amp;#34;&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="s">&amp;#34;names&amp;#34;&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="nx">username&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;hellip;Go just tries to make that as painful a process as possible.&lt;/p>
+&lt;h2 id="where-is-my-ternary">Where is my ternary&lt;/h2>
+&lt;p>Well, it isn&amp;rsquo;t there. It&amp;rsquo;s gone forever in Go. They threw it out because it was deemed unclear or confusing. Let’s go through a few features that &lt;strong>C and C++ have, but Go doesn’t.&lt;/strong> I want you to glance through them and think about which features you absolutely loved having.&lt;/p>
+&lt;ul>
+&lt;li>Ternary operator&lt;/li>
+&lt;li>“”””Macros””””&lt;/li>
+&lt;li>&lt;code>NULL&lt;/code>, &lt;code>nullptr&lt;/code>, and &lt;code>MY_LIBRARY_NULL&lt;/code>&lt;/li>
+&lt;li>&lt;code>typedef __something something;&lt;/code>&lt;/li>
+&lt;li>&lt;code>template&amp;lt;typedef T&amp;gt;&lt;/code>&lt;/li>
+&lt;li>&lt;code>retType MyClass::fnName()&lt;/code>, and generic class member functions.&lt;/li>
+&lt;li>&lt;code>std::thread&lt;/code>&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup> vs. &lt;code>std::async&lt;/code>&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup> vs. &lt;code>boost&lt;/code>&lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup>&lt;/li>
+&lt;/ul>
+&lt;p>The two features that I personally noticed learning Go were the lack of a ternary operator and the lack of generics. However, the more Go I wrote, the less I found myself falling back on them. In place of ternary, one can use &lt;code>if/else&lt;/code>. Sure, it&amp;rsquo;s at least five lines after &lt;code>gofmt&lt;/code>, but it reads idiomatically. In place of generics, we can use interfaces, which are implicitly implemented &amp;ndash; a far more flexible compromise than static assertions for polymorphic &amp;ldquo;&amp;ldquo;type bounds&amp;rdquo;&amp;rdquo;.&lt;/p>
+&lt;p>This wasn&amp;rsquo;t just in code I was writing while learning. Suddenly, contributions to Go projects were easier to read, even if they were authored by someone who started learning Go last week. Suddenly, errors were being managed and useless variables were being pruned not necessarily because programmers are keeping an eye out for them, but because &lt;em>the program won&amp;rsquo;t even compile without addressing them&lt;/em>. Mix this with Go&amp;rsquo;s emphasis on test-driven development, and source is enforcably safer.&lt;/p>
+&lt;p>The Go programming language was designed by Google engineers who expect to write and maintain codebases with SLOC in the tens of thousands to drive complex systems in the highest-demand environments.&lt;/p>
+&lt;p>Writing code the designers like might not be so bad after all.&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>&lt;a href="https://stackoverflow.com/a/60561838">https://stackoverflow.com/a/60561838&lt;/a> referencing &lt;a href="https://golang.org/doc/faq#Does_Go_have_a_ternary_form">https://golang.org/doc/faq#Does_Go_have_a_ternary_form&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>Rob Pike. Go at Google. &lt;a href="https://talks.golang.org/2012/splash.slide#10">https://talks.golang.org/2012/splash.slide#10&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3" role="doc-endnote">
+&lt;p>C++&amp;rsquo;s &lt;code>std::thread&lt;/code>. &lt;a href="https://en.cppreference.com/w/cpp/thread/thread">https://en.cppreference.com/w/cpp/thread/thread&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:4" role="doc-endnote">
+&lt;p>C++&amp;rsquo;s &lt;code>std::async&lt;/code>. &lt;a href="https://en.cppreference.com/w/cpp/thread/async">https://en.cppreference.com/w/cpp/thread/async&lt;/a>&amp;#160;&lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:5" role="doc-endnote">
+&lt;p>Boost&amp;rsquo;s async ecosystem. &lt;a href="https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html">https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html&lt;/a>&amp;#160;&lt;a href="#fnref:5" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>An SSH Tarpit in 24 Lines</title><link>https://krashanoff.com/2021/09/27/an-ssh-tarpit-in-24-lines/</link><pubDate>Mon, 27 Sep 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/09/27/an-ssh-tarpit-in-24-lines/</guid><description>&lt;p>I found Chris Wellons' &lt;a href="https://nullprogram.com/blog/2019/03/22/">endlessh&lt;/a>
 to be very neat, so I wrote a short one in Rust. This compiles down to about
 337kB after stripping metadata on the &lt;code>current-thread&lt;/code> flavor of &lt;a href="https://tokio.rs/">&lt;code>tokio&lt;/code>&lt;/a>.&lt;/p>
 &lt;p>If you want to try it yourself, you can run it with &lt;code>./binname [PORT NUMBER]&lt;/code>.&lt;/p>
@@ -142,84 +222,4 @@ solution to them.&lt;/p>
 &lt;blockquote>
 &lt;p>So does all of this mean that BSD is superior to Linux?&lt;/p>
 &lt;/blockquote>
-&lt;p>eh.&lt;/p></description></item><item><title>Idiomatic Semantics in Golang</title><link>https://krashanoff.com/2021/04/12/idiomatic-semantics-in-golang/</link><pubDate>Mon, 12 Apr 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/04/12/idiomatic-semantics-in-golang/</guid><description>&lt;p>I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.&lt;/p>
-&lt;p>A while back, when I was starting to learn Go, I stumbled onto this answer on StackOverflow referencing the Golang FAQ&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>.&lt;/p>
-&lt;blockquote>
-&lt;p>&amp;ldquo;The reason [the ternary operator] is absent from Go is that the language&amp;rsquo;s designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct.&amp;rdquo;&lt;/p>
-&lt;/blockquote>
-&lt;p>Let me emphasize a particular point here that I think really stands out to me:&lt;/p>
-&lt;blockquote>
-&lt;p>“&amp;hellip;the if-else form, although longer, is unquestionably clearer&amp;hellip;”&lt;/p>
-&lt;/blockquote>
-&lt;p>I think that’s the big selling point of Go as a programming language. The syntax strives to be idiomatic and easy-to-read, and the official toolchain isn’t afraid to enforce the shit out of this principle even if it means inflating your LOC and making your code a little more verbose than it needs to be. Terseness is secondary: good code in Go&amp;rsquo;s eyes is code that you read once, write once, and can immediately grasp.&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="c1">// From: github.com/uclaacm/teach-la-go-backend
-&lt;/span>&lt;span class="c1">&lt;/span>
-&lt;span class="c1">// RequestBodyTo reads the request body and marshals it into
-&lt;/span>&lt;span class="c1">// the interface described by i.
-&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="kd">func&lt;/span> &lt;span class="nf">RequestBodyTo&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">r&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">Request&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">i&lt;/span> &lt;span class="kd">interface&lt;/span>&lt;span class="p">{})&lt;/span> &lt;span class="kt">error&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;span class="k">if&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="nx">json&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">NewDecoder&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">r&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">Body&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="nf">Decode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">i&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="nx">io&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">EOF&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;span class="k">return&lt;/span> &lt;span class="kc">nil&lt;/span>
-&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;span class="k">return&lt;/span> &lt;span class="nx">err&lt;/span>
-&lt;span class="p">}&lt;/span>
-&lt;span class="p">}&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is one of those things that &amp;ndash; while I was learning Go &amp;ndash; I had wished the language didn’t take so strongly to. Now that I’ve spent more time with the language, though, and worked on some larger projects, I’ve come to a point where I feel comfortable talking about these design decisions and how they reflect on everything else. You see&amp;hellip;&lt;/p>
-&lt;h2 id="go-wants-to-force-you-to-write-code-the-designers-like">Go wants to force you to write code the designers like.&lt;/h2>
-&lt;p>I think that this is the paradigm that makes everyone so uneasy. We aren’t presented with the amount of rigidity introduced to Go in any programming language that I know of, except for maybe Scratch, but that’s hardly a use case.&lt;/p>
-&lt;p>So what was going through the designers’ heads? And where the hell is my ternary? Look to the language designers’ presentations at SPLASH 2012 for some more context &amp;ndash; specifically, slide 10&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>:&lt;/p>
-&lt;blockquote>
-&lt;p>“My favorite feature isn’t in Go! Go Sucks!”&lt;/p>
-&lt;p>This misses the point.&lt;/p>
-&lt;/blockquote>
-&lt;p>A project with similar ideals can be found in &lt;a href="https://prettier.io/docs/en/why-prettier.html">Prettier&lt;/a>:&lt;/p>
-&lt;blockquote>
-&lt;p>“By far the biggest reason for adopting Prettier is to stop all the on-going debates over styles.”&lt;/p>
-&lt;/blockquote>
-&lt;p>This is analogous to what Go does at a language level. Its language design &amp;ndash; and its appropriately unforgiving linter &amp;ndash; solve problems of maintainability at the source. Rather than concern oneself with what good code looks like, one writes code that will meet some bare minimum threshold of quality enforced by the axioms of the language itself. As with any language, it’s still possible to write unmaintainable spaghetti:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="kd">type&lt;/span> &lt;span class="nx">MyDB&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kd">map&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="kd">map&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="kd">map&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="kt">string&lt;/span>
-&lt;span class="kd">func&lt;/span> &lt;span class="nf">getValue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">db&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">MyDB&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">username&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;span class="k">if&lt;/span> &lt;span class="nx">db&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;span class="k">return&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>
-&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="nx">db&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;users&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;span class="k">return&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>
-&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;span class="c1">// ...
-&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;span class="k">return&lt;/span> &lt;span class="nx">db&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;users&amp;#34;&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="s">&amp;#34;names&amp;#34;&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="nx">username&lt;/span>&lt;span class="p">]&lt;/span>
-&lt;span class="p">}&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;hellip;Go just tries to make that as painful a process as possible.&lt;/p>
-&lt;h2 id="where-is-my-ternary">Where is my ternary&lt;/h2>
-&lt;p>Well, it isn&amp;rsquo;t there. It&amp;rsquo;s gone forever in Go. They threw it out because it was deemed unclear or confusing. Let’s go through a few features that &lt;strong>C and C++ have, but Go doesn’t.&lt;/strong> I want you to glance through them and think about which features you absolutely loved having.&lt;/p>
-&lt;ul>
-&lt;li>Ternary operator&lt;/li>
-&lt;li>“”””Macros””””&lt;/li>
-&lt;li>&lt;code>NULL&lt;/code>, &lt;code>nullptr&lt;/code>, and &lt;code>MY_LIBRARY_NULL&lt;/code>&lt;/li>
-&lt;li>&lt;code>typedef __something something;&lt;/code>&lt;/li>
-&lt;li>&lt;code>template&amp;lt;typedef T&amp;gt;&lt;/code>&lt;/li>
-&lt;li>&lt;code>retType MyClass::fnName()&lt;/code>, and generic class member functions.&lt;/li>
-&lt;li>&lt;code>std::thread&lt;/code>&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup> vs. &lt;code>std::async&lt;/code>&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup> vs. &lt;code>boost&lt;/code>&lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup>&lt;/li>
-&lt;/ul>
-&lt;p>The two features that I personally noticed learning Go were the lack of a ternary operator and the lack of generics. However, the more Go I wrote, the less I found myself falling back on them. In place of ternary, one can use &lt;code>if/else&lt;/code>. Sure, it&amp;rsquo;s at least five lines after &lt;code>gofmt&lt;/code>, but it reads idiomatically. In place of generics, we can use interfaces, which are implicitly implemented &amp;ndash; a far more flexible compromise than static assertions for polymorphic &amp;ldquo;&amp;ldquo;type bounds&amp;rdquo;&amp;rdquo;.&lt;/p>
-&lt;p>This wasn&amp;rsquo;t just in code I was writing while learning. Suddenly, contributions to Go projects were easier to read, even if they were authored by someone who started learning Go last week. Suddenly, errors were being managed and useless variables were being pruned not necessarily because programmers are keeping an eye out for them, but because &lt;em>the program won&amp;rsquo;t even compile without addressing them&lt;/em>. Mix this with Go&amp;rsquo;s emphasis on test-driven development, and source is enforcably safer.&lt;/p>
-&lt;p>The Go programming language was designed by Google engineers who expect to write and maintain codebases with SLOC in the tens of thousands to drive complex systems in the highest-demand environments.&lt;/p>
-&lt;p>Writing code the designers like might not be so bad after all.&lt;/p>
-&lt;section class="footnotes" role="doc-endnotes">
-&lt;hr>
-&lt;ol>
-&lt;li id="fn:1" role="doc-endnote">
-&lt;p>&lt;a href="https://stackoverflow.com/a/60561838">https://stackoverflow.com/a/60561838&lt;/a> referencing &lt;a href="https://golang.org/doc/faq#Does_Go_have_a_ternary_form">https://golang.org/doc/faq#Does_Go_have_a_ternary_form&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li id="fn:2" role="doc-endnote">
-&lt;p>Rob Pike. Go at Google. &lt;a href="https://talks.golang.org/2012/splash.slide#10">https://talks.golang.org/2012/splash.slide#10&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li id="fn:3" role="doc-endnote">
-&lt;p>C++&amp;rsquo;s &lt;code>std::thread&lt;/code>. &lt;a href="https://en.cppreference.com/w/cpp/thread/thread">https://en.cppreference.com/w/cpp/thread/thread&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li id="fn:4" role="doc-endnote">
-&lt;p>C++&amp;rsquo;s &lt;code>std::async&lt;/code>. &lt;a href="https://en.cppreference.com/w/cpp/thread/async">https://en.cppreference.com/w/cpp/thread/async&lt;/a>&amp;#160;&lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li id="fn:5" role="doc-endnote">
-&lt;p>Boost&amp;rsquo;s async ecosystem. &lt;a href="https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html">https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html&lt;/a>&amp;#160;&lt;a href="#fnref:5" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;/section></description></item></channel></rss>
+&lt;p>eh.&lt;/p></description></item></channel></rss>
