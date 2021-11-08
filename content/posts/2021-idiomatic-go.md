@@ -1,38 +1,32 @@
 ---
-title: "Unquestionably Clearer: Idiomatic Semantics in Golang"
-date: 2021-04-12T00:00:00-07:00
-draft: true
+title: "Idiomatic Semantics in Golang"
+date: 2021-11-08T00:00:00-07:00
+draft: false
 ---
 
-I have a complicated relationship with Go as a programming language. There’s a lot at its disposal that makes for an incredibly readable, expressive source, but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.
+I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.
 
-A while back, when I was starting to learn Go, I stumbled onto this answer on StackOverflow referencing the Golang FAQ[^1]. I found a number of other answers just like it.
+A while back, when I was starting to learn Go, I stumbled onto this answer on StackOverflow referencing the Golang FAQ[^1].
 
-> “The reason [the ternary operator] is absent from Go is that the language's designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct.”
+> "The reason [the ternary operator] is absent from Go is that the language's designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct."
 
 Let me emphasize a particular point here that I think really stands out to me:
 
 > “...the if-else form, although longer, is unquestionably clearer...”
 
-I think that’s the big selling point of Go as a programming language. The syntax strives to be idiomatic and easy-to-read, and the official toolchain isn’t afraid to enforce the shit out of this principle even if it means inflating your LOC and making your code a little more verbose than it needs to be. Terseness is secondary: good code in Go's eyes is code that you read once, and immediately grasp.
+I think that’s the big selling point of Go as a programming language. The syntax strives to be idiomatic and easy-to-read, and the official toolchain isn’t afraid to enforce the shit out of this principle even if it means inflating your LOC and making your code a little more verbose than it needs to be. Terseness is secondary: good code in Go's eyes is code that you read once, write once, and can immediately grasp.
 
 ```go
 // From: github.com/uclaacm/teach-la-go-backend
 
-// RequestBodyTo reads the request body with ioutil.ReadAll
-// and marshals it into the interface described by i.
+// RequestBodyTo reads the request body and marshals it into
+// the interface described by i.
 func RequestBodyTo(r *http.Request, i interface{}) error {
-  if r.body == nil {
-    return nil
-  } 
-  if bytesBody, err := ioutil.ReadAll(r.body); err != nil {
-    return err
-  } else if len(bytesBody) == 0 {
-    return nil
-  } else if err := json.Unmarshal(bytesBody, i); err != nil {
-    return err
-  }
-  return nil
+	if err := json.NewDecoder(r.Body).Decode(i); err == io.EOF {
+		return nil
+	} else {
+		return err
+	}
 }
 ```
 
@@ -71,28 +65,28 @@ func getValue(db *MyDB, username string) string {
 
 ...Go just tries to make that as painful a process as possible.
 
-## Where is my ternary
+## Where is my ternary?
 
 Well, it isn't there. It's gone forever in Go. They threw it out because it was deemed unclear or confusing. Let’s go through a few features that **C and C++ have, but Go doesn’t.** I want you to glance through them and think about which features you absolutely loved having.
 
 * Ternary operator
 * “”””Macros””””
-* Multiple `NULL` values. One for almost every library.
+* `NULL`, `nullptr`, and `MY_LIBRARY_NULL`
 * `typedef __something something;`
 * `template<typedef T>`
-* `retType MyClass::fnName()`
-* `std::async`[^3] vs. `std::thread`[^4] vs. `boost`[^5]
+* `retType MyClass::fnName()`, and generic class member functions.
+* `std::thread`[^3] vs. `std::async`[^4] vs. `boost`[^5]
 
-The two features that I personally noticed learning Go were the lack of a ternary operator and the lack of generics. However, the more Go I wrote, the less I found myself falling back on them. In place of ternary, one can use `if/else`. Sure, it's **at least five lines after `gofmt`**, but it reads idiomatically. In place of generics, we can use interfaces, which are implicitly implemented -- a far more flexible compromise than static assertions for polymorphic ""type bounds"".
+The two features that I personally noticed learning Go were the lack of a ternary operator and the lack of generics. However, the more Go I wrote, the less I found myself falling back on them. In place of ternary, one can use `if/else`. Sure, it's at least five lines after `gofmt`, but it reads idiomatically. In place of generics, we can use interfaces, which are implicitly implemented -- a far more flexible compromise than static assertions for polymorphic ""type bounds"".
 
-This wasn't just in code I was writing while learning. Suddenly, contributions to Go projects were easier to read, even if they started learning Go last week. Suddenly, errors were being managed and useless variables were being pruned not necessarily because programmers are keeping an eye out for them, but because *the program won't even compile without addressing them*.
+This wasn't just in code I was writing while learning. Suddenly, contributions to Go projects were easier to read, even if they were authored by someone who started learning Go last week. Suddenly, errors were being managed and useless variables were being pruned not necessarily because programmers are keeping an eye out for them, but because *the program won't even compile without addressing them*. Mix this with Go's emphasis on test-driven development, and source is enforcably safer.
 
-The Go programming language was designed by Google engineers who expect to write and maintain codebases with SLOC in the tens of thousands to drive connected systems in the highest-demand environments. They wanted to keep their lives sane, and I, for one, trust their judgement.
+The Go programming language was designed by Google engineers who expect to write and maintain codebases with SLOC in the tens of thousands to drive complex systems in the highest-demand environments.
 
-Maybe writing code the designers like might not be so bad after all.
+Writing code the designers like might not be so bad after all.
 
 [^1]: https://stackoverflow.com/a/60561838 referencing https://golang.org/doc/faq#Does_Go_have_a_ternary_form
-[^2]: https://talks.golang.org/2012/splash.slide#10
-[^3]: https://en.cppreference.com/w/cpp/thread/async
-[^4]: https://en.cppreference.com/w/cpp/thread/thread
-[^5]: https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html
+[^2]: Rob Pike. Go at Google. https://talks.golang.org/2012/splash.slide#10
+[^3]: C++'s `std::thread`. https://en.cppreference.com/w/cpp/thread/thread
+[^4]: C++'s `std::async`. https://en.cppreference.com/w/cpp/thread/async
+[^5]: Boost's async ecosystem. https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html
