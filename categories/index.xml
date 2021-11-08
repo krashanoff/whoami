@@ -44,7 +44,7 @@
 &lt;span class="k">return&lt;/span> &lt;span class="nx">db&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;users&amp;#34;&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="s">&amp;#34;names&amp;#34;&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="nx">username&lt;/span>&lt;span class="p">]&lt;/span>
 &lt;span class="p">}&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;hellip;Go just tries to make that as painful a process as possible.&lt;/p>
-&lt;h2 id="where-is-my-ternary">Where is my ternary&lt;/h2>
+&lt;h2 id="where-is-my-ternary">Where is my ternary?&lt;/h2>
 &lt;p>Well, it isn&amp;rsquo;t there. It&amp;rsquo;s gone forever in Go. They threw it out because it was deemed unclear or confusing. Let’s go through a few features that &lt;strong>C and C++ have, but Go doesn’t.&lt;/strong> I want you to glance through them and think about which features you absolutely loved having.&lt;/p>
 &lt;ul>
 &lt;li>Ternary operator&lt;/li>
