@@ -38,4 +38,6 @@ In my free time, I study Japanese.
 
 ***
 
+Thoughts expressed on my blog are my own.
+
 Need to email me? Email `leo` at this address.
