@@ -78,6 +78,188 @@
 &lt;p>Boost&amp;rsquo;s async ecosystem. &lt;a href="https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html">https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html&lt;/a>&amp;#160;&lt;a href="#fnref:5" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
+&lt;/section></description></item><item><title>Understanding Haskell Through Rust (and vice versa)</title><link>https://krashanoff.com/2021/10/29/understanding-haskell-through-rust-and-vice-versa/</link><pubDate>Fri, 29 Oct 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/10/29/understanding-haskell-through-rust-and-vice-versa/</guid><description>&lt;p>Haskell is a very strange programming language. I have never had a particular reason to
+learn the language in the same way I needed Go for my clubs projects or Rust for understanding
+a few open-source projects. I&amp;rsquo;m not writing any math-heavy research papers, and even then I
+can&amp;rsquo;t say that I&amp;rsquo;d jump to using Haskell. I had always found it a curiosity, and not much more.&lt;/p>
+&lt;p>Every time I have a bunch of exams queued up, though, I come around to trying to learn it, and
+then give up when I get to parts about monads and all this other category theory stuff.&lt;/p>
+&lt;p>This October, I took another dive into it after getting burnt out writing a &lt;em>lot&lt;/em> of
+Rust. For whatever reason, this time, it made a lot more sense to me.&lt;/p>
+&lt;h2 id="learning-struggles">Learning Struggles&lt;/h2>
+&lt;p>I think the thing that it boiled down to for me while struggling to learn is the syntax of the
+language. Yeah, it&amp;rsquo;s functional, so it&amp;rsquo;s pretty unfamiliar, but even if you&amp;rsquo;re coming from
+something like OCaml, as I was in my second year of college, it&amp;rsquo;s still just &lt;em>weird&lt;/em>.&lt;/p>
+&lt;p>There&amp;rsquo;s a lot of different ways of doing the same thing at a fundamental level.&lt;/p>
+&lt;p>Which of these looks more syntactically sane to you? Or, even better, which of these
+immediately demonstrates exactly what it&amp;rsquo;s going to do?&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-haskell" data-lang="haskell">&lt;span class="nf">prefix&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="s">&amp;#34;hi there &amp;#34;&lt;/span>
+&lt;span class="nf">sayHi&lt;/span> &lt;span class="n">name&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="n">putStrLn&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">prefix&lt;/span> &lt;span class="o">++&lt;/span> &lt;span class="n">name&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">-- (1)&lt;/span>
+&lt;span class="nf">sayHi&lt;/span> &lt;span class="n">name&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="n">putStrLn&lt;/span> &lt;span class="o">$&lt;/span> &lt;span class="n">prefix&lt;/span> &lt;span class="o">++&lt;/span> &lt;span class="n">name&lt;/span> &lt;span class="c1">-- (2)&lt;/span>
+&lt;span class="nf">sayHi&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="n">putStrLn&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">prefix&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">-- (3)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>All of these functions typecheck. All of them do the same thing: they apply some prefix to
+a string, then print it.&lt;/p>
+&lt;pre>&lt;code>Prelude&amp;gt; sayHi &amp;quot;reader&amp;quot;
+hi there reader
+&lt;/code>&lt;/pre>&lt;p>Some of the examples use currying (&lt;code>3&lt;/code>), some don&amp;rsquo;t. Some use an entire
+operator for simply applying parameters to a function (&lt;code>2&lt;/code>), another composes functions (&lt;code>3&lt;/code>).&lt;/p>
+&lt;p>Like natural language, there&amp;rsquo;s always more than one way to say the same thing when programming.
+In Haskell, there&amp;rsquo;s even more. It gives the programmer a lot more creative freedom about how they
+want to express their ideas without sacrificing functionality.&lt;/p>
+&lt;p>This is good: focused use of Haskell&amp;rsquo;s syntax leads to concise code and builds a relationship
+between the author and their reader.&lt;/p>
+&lt;p>This is bad: brandishing its syntax can cause confusion. This is what gave me a lot of trouble while
+familiarizing myself with its grammar. Once you get over the initial hump, though, writing software
+becomes even more creative.&lt;/p>
+&lt;p>Here&amp;rsquo;s another example, where we increment an optional value.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-haskell" data-lang="haskell">&lt;span class="c1">-- Using a case statement:&lt;/span>
+&lt;span class="nf">possiblyIncrement&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="kr">case&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="kr">of&lt;/span>
+&lt;span class="kt">Just&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="ow">-&amp;gt;&lt;/span> &lt;span class="kt">Just&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="kt">Nothing&lt;/span> &lt;span class="ow">-&amp;gt;&lt;/span> &lt;span class="kt">Nothing&lt;/span>
+&lt;span class="c1">-- Using a lambda case statement:&lt;/span>
+&lt;span class="c1">-- You have to turn this on with &amp;#39;{-# LANGUAGE LambdaCase #-}&amp;#39;.&lt;/span>
+&lt;span class="nf">possiblyIncrement&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="nf">\&lt;/span>&lt;span class="kr">case&lt;/span>
+&lt;span class="kt">Just&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="ow">-&amp;gt;&lt;/span> &lt;span class="kt">Just&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="kt">Nothing&lt;/span> &lt;span class="ow">-&amp;gt;&lt;/span> &lt;span class="kt">Nothing&lt;/span>
+&lt;span class="c1">-- Or, using pattern matching:&lt;/span>
+&lt;span class="nf">possiblyIncrement&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">Just&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="kt">Just&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="nf">possiblyIncrement&lt;/span> &lt;span class="kt">Nothing&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="kt">Nothing&lt;/span>
+&lt;span class="c1">-- Or, using monads:&lt;/span>
+&lt;span class="nf">possiblyIncrement&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="o">&amp;gt;&amp;gt;=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">\&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="ow">-&amp;gt;&lt;/span> &lt;span class="kt">Just&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="c1">-- Or, with currying:&lt;/span>
+&lt;span class="nf">possiblyIncrement&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">=&amp;lt;&amp;lt;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">$&lt;/span> &lt;span class="kt">Just&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We are able to describe the action of &lt;em>potentially&lt;/em> modifying a value under an abstraction with
+Haskell&amp;rsquo;s &lt;code>bind&lt;/code> (&lt;code>&amp;gt;&amp;gt;=&lt;/code>) operator. There are a plethora of ways of approaching it, even in this
+simple example. Depending on which way one approaches it, the immediate meaning might change.&lt;/p>
+&lt;p>In nontrivial codebases, the voice of the author determines its maintainability &amp;ndash; how terse it
+will be. For more complicated Haskell programs, functions can reach tens of lines. Doesn&amp;rsquo;t sound
+like much, except each line comes with this same exceptional information density.&lt;/p>
+&lt;h2 id="rust-parallels">Rust Parallels&lt;/h2>
+&lt;p>Looking over these functions after writing a ton of Rust, though, I realized these semantics reminded me
+of a fundamental example.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rs" data-lang="rs">&lt;span class="k">fn&lt;/span> &lt;span class="nf">potentially_increment&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">u&lt;/span>: &lt;span class="nb">Option&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">u32&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nb">Option&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">u32&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">u&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">map&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In Rust, an &lt;code>Option&amp;lt;T&amp;gt;&lt;/code> type can have its underlying value &lt;em>potentially&lt;/em> modified with a call to
+&lt;code>Option&amp;lt;T&amp;gt;::map&lt;/code>. This may sound similar to the &lt;code>bind&lt;/code> operator.&lt;/p>
+&lt;p>It was when I came to this parallel that I noticed how many things in Rust are near-direct analogs to
+Haskell. A &lt;code>Tree&lt;/code> in Haskell, for example, might look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-haskell" data-lang="haskell">&lt;span class="kr">data&lt;/span> &lt;span class="kt">Tree&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="kt">Node&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">Tree&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">Tree&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="kt">Leaf&lt;/span> &lt;span class="n">a&lt;/span>
+&lt;span class="kr">deriving&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">Show&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="nf">valAt&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">Leaf&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="kt">Just&lt;/span> &lt;span class="n">v&lt;/span>
+&lt;span class="nf">valAt&lt;/span> &lt;span class="kr">_&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="kt">Nothing&lt;/span>
+&lt;span class="kr">instance&lt;/span> &lt;span class="kt">Eq&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="ow">=&amp;gt;&lt;/span> &lt;span class="kt">Eq&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">Tree&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kr">where&lt;/span>
+&lt;span class="p">(&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="ow">=&lt;/span> &lt;span class="n">valAt&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">valAt&lt;/span> &lt;span class="n">b&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Compare this to a Rust data structure that I&amp;rsquo;ve coerced to appear as similar as possible:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rs" data-lang="rs">&lt;span class="cp">#[derive(Debug)]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="nc">Tree&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>: &lt;span class="nb">Eq&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">left&lt;/span>: &lt;span class="nb">Option&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Tree&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">right&lt;/span>: &lt;span class="nb">Option&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Tree&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">value&lt;/span>: &lt;span class="nb">Option&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">impl&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">std&lt;/span>::&lt;span class="n">cmp&lt;/span>::&lt;span class="nb">PartialEq&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Tree&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">type&lt;/span> &lt;span class="nc">Rhs&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Tree&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">eq&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">other&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">Rhs&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="kt">bool&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">todo&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">ne&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">other&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">Rhs&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="kt">bool&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">todo&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The Haskell version is the same structure expressed tersely, in exchange for a
+less-intuitive grammar.&lt;/p>
+&lt;p>When I realized the parallel between these two, things gradually started to click.
+Rust paradigms are generally Haskell paradigms expressed in a more imperative way.
+That is, Rust is a scaffold between the safety of the functional world and the
+familiarity of the imperative, at expense of verbosity.&lt;/p>
+&lt;p>Others have written about the more direct similarities between Haskell and Rust&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>,
+but I&amp;rsquo;d like to quickly talk about two trade-offs Rust has made to inherit some of their
+ideas beyond syntax.&lt;/p>
+&lt;h2 id="currying-and-fluency">Currying and Fluency&lt;/h2>
+&lt;p>Haskell is built around currying. Applying a parameter to a function produces a new
+function that simply takes one less parameter:&lt;/p>
+&lt;pre>&lt;code>Prelude&amp;gt; :t (+)
+(+) :: Num a =&amp;gt; a -&amp;gt; a -&amp;gt; a
+Prelude&amp;gt; :t (+ 2)
+(+ 2) :: Num a =&amp;gt; a -&amp;gt; a
+&lt;/code>&lt;/pre>&lt;p>This has a number of useful applications, though my most common exposure to it was
+through function declarations that are simply chains of others:&lt;/p>
+&lt;pre>&lt;code>Prelude&amp;gt; :t (=&amp;lt;&amp;lt;)
+(=&amp;lt;&amp;lt;) :: Monad m =&amp;gt; (a -&amp;gt; m b) -&amp;gt; m a -&amp;gt; m b
+Prelude&amp;gt; potentiallyIncrement = (=&amp;lt;&amp;lt;) $ Just . (+ 1)
+Prelude&amp;gt; :t potentiallyIncrement
+potentiallyIncrement :: Num b =&amp;gt; Maybe b -&amp;gt; Maybe b
+&lt;/code>&lt;/pre>&lt;p>I&amp;rsquo;d argue this drives the &amp;ldquo;flow&amp;rdquo; of the code.&lt;/p>
+&lt;p>While Rust does not have out of the box support for currying&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>,
+it has its own sort of &amp;ldquo;flow mechanic&amp;rdquo;: functional fluency. Rather than partial application of
+functions generating new functions, we can partially apply attributes onto a struct
+through functions, generating new partial data structures.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rs" data-lang="rs">&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">myfile&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">OpenOptions&lt;/span>::&lt;span class="n">new&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">read&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">write&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">open&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;filename.txt&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">unwrap&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This adopts a functional approach to object-oriented operations.&lt;/p>
+&lt;h2 id="monads-vs-results--options">Monads vs. Results + Options&lt;/h2>
+&lt;p>I pinned down monads as a container type in the same vein as &lt;code>Option&amp;lt;T&amp;gt;&lt;/code>. Let&amp;rsquo;s compare
+&lt;code>Option&amp;lt;T&amp;gt;&lt;/code> to &lt;code>Maybe&lt;/code>:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Operation&lt;/th>
+&lt;th>Rust&lt;/th>
+&lt;th>Haskell&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">Wrap in container&lt;/td>
+&lt;td>&lt;code>Some(x)&lt;/code>&lt;/td>
+&lt;td>&lt;code>Just (x)&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Modify underlying value&lt;/td>
+&lt;td>&lt;code>.map()&lt;/code>&lt;/td>
+&lt;td>&lt;code>&amp;gt;&amp;gt;=&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Get first underlying value&lt;/td>
+&lt;td>&lt;code>.iter().find()&lt;/code>&lt;/td>
+&lt;td>&lt;code>msum&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Map each underlying value in an iterator&lt;/td>
+&lt;td>`.iter().map(&lt;/td>
+&lt;td>x&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Where the two differ is that monads are also their own &lt;code>Result&amp;lt;T, E&amp;gt;&lt;/code>. The ubiquitous &lt;code>IO&lt;/code> monad
+is an example of this&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>.&lt;/p>
+&lt;p>Rather than keeping two separate types with uniform interfaces, Haskell instead has a single
+type with a single, more polymorphically powerful interface.&lt;/p>
+&lt;p>In the same way that I came to appreciate Rust after an initial hurdle,
+I&amp;rsquo;m starting to understand why Haskell is well-liked by its developers. It just took
+a small change in perspective.&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>Others have written about more direct similarities between Rust and Haskell:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://xion.io/post/programming/rust-into-haskell.html">http://xion.io/post/programming/rust-into-haskell.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.fpcomplete.com/blog/2018/11/haskell-and-rust/">https://www.fpcomplete.com/blog/2018/11/haskell-and-rust/&lt;/a>&lt;/li>
+&lt;/ul>
+&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>There is a crate for currying functions in Rust. &lt;a href="https://peppe.rs/posts/auto-currying_rust_functions/">https://peppe.rs/posts/auto-currying_rust_functions/&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3" role="doc-endnote">
+&lt;p>&lt;a href="https://hackage.haskell.org/package/base-4.9.1.0/docs/System-IO.html">https://hackage.haskell.org/package/base-4.9.1.0/docs/System-IO.html&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
 &lt;/section></description></item><item><title>An SSH Tarpit in 24 Lines</title><link>https://krashanoff.com/2021/09/27/an-ssh-tarpit-in-24-lines/</link><pubDate>Mon, 27 Sep 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/09/27/an-ssh-tarpit-in-24-lines/</guid><description>&lt;p>I found Chris Wellons' &lt;a href="https://nullprogram.com/blog/2019/03/22/">endlessh&lt;/a>
 to be very neat, so I wrote a short one in Rust. This compiles down to about
 337kB after stripping metadata on the &lt;code>current-thread&lt;/code> flavor of &lt;a href="https://tokio.rs/">&lt;code>tokio&lt;/code>&lt;/a>.&lt;/p>
