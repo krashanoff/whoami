@@ -9,7 +9,7 @@ pygmentsUseClasses = true
 
 [params]
   description = "Software and other things."
-  copyright = "Copyright © 2021 Leonid Krashanoff"
+  copyright = "Copyright © 2022 Leonid Krashanoff"
   dark = "auto"
   highlight = true
 
