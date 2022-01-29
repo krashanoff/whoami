@@ -1,4 +1,170 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Categories on krashanoff</title><link>https://krashanoff.com/categories/</link><description>Recent content in Categories on krashanoff</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://krashanoff.com/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>Idiomatic Semantics in Golang</title><link>https://krashanoff.com/2021/11/08/idiomatic-semantics-in-golang/</link><pubDate>Mon, 08 Nov 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/11/08/idiomatic-semantics-in-golang/</guid><description>&lt;p>I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Categories on krashanoff</title><link>https://krashanoff.com/categories/</link><description>Recent content in Categories on krashanoff</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://krashanoff.com/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>Virtualizing a Minecraft Server on OpenBSD</title><link>https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/</link><pubDate>Sat, 29 Jan 2022 05:02:00 -0800</pubDate><guid>https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/</guid><description>&lt;p>&lt;em>&amp;ldquo;Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
+and a megaphone.&amp;quot;&lt;/em>&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>Minecraft recently got its bump to version 1.18.1, and my girlfriend and I have been looking
+for a way to play without running the server locally on my machine. I have an OpenBSD box (see
+&lt;a href="https://krashanoff.com/2021/09/24/exploring-openbsd/">my previous post&lt;/a>) that I have been using for my remote
+needs, so I figured I could run the server on it fairly easily.&lt;/p>
+&lt;h2 id="the-hardware">The Hardware&lt;/h2>
+&lt;p>First, let&amp;rsquo;s meet the lambo I plan to have running this:&lt;/p>
+&lt;pre>&lt;code># top
+...
+CPU0 states: ...
+CPU1 states: ...
+Memory: Real: 82M/1782M act/tot Free: 6024M Cache: 1084M Swap: 0K/2818M
+...
+# df -h
+Filesystem Size Used Avail Capacity Mounted on
+/dev/ab0x 986M 107M 830M 11% /
+...
+/dev/ab0y 9.4G 936M 8.1G 10% /home
+&lt;/code>&lt;/pre>&lt;p>Oh hell yes. Two cores. Like 8G of RAM. &lt;em>Maybe&lt;/em> 8G of disk space. We&amp;rsquo;re gonna make this
+thing work like Atlas.&lt;/p>
+&lt;h2 id="the-software">The Software&lt;/h2>
+&lt;p>To get a Minecraft server running, all you need is the latest version of the JRE. For most
+machines, this really isn&amp;rsquo;t a problem. Java &lt;em>does&lt;/em> run on 3 billion devices&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>, after
+all. How bad could it be? Let&amp;rsquo;s go ahead and check &lt;a href="http://ports.su/devel/jdk">ports&lt;/a>:&lt;/p>
+&lt;p>&lt;img src="https://krashanoff.com/img/mcbsd/jdkports.png" alt="jdk 1.8 in openbsd ports">&lt;/p>
+&lt;p>1 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
+OpenBSD doesn&amp;rsquo;t really have much in the way of modern luxury when it comes to Java. This is
+in line with their philosophy, I mean think about how many damn licenses are sitting on a JRE.&lt;/p>
+&lt;p>This said, I am not so headstrong as to port my own OpenJDK, not so eager to find a way to
+use &lt;a href="https://openports.se/devel/jdk/17">OpenPorts&lt;/a>, and not so foolish as to use some weird hacky
+stuff for running a &lt;code>jar&lt;/code>, so what&amp;rsquo;s the solution here?&lt;/p>
+&lt;p>&lt;strong>Isn&amp;rsquo;t it so obvious? Just virtualize a Linux box!&lt;/strong>&lt;/p>
+&lt;h2 id="enter-vmm4">Enter: &lt;code>vmm(4)&lt;/code>&lt;/h2>
+&lt;p>I decided to virtualize a lightweight Linux distribution inside of my OpenBSD box to run the latest
+server, then NAT Minecraft clients to it.&lt;/p>
+&lt;p>It&amp;rsquo;s easier to virtualize hardware on OpenBSD than you might think. &lt;a href="https://man.openbsd.org/vmm.4">&lt;code>vmm(4)&lt;/code>&lt;/a>
+provides capability in spades. All we need to do to enable it is add a line to our
+&lt;a href="https://man.openbsd.org/rc.conf">&lt;code>rc.conf.local(8)&lt;/code>&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;vmd_flags=&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/rc.conf.local
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s go ahead and create our working directory and its virtual disk with &lt;a href="https://man.openbsd.org/vmctl.8">&lt;code>vmctl(8)&lt;/code>&lt;/a>.&lt;/p>
+&lt;pre>&lt;code># useradd -m -s /sbin/nologin /home/minecraft
+# cd /home/minecraft
+# vmctl create -s 5G minecraft.qcow2
+vmctl: qcow2 imagefile created
+&lt;/code>&lt;/pre>&lt;p>All we have to do now is just pick a Linux distribution to run on our (admittedly sparing) disk
+space. All I really need is &lt;a href="https://www.alpinelinux.org/">Alpine&lt;/a>, since it supports the latest
+JDK and keeps things tidy. After fetching the boot disk, the startup command isn&amp;rsquo;t so bad:&lt;/p>
+&lt;pre>&lt;code># vmctl start -m 2G -L -i 1 -r alpine-virt-x86_64.iso \
+-d minecraft.qcow2 minecraft
+vmctl: started vm 1 successfully, tty /dev/ttyp1
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>&lt;code>-m 2G&lt;/code>: 2G of memory.&lt;/li>
+&lt;li>&lt;code>-L&lt;/code>: link over network. Basically spin up a subnet for the VM.&lt;/li>
+&lt;li>&lt;code>-i 1&lt;/code>: one network interface.&lt;/li>
+&lt;li>&lt;code>-r&lt;/code>: boot from an image.&lt;/li>
+&lt;/ul>
+&lt;p>All set.&lt;/p>
+&lt;pre>&lt;code># vmctl show
+ID PID VCPUS MAXMEM CURMEM TTY OWNER STATE NAME
+1 24772 1 2.0G 96.4M ttyp1 root running minecraft
+&lt;/code>&lt;/pre>&lt;p>I won&amp;rsquo;t lie, a 5G disk might be a bit pessimistic for how small we can get this thing, and 2G of memory
+might be pushing it for a machine that&amp;rsquo;s rocking the base amount that you&amp;rsquo;d expect out of a nicer
+Chromebook&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>. We&amp;rsquo;ll limit test later, though. Right now, there are more important matters to tend
+to.&lt;/p>
+&lt;h2 id="nat">NAT&lt;/h2>
+&lt;p>Before we can use our machine to reach the internet, we&amp;rsquo;ve got to redirect traffic to it.
+Time for &lt;a href="https://man.openbsd.org/pf">&lt;code>pf(4)&lt;/code>&lt;/a> to go to work. We add a rule to redirect traffic in
+on port 25565, and allow outbound traffic.&lt;/p>
+&lt;p>I don&amp;rsquo;t run my server as a DNS cache, so the third rule (pulled from &lt;a href="https://xosc.org/vmm.html">xhr&amp;rsquo;s post&lt;/a>)
+maps DNS to &lt;a href="https://1.1.1.1/">Cloudflare&lt;/a>.&lt;/p>
+&lt;pre>&lt;code>match out on egress from $minecraft to any \
+nat-to egress
+pass out on egress from $minecraft to any \
+nat-to egress
+pass in proto udp from $minecraft to any port \
+domain rdr-to 1.1.1.1 port domain
+pass in on egress proto tcp from any to (egress) \
+port { 25565 } rdr-to $minecraft
+pass in on egress proto udp from any to (egress) \
+port { 25565 } rdr-to $minecraft
+&lt;/code>&lt;/pre>&lt;p>Before putting these rules into action, make sure that we have IP forwarding enabled in
+&lt;a href="https://man.openbsd.org/sysctl.conf.5">&lt;code>sysctl(5)&lt;/code>&lt;/a>:&lt;/p>
+&lt;pre>&lt;code># sysctl net.inet.ip.forwarding
+net.inet.ip.forwarding=1
+&lt;/code>&lt;/pre>&lt;p>Networking is ready for our VM. Let&amp;rsquo;s get to work.&lt;/p>
+&lt;h2 id="setup-alpine">&lt;code>setup-alpine&lt;/code>&lt;/h2>
+&lt;p>Time to get our virtual machine set up. We can hop into the VM&amp;rsquo;s console, login as &lt;code>root&lt;/code>, and
+run &lt;a href="https://wiki.alpinelinux.org/wiki/Installation">&lt;code>setup-alpine&lt;/code>&lt;/a> as usual.&lt;/p>
+&lt;pre>&lt;code># vmctl console minecraft
+Connected to /dev/ttyp1 (speed 115200)
+&lt;/code>&lt;/pre>&lt;p>Alpine&amp;rsquo;s install is streamlined like OpenBSD&amp;rsquo;s. Just page through with sane defaults and we&amp;rsquo;re
+set. Surprisingly, the arduous portion of this operation was just waiting for it to ping mirrors,
+start chrony, all that good stuff.&lt;/p>
+&lt;p>After that&amp;rsquo;s all set, we have to install dependencies. The only dependency we really need to run
+our Minecraft server is &lt;a href="https://pkgs.alpinelinux.org/package/edge/community/aarch64/openjdk17">openjdk17&lt;/a>.&lt;/p>
+&lt;p>Since this is available in community, we install it by specifying the repository:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">apk add openjdk17 --repository&lt;span class="o">=&lt;/span>https://pkgs.alpinelinux.org/package/edge/community/aarch64/openjdk17
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Once that&amp;rsquo;s done, we can check our version of the JRE.&lt;/p>
+&lt;pre>&lt;code># java --version
+openjdk 17.0.2 2022-01-18
+OpenJDK Runtime Environment (build 17.0.2+8-alpine-r0)
+OpenJDK 64-Bit Server VM (build 17.0.2+8-alpine-r0, mixed mode, sharing)
+&lt;/code>&lt;/pre>&lt;p>Looking good. After downloading the latest Minecraft server &lt;code>jar&lt;/code> and prepping our server directory,
+we just add the driver script for our preferred &lt;code>java&lt;/code> command as a start script in &lt;code>/etc/local.d/&lt;/code>.&lt;/p>
+&lt;h2 id="on-boot">On-Boot&lt;/h2>
+&lt;p>If we want to let this run automatically, we&amp;rsquo;re going to have to set up our VM to start on boot. This
+is accomplished through &lt;a href="https://man.openbsd.org/vm.conf">&lt;code>vm.cfg(5)&lt;/code>&lt;/a>.&lt;/p>
+&lt;pre>&lt;code>vm &amp;quot;minecraft&amp;quot; {
+memory 2G
+enable
+disk /home/minecraft/minecraft.qcow2
+local interface
+owner minecraft
+}
+&lt;/code>&lt;/pre>&lt;p>Now when we reboot, the machine will run at boot and run under the &lt;code>minecraft&lt;/code> user.&lt;/p>
+&lt;h2 id="limit-testing">Limit Testing&lt;/h2>
+&lt;p>Surprisingly, the entire Alpine + JDK install only comes out to about 345MiB. The size of the minecraft
+server installation on my Windows disk is about 391MB. So what we &lt;em>really&lt;/em> require in disk space is about
+3G. If we really wanted to push it, we could go to about 2G.&lt;/p>
+&lt;p>The amount of RAM the VM sips at idle is about ~300MB, so we could shove its RAM consumption down to
+about 1.3G.&lt;/p>
+&lt;pre>&lt;code>athome# vmctl show minecraft
+ID PID VCPUS MAXMEM CURMEM TTY OWNER STATE NAME
+1 28555 1 1.5G 1.5G ttyp1 root running minecraft
+&lt;/code>&lt;/pre>&lt;p>&amp;hellip;okay maybe we can&amp;rsquo;t. I went ahead and upped the memory to around 3G and that seemed to do the trick
+for the stock server command that grants the &lt;code>jar&lt;/code> about 1G of RAM.&lt;/p>
+&lt;h2 id="performance">Performance&lt;/h2>
+&lt;p>And so comes the question: is it fast? Well, not really.&lt;/p>
+&lt;p>I tested it out and saw a pretty &lt;em>okay&lt;/em> TPS, but it&amp;rsquo;s clear that a Minecraft server wasn&amp;rsquo;t meant to be
+run on a virtual machine with meager resources allocated to it on an already-resource-limited host.
+Notably, the whole server would eat dirt when transitioning between the Overworld and the Nether.&lt;/p>
+&lt;p>Once chunks were loaded, performance wasn&amp;rsquo;t an issue on the local network. Player activity was fairly
+snappy. This said, the chunk load time being painful made me uncomfortable taking this Frankenstein
+out of the lab. I just stuck with my own machine.&lt;/p>
+&lt;h2 id="conclusions-and-future-considerations">Conclusions and Future Considerations&lt;/h2>
+&lt;p>Running a Minecraft server on a virtualized Alpine machine isn&amp;rsquo;t a bad idea if you have the hardware
+for it. I do not.&lt;/p>
+&lt;p>In the future, I&amp;rsquo;d like to upgrade my server hardware and try this again, experimenting with ways of
+storing the Minecraft world folder in a host-system accessible folder. On any other virtualization
+solution, this wouldn&amp;rsquo;t be too hard, but OpenBSD&amp;rsquo;s virtualization daemon doesn&amp;rsquo;t support hardware
+passthrough yet&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>.&lt;/p>
+&lt;p>Network passthrough is a breeze with &lt;a href="https://man.openbsd.org/pf">&lt;code>pf(4)&lt;/code>&lt;/a>, but the only viable option
+for file-sharing between the two is through a network share like &lt;a href="https://linux.die.net/man/8/smbd">&lt;code>smbd(8)&lt;/code>&lt;/a>.
+That would kill performance.&lt;/p>
+&lt;p>I think that if I were to get this set up, I&amp;rsquo;d just have a cronjob on the VM that periodically backs
+up the Minecraft world at regular intervals over SSH to an S3 bucket with &lt;a href="https://rclone.org/">&lt;code>rclone(1)&lt;/code>&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;span class="cp">&lt;/span>&lt;span class="nv">NAME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;backup-&lt;/span>&lt;span class="k">$(&lt;/span>date +%D&lt;span class="k">)&lt;/span>&lt;span class="s2">.tar.gz&amp;#34;&lt;/span>
+tar -czf &lt;span class="nv">$NAME&lt;/span> /root/server
+rclone copy &lt;span class="nv">$NAME&lt;/span> s3:/minecraftWorlds/
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Anyways, this was a fun little project and an educative experience. I may return to it to see if I
+can improve performance on the little server that could™.&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>&lt;a href="https://www.youtube.com/watch?v=d59J78yhwtg">https://www.youtube.com/watch?v=d59J78yhwtg&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>&lt;a href="https://skeptics.stackexchange.com/a/9873">https://skeptics.stackexchange.com/a/9873&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3" role="doc-endnote">
+&lt;p>You&amp;rsquo;d expect to see around 8GB in newer models. &lt;a href="https://zipso.net/chromebook-specs-comparison-table/">https://zipso.net/chromebook-specs-comparison-table/&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>Idiomatic Semantics in Golang</title><link>https://krashanoff.com/2021/11/08/idiomatic-semantics-in-golang/</link><pubDate>Mon, 08 Nov 2021 00:00:00 -0700</pubDate><guid>https://krashanoff.com/2021/11/08/idiomatic-semantics-in-golang/</guid><description>&lt;p>I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.&lt;/p>
 &lt;p>A while back, when I was starting to learn Go, I stumbled onto this answer on StackOverflow referencing the Golang FAQ&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>.&lt;/p>
 &lt;blockquote>
 &lt;p>&amp;ldquo;The reason [the ternary operator] is absent from Go is that the language&amp;rsquo;s designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct.&amp;rdquo;&lt;/p>
