@@ -18,7 +18,7 @@ Filesystem     Size    Used   Avail Capacity  Mounted on
 </code></pre><p>Oh hell yes. Two cores. Like 8G of RAM. <em>Maybe</em> 8G of disk space. We&rsquo;re gonna make this
 thing work like Atlas.</p><h2 id=the-software>The Software</h2><p>To get a Minecraft server running, all you need is the latest version of the JRE. For most
 machines, this really isn&rsquo;t a problem. Java <em>does</em> run on 3 billion devices<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>, after
-all. How bad could it be? Let&rsquo;s go ahead and check <a href=http://ports.su/devel/jdk>ports</a>:</p><p><img src=/img/mcbsd/jdkports.png alt="jdk 1.8 in openbsd ports"></p><p>1 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
+all. How bad could it be? Let&rsquo;s go ahead and check <a href=http://ports.su/devel/jdk>ports</a>:</p><p><img src=/img/mcbsd/jdkports.png alt="jdk 1.8 in openbsd ports"></p><p>3 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
 OpenBSD doesn&rsquo;t really have much in the way of modern luxury when it comes to Java. This is
 in line with their philosophy, I mean think about how many damn licenses are sitting on a JRE.</p><p>This said, I am not so headstrong as to port my own OpenJDK, not so eager to find a way to
 use <a href=https://openports.se/devel/jdk/17>OpenPorts</a>, and not so foolish as to use some weird hacky
@@ -81,7 +81,7 @@ is accomplished through <a href=https://man.openbsd.org/vm.conf><code>vm.cfg(5)<
 </code></pre><p>Now when we reboot, the machine will run at boot and run under the <code>minecraft</code> user.</p><h2 id=limit-testing>Limit Testing</h2><p>Surprisingly, the entire Alpine + JDK install only comes out to about 345MiB. The size of the minecraft
 server installation on my Windows disk is about 391MB. So what we <em>really</em> require in disk space is about
 3G. If we really wanted to push it, we could go to about 2G.</p><p>The amount of RAM the VM sips at idle is about ~300MB, so we could shove its RAM consumption down to
-about 1.3G.</p><pre><code>athome# vmctl show minecraft
+about 1.5G.</p><pre><code>athome# vmctl show minecraft
    ID   PID VCPUS  MAXMEM  CURMEM     TTY        OWNER    STATE NAME
     1 28555     1    1.5G    1.5G   ttyp1         root  running minecraft
 </code></pre><p>&mldr;okay maybe we can&rsquo;t. I went ahead and upped the memory to around 3G and that seemed to do the trick
