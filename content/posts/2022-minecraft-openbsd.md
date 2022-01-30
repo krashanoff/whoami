@@ -43,7 +43,7 @@ all. How bad could it be? Let's go ahead and check [ports](http://ports.su/devel
 
 ![jdk 1.8 in openbsd ports](/img/mcbsd/jdkports.png)
 
-1 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
+3 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
 OpenBSD doesn't really have much in the way of modern luxury when it comes to Java. This is
 in line with their philosophy, I mean think about how many damn licenses are sitting on a JRE.
 
@@ -195,7 +195,7 @@ server installation on my Windows disk is about 391MB. So what we *really* requi
 3G. If we really wanted to push it, we could go to about 2G.
 
 The amount of RAM the VM sips at idle is about ~300MB, so we could shove its RAM consumption down to
-about 1.3G.
+about 1.5G.
 
 ```
 athome# vmctl show minecraft
