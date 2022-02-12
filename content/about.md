@@ -14,4 +14,4 @@ You can find me on GitHub as [@krashanoff](https://github.com/krashanoff).
 
 Thoughts expressed on my blog are my own.
 
-Need to email me? Email `leo` at this address.
+Need to email me? Email `hello` at this address.
