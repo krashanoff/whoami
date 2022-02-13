@@ -1,4 +1,172 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>krashanoff</title><link>https://krashanoff.com/</link><description>Recent content on krashanoff</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 29 Jan 2022 05:02:00 -0800</lastBuildDate><atom:link href="https://krashanoff.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Virtualizing a Minecraft Server on OpenBSD</title><link>https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/</link><pubDate>Sat, 29 Jan 2022 05:02:00 -0800</pubDate><guid>https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/</guid><description>&lt;p>&lt;em>&amp;ldquo;Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>krashanoff</title><link>https://krashanoff.com/</link><description>Recent content on krashanoff</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 12 Feb 2022 11:16:59 -0800</lastBuildDate><atom:link href="https://krashanoff.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Alternative Protocols for the WWW</title><link>https://krashanoff.com/2022/02/12/alternative-protocols-for-the-www/</link><pubDate>Sat, 12 Feb 2022 11:16:59 -0800</pubDate><guid>https://krashanoff.com/2022/02/12/alternative-protocols-for-the-www/</guid><description>&lt;p>I saw a strange link on a GitHub repo the other day that was prefixed with &lt;code>gemini://&lt;/code>.
+I was confused and tried looking up &amp;ldquo;gemini protocol&amp;rdquo; online, but to no avail. I brushed
+it off as a weird startup alternative to HTTP and went on with my day.&lt;/p>
+&lt;p>That was, until my friend Waylon&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> shot me a message a week or two later:&lt;/p>
+&lt;pre>&lt;code>waylon — 02/09/2022
+have you seen this https://gemini.circumlunar.space/
+leo — 02/09/2022
+I've heard about Gemini
+Hmmmm haven't seen a lot
+Lemme read
+So better HTTP?
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>So better HTTP?&lt;/p>
+&lt;/blockquote>
+&lt;p>Ehhhh, no. With some closer investigation, it&amp;rsquo;s an alternative protocol for the web. It&amp;rsquo;s still
+focused on delivering content, but just in a more privacy-motivated, cozy way. You can write a
+server or client for it &lt;em>very&lt;/em> simply in only a handful of lines in almost any language. You can
+write a fully-fleshed out client in maybe 100 or 200 SLOC&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>.&lt;/p>
+&lt;p>Here&amp;rsquo;s an &lt;code>inetd&lt;/code>-compatible &amp;ldquo;&amp;ldquo;server&amp;rdquo;&amp;rdquo; in POSIX-compliant shell I wrote in a minute or two:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;span class="cp">&lt;/span>chdir &lt;span class="nv">$1&lt;/span>
+&lt;span class="nb">shift&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="nv">$#&lt;/span> -ne &lt;span class="m">1&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;span class="nb">echo&lt;/span> -n &lt;span class="s2">&amp;#34;50 Ill-formatted request&amp;#34;&lt;/span>
+&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="k">fi&lt;/span>
+&lt;span class="nv">uri&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">printf&lt;/span> &lt;span class="s1">&amp;#39;%b\n&amp;#39;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$@&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> sed -n &lt;span class="s1">&amp;#39;s/^gemini:\/\/.*\/\(.*\)$/\1/p&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;span class="k">if&lt;/span> ! &lt;span class="o">[&lt;/span> -r &lt;span class="nv">$uri&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;span class="nb">echo&lt;/span> -n &lt;span class="s2">&amp;#34;40 Page does not exist\r\n&amp;#34;&lt;/span>
+&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="k">fi&lt;/span>
+&lt;span class="nv">MIME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>file -b --mime-type &lt;span class="nv">$uri&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$uri&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> grep -q &lt;span class="s2">&amp;#34;.*\.gmi&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;span class="nv">MIME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;text/gemini&amp;#34;&lt;/span>
+&lt;span class="k">fi&lt;/span>
+&lt;span class="nb">echo&lt;/span> -n &lt;span class="s2">&amp;#34;20 &lt;/span>&lt;span class="nv">$MIME&lt;/span>&lt;span class="s2">;\r\n&amp;#34;&lt;/span>
+cat &lt;span class="nv">$uri&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>To use this you would just add a line to your &lt;code>/etc/inetd.conf&lt;/code>:&lt;/p>
+&lt;pre>&lt;code>127.0.0.1:1965 stream nowait gemini /path/to/gemini.sh gemini.sh /path/to/chdir
+&lt;/code>&lt;/pre>&lt;p>This would produce some request-response behavior like this (&lt;code>\r\n&lt;/code> included for
+legibility):&lt;/p>
+&lt;pre>&lt;code>&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;REQUEST
+/index.gmi\r\n
+&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;RESPONSE
+20 text/gemini;\r\n
+hi there
+&lt;/code>&lt;/pre>&lt;p>I say &amp;ldquo;&amp;ldquo;server&amp;rdquo;&amp;rdquo; though because it only really just serves the file at a given URI with pretty
+minimal URI validation. There&amp;rsquo;s no meaningful logging. Also, you would need a relay for TLS
+(so you&amp;rsquo;d probably want to remap your server port to something else). If you&amp;rsquo;re using &lt;code>inetd&lt;/code>,
+though, you probably have one of those. It isn&amp;rsquo;t the prettiest solution on Earth, but it &lt;em>could&lt;/em>
+get the job done.&lt;/p>
+&lt;p>For my purposes, I happened to be looking for a more personal way of blogging without making it
+HTTP-scrapable. Gemini provides its own integrated markdown-esque markup language for text content,
+so things clicked. There&amp;rsquo;s all kinds of different protocols for this stuff, though. IPFS is
+an alternative I considered. Adjacent to Gemini specifically, Gopher comes to mind.&lt;/p>
+&lt;h2 id="gemini--gopher">Gemini + Gopher&lt;/h2>
+&lt;p>You don&amp;rsquo;t always need a dozen headers or a packed format with a binary BNF grammar to describe
+a text file to a requester. I think that&amp;rsquo;s kind of the point of these new alternative protocols
+&amp;ndash; levering modern technologies to make &amp;ldquo;the web&amp;rdquo; more accessible and a little less centralized.&lt;/p>
+&lt;p>Gemini is, in my eyes, one of the most straightforward protocols around when it comes to this.
+It doesn&amp;rsquo;t bother trying to be anything it isn&amp;rsquo;t.&lt;/p>
+&lt;p>No JS means there&amp;rsquo;s no interactivity, really, but that&amp;rsquo;s not an issue if your
+content is static. No CSS means there&amp;rsquo;s no definitive style, but that&amp;rsquo;s also not
+an issue if your content is static &amp;ndash; the user&amp;rsquo;s client can determine how it should look.&lt;/p>
+&lt;p>At a technical level, there&amp;rsquo;s already so much abstraction afforded in TCP sockets and TLS
+alone, so why bother with adding all of this extra stuff when the ultimate goal of the
+protocol is to serve largely text-based content?&lt;/p>
+&lt;p>How far out can we push this line of power-to-weight&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>, though? Things get weird when
+you start looking at Gopher.&lt;/p>
+&lt;p>Gopher was designed a sort of alternative to HTTP. They were both around in the same
+era, and both got a reasonable amount of publicity. I&amp;rsquo;m too young to ever know &amp;ldquo;The
+Gopher Protocol&amp;rdquo; was a serious contender for the web, but it was.&lt;/p>
+&lt;p>Its markup is stripped down compared to HTML, and it revolves around the notion of menu-based
+browsing. There&amp;rsquo;s this packed, but semi-legible construct that it uses in responses to
+describe menus (pulled from &lt;a href="https://en.wikipedia.org/wiki/Gopher_(protocol)">Wikipedia&lt;/a>).&lt;/p>
+&lt;pre>&lt;code>&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;REQUEST
+/Reference
+&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;RESPONSE
+1CIA World Factbook /Archives/mirrors/textfiles.com/politics/CIA gopher.quux.org 70
+0Jargon 4.2.0 /Reference/Jargon 4.2.0 gopher.quux.org 70 +
+1Online Libraries /Reference/Online Libraries gopher.quux.org 70 +
+1RFCs: Internet Standards /Computers/Standards and Specs/RFC gopher.quux.org 70
+1U.S. Gazetteer /Reference/U.S. Gazetteer gopher.quux.org 70 +
+iThis file contains information on United States fake (NULL) 0
+icities, counties, and geographical areas. It has fake (NULL) 0
+ilatitude/longitude, population, land and water area, fake (NULL) 0
+iand ZIP codes. fake (NULL) 0
+i fake (NULL) 0
+iTo search for a city, enter the city's name. To search fake (NULL) 0
+ifor a county, use the name plus County -- for instance, fake (NULL) 0
+iDallas County. fake (NULL) 0
+&lt;/code>&lt;/pre>&lt;p>Don&amp;rsquo;t look at it too long. It&amp;rsquo;s easy to understand why it lost out against HTTP.&lt;/p>
+&lt;p>The formatting of Gophertext is reminiscent of &lt;code>troff&lt;/code>&amp;rsquo;s syntax. The user requests the &lt;code>Reference&lt;/code>
+menu, in plaintext then the server replies with different resources (their types indicated by the
+prefixed number), menus, and submenus (&lt;code>i&lt;/code>). To an untrained eye, there&amp;rsquo;s these strange keywords
+&amp;ldquo;fake&amp;rdquo; and &amp;ldquo;(NULL)&amp;rdquo; popping up all over, references to proxy servers. It&amp;rsquo;s just&amp;hellip; strange.&lt;/p>
+&lt;p>There isn&amp;rsquo;t really much in the way of security for the protocol, and there are unofficial,
+somewhat-community-accepted extensions to it for things like media files and binaries.
+Overall, it feels like a somewhat reasonable protocol that lost its focus as new things
+needed to be incorporated into it.&lt;/p>
+&lt;p>Its markup is restrained, but wanted to compete with HTML. It wanted to incorporate new media
+types, but to do that, it had to incorporate new prefix codes. And once the protocol itself
+changes at a fundamental level like that, it&amp;rsquo;s pretty difficult to propagate that change across
+the web. Meanwhile in HTTP or Gemini, you simply change the MIME type field. Overall, it&amp;rsquo;s a cool idea, but
+with all of these dangling bits it may be a bit of an anachronism and a case study in protocol
+design.&lt;/p>
+&lt;p>These ideas of alternative protocols still catch my eye, though. They&amp;rsquo;re reminiscent of
+a web that didn&amp;rsquo;t have a notion of CSS, or JS, or really any moving parts.&lt;/p>
+&lt;p>It makes you wonder. How different would the Internet be if these protocols had
+won out? How would we handle the features that are ubiquitous in the WWW today like CSS
+for styling and JS for interactivity?&lt;/p>
+&lt;h2 id="the-real-web3">The &lt;em>Real&lt;/em> Web3&lt;/h2>
+&lt;p>After Waylon and I chatted for a bit about the Gemini specification, a fun thought experiment
+began.&lt;/p>
+&lt;p>What if we abandoned what we have today to completely redesign the web? No HTTP. No HTML.
+No CSS. No JavaScript. Completely from scratch, but with our lessons-learned from the
+present.&lt;/p>
+&lt;p>Well for one, we wouldn&amp;rsquo;t be throwing out IP. Maybe if we were ambitious we&amp;rsquo;d redesign it
+such that all computers use IPv6, but a flag day is impossible now.&lt;/p>
+&lt;p>More realistically, I think application-level protocols would be a lot more modular with a
+security-first design &amp;ndash; kind of like QUIC. Hosts can stream data between each other on a lighter
+protocol that is designed to handle congestion control.&lt;/p>
+&lt;p>The deep point of discussion, though, is how websites could be rendered without HTML. The one that
+seemed to hold our attention best was:&lt;/p>
+&lt;pre>&lt;code>waylon — 02/09/2022
+what if you had something like this
+(except not with HTML primitives)
+and instead of serving HTML
+web servers served this
+and browsers executed it to build a website
+I mean that's basically react
+I guess what we're doing is just React but cutting out the
+js part and pretending HTML doesn't exist 🤔
+&lt;/code>&lt;/pre>&lt;p>So basically what &lt;a href="https://github.com/DioxusLabs/dioxus">dioxus&lt;/a> is doing: compile down your
+dynamically-rendered JSX-like statically-typed markup into some WebAssembly. Dodge the JS runtime
+bullet and roll your own from scratch.&lt;/p>
+&lt;p>This would open up a few interesting discussions about website performance as more ambitious devs
+try to roll their own WebAssembly, but I don&amp;rsquo;t think it&amp;rsquo;d be any different than devs who
+roll their own HTTP servers these days.&lt;/p>
+&lt;p>I encounter problems thinking about this in the same way that I encounter problems trying to
+think in more than 3 dimensions. HTML is all I know. React is all I know. For the current web,
+it&amp;rsquo;s the same deal. WebAssembly is a step in the right direction of speeding up
+and broadening the spectrum of dynamic content on the web, but it&amp;rsquo;s still served as a complement
+to JavaScript&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup>.&lt;/p>
+&lt;p>I am skeptical that we&amp;rsquo;ll see a serious transition to a brand new protocol
+like QUIC or an exodus from the de jure languages of the web for a long time. To do so would be like
+switching the web to IPv6, which - like I said - I&amp;rsquo;m fairly certain won&amp;rsquo;t be happening anytime soon&amp;hellip;
+Maybe ever.&lt;/p>
+&lt;p>These new protocols are around the block, and they won&amp;rsquo;t be replacing anything that&amp;rsquo;s already
+around, but it&amp;rsquo;s a lot of fun exploring that big &lt;em>&amp;ldquo;what if&amp;rdquo;&lt;/em>.&lt;/p>
+&lt;hr>
+&lt;p>I might update this article later on.&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>Waylon is one of the smartest people I know. &lt;a href="https://www.waylonpeng.com/">https://www.waylonpeng.com/&lt;/a>.&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>&lt;a href="https://gemini.circumlunar.space/">https://gemini.circumlunar.space/&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3" role="doc-endnote">
+&lt;p>The Gemini docs describe it as &amp;ldquo;a new internet protocol which &amp;hellip; strives for maximum power to weight ratio&amp;rdquo;&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:4" role="doc-endnote">
+&lt;p>MDN describes it as complementary to JavaScript. &lt;a href="https://developer.mozilla.org/en-US/docs/WebAssembly">https://developer.mozilla.org/en-US/docs/WebAssembly&lt;/a>&amp;#160;&lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>Virtualizing a Minecraft Server on OpenBSD</title><link>https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/</link><pubDate>Sat, 29 Jan 2022 05:02:00 -0800</pubDate><guid>https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/</guid><description>&lt;p>&lt;em>&amp;ldquo;Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
 and a megaphone.&amp;quot;&lt;/em>&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>&lt;/p>
 &lt;p>Minecraft recently got its bump to version 1.18.1, and my girlfriend and I have been looking
 for a way to play without running the server locally on my machine. I have an OpenBSD box (see
