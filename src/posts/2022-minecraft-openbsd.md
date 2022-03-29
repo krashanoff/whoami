@@ -2,6 +2,7 @@
 title: "Virtualizing a Minecraft Server on OpenBSD"
 date: 2022-01-29T05:02:00-08:00
 draft: false
+layout: layouts/post.njk
 ---
 
 *"Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
@@ -9,7 +10,7 @@ and a megaphone."*[^1]
 
 Minecraft recently got its bump to version 1.18.1, and my girlfriend and I have been looking
 for a way to play without running the server locally on my machine. I have an OpenBSD box (see
-[my previous post]({{< ref "2021-exploring-bsd.md" >}})) that I have been using for my remote
+[my previous post]({{ './2021-exploring-bsd' | url }})) that I have been using for my remote
 needs, so I figured I could run the server on it fairly easily.
 
 ## The Hardware
@@ -41,7 +42,7 @@ To get a Minecraft server running, all you need is the latest version of the JRE
 machines, this really isn't a problem. Java *does* run on 3 billion devices[^2], after
 all. How bad could it be? Let's go ahead and check [ports](http://ports.su/devel/jdk):
 
-![jdk 1.8 in openbsd ports](/img/mcbsd/jdkports.png)
+![jdk 1.8 in openbsd ports]({{ '/static/img/mcbsd/jdkports.png' | url }})
 
 3 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
 OpenBSD doesn't really have much in the way of modern luxury when it comes to Java. This is
@@ -226,7 +227,7 @@ for it. I do not.
 In the future, I'd like to upgrade my server hardware and try this again, experimenting with ways of
 storing the Minecraft world folder in a host-system accessible folder. On any other virtualization
 solution, this wouldn't be too hard, but OpenBSD's virtualization daemon doesn't support hardware
-passthrough yet[^2].
+passthrough yet[^4].
 
 Network passthrough is a breeze with [`pf(4)`](https://man.openbsd.org/pf), but the only viable option
 for file-sharing between the two is through a network share like [`smbd(8)`](https://linux.die.net/man/8/smbd).
@@ -248,3 +249,4 @@ can improve performance on the little server that could&trade;.
 [^1]: https://www.youtube.com/watch?v=d59J78yhwtg
 [^2]: https://skeptics.stackexchange.com/a/9873
 [^3]: You'd expect to see around 8GB in newer models. https://zipso.net/chromebook-specs-comparison-table/
+[^4]: https://www.reddit.com/r/openbsd/comments/ih4vns/pci_passthrough_on_vmm/

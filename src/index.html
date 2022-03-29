@@ -1,0 +1,14 @@
+---
+layout: layouts/default.njk
+---
+
+<div class="prose prose-l">
+  <ul class="list-none pl-0 pt-[1rem]">
+    {%- for post in collections.posts -%}
+    <li class="pl-0">
+      <a href="{{ post.url | url }}" class="link">{{ post.data.title }}</a>
+      <small class="text-slate-500"><time>{{ post.data.date | date }}</time></small>
+    </li>
+    {%- endfor -%}
+  </ul>
+</div>

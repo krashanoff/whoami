@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../gmi"
+		},
+		{
+			"path": "../rotp"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

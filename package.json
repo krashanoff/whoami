@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "build": "ELEVENTY_PRODUCTION=true eleventy && NODE_ENV=production npx tailwindcss -i src/styles/index.css -c tailwind.config.js -o _site/dist.css --minify",
+    "start": "eleventy --serve & npx tailwindcss -i src/styles/index.css -c tailwind.config.js -o _site/dist.css --watch"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.0",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^4.0.0",
+    "@tailwindcss/typography": "^0.5.2",
+    "daisyui": "^2.13.3",
+    "markdown-it": "^12.3.2",
+    "markdown-it-footnote": "^3.0.3",
+    "tailwindcss": "^3.0.23"
+  }
+}

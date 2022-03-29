@@ -2,6 +2,7 @@
 title: "Exploring OpenBSD"
 date: 2021-09-24T00:00:00-07:00
 draft: false
+layout: layouts/post.njk
 ---
 
 I'm an operating systems enthusiast, and love [Linux](https://www.linux.org/).
@@ -141,12 +142,7 @@ my knowledge, and without any clear way to locate it all.
 
 A lot of these issues can be chalked up to Linux distributions getting filled with bloatware
 and one-off abstractions that fail to empower their users in efforts of being
-"the best OS". Consider Ubuntu's redundancies:
-[`iptables(8)`](https://manpages.ubuntu.com/manpages/precise/en/man8/iptables.8.html),
-[`ufw(8)`](https://manpages.ubuntu.com/manpages/bionic/man8/ufw.8.html),
-[`apt(8)`](https://manpages.ubuntu.com/manpages/xenial/man8/apt.8.html),
-[`snap(8)`](https://manpages.ubuntu.com/manpages/impish/en/man8/snap.8.html). Consider
-Gentoo's behemoth [`portage(5)`](https://wiki.gentoo.org/wiki/Portage).
+"the best OS". Consider Ubuntu's redundancies: [`iptables(8)`](https://manpages.ubuntu.com/manpages/precise/en/man8/iptables.8.html), [`ufw(8)`](https://manpages.ubuntu.com/manpages/bionic/man8/ufw.8.html), [`apt(8)`](https://manpages.ubuntu.com/manpages/xenial/man8/apt.8.html), [`snap(8)`](https://manpages.ubuntu.com/manpages/impish/en/man8/snap.8.html). Consider Gentoo's behemoth [`portage(5)`](https://wiki.gentoo.org/wiki/Portage).
 
 OpenBSD's objectives, on the other hand, are precise, and it is a damn good
 solution to them.

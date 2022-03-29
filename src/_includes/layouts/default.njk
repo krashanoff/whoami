@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="corporate">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if title %}{{ title }}{% else %}krashanoff{% endif %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ '/dist.css' | url }}" />
+  </head>
+  <body>
+    <div class="container mx-auto mx-w-prose">
+      <nav class="navbar px-0">
+        <a class="btn btn-ghost normal-case text-2xl" href={{ '/' | url }}>krashanoff</a>
+        <a class="btn btn-ghost normal-case text-xl" href={{ '/about' | url }}>about</a>
+      </nav>
+      
+      {{ content | safe }}
+
+      <footer class="footer py-8 text-slate-500">
+        <div>
+          <p>Copyright &copy; 2022 Leonid Krashanoff</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -2,17 +2,18 @@
 title: "Idiomatic Semantics in Golang"
 date: 2021-11-08T00:00:00-07:00
 draft: false
+layout: layouts/post.njk
 ---
 
 I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.
 
 A while back, when I was starting to learn Go, I stumbled onto this answer on StackOverflow referencing the Golang FAQ[^1].
 
-> "The reason [the ternary operator] is absent from Go is that the language's designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct."
+> The reason [the ternary operator] is absent from Go is that the language's designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct.
 
 Let me emphasize a particular point here that I think really stands out to me:
 
-> “...the if-else form, although longer, is unquestionably clearer...”
+> ...the if-else form, although longer, is unquestionably clearer...
 
 I think that’s the big selling point of Go as a programming language. The syntax strives to be idiomatic and easy-to-read, and the official toolchain isn’t afraid to enforce the shit out of this principle even if it means inflating your LOC and making your code a little more verbose than it needs to be. Terseness is secondary: good code in Go's eyes is code that you read once, write once, and can immediately grasp.
 
