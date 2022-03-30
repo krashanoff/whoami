@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" data-theme="corporate">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An SSH Tarpit in 24 Lines</title>
+    <link rel="stylesheet" type="text/css" href="/dist.css" />
+  </head>
+  <body>
+    <div class="container mx-auto mx-w-prose">
+      <nav class="navbar px-0">
+        <a class="btn btn-ghost normal-case text-2xl" href=/>krashanoff</a>
+        <a class="btn btn-ghost normal-case text-xl" href=/about>about</a>
+      </nav>
+      
+      
+<article class="prose lg:prose-xl pt-[1rem]">
+  <small class="text-slate-500"><date>Sep 27, 2021</date></small>
+  <h1>An SSH Tarpit in 24 Lines</h1>
+  <p>I found Chris Wellons' <a href="https://nullprogram.com/blog/2019/03/22/">endlessh</a>
+to be very neat, so I wrote a short one in Rust. This compiles down to about
+337kB after stripping metadata on the <code>current-thread</code> flavor of <a href="https://tokio.rs/"><code>tokio</code></a>.</p>
+<p>If you want to try it yourself, you can run it with <code>./binname [PORT NUMBER]</code>.</p>
+<pre><code class="language-rs">use std::{env, time::Duration};
+use tokio::{self, io::AsyncWriteExt, net::TcpListener, time::interval};
+
+#[tokio::main]
+async fn main() {
+    let port: String = env::args().skip(1).collect();
+    let listener = TcpListener::bind(format!(&quot;0.0.0.0:{}&quot;, port))
+        .await
+        .expect(&quot;failed to bind to port&quot;);
+
+    loop {
+        if let Ok((mut stream, _)) = listener.accept().await {
+            tokio::spawn(async move {
+                let mut interval = interval(Duration::from_secs(5));
+                loop {
+                    if let Err(e) = stream.write(b&quot;\n&quot;).await {
+                        eprintln!(&quot;{}&quot;, e);
+                    }
+                    interval.tick().await;
+                }
+            });
+        }
+    }
+}
+</code></pre>
+
+</article>
+
+
+      <footer class="footer py-8 text-slate-500">
+        <div>
+          <p>Copyright &copy; 2022 Leonid Krashanoff</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

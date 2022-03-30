@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en" data-theme="corporate">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploring OpenBSD</title>
+    <link rel="stylesheet" type="text/css" href="/dist.css" />
+  </head>
+  <body>
+    <div class="container mx-auto mx-w-prose">
+      <nav class="navbar px-0">
+        <a class="btn btn-ghost normal-case text-2xl" href=/>krashanoff</a>
+        <a class="btn btn-ghost normal-case text-xl" href=/about>about</a>
+      </nav>
+      
+      
+<article class="prose lg:prose-xl pt-[1rem]">
+  <small class="text-slate-500"><date>Sep 24, 2021</date></small>
+  <h1>Exploring OpenBSD</h1>
+  <p>I'm an operating systems enthusiast, and love <a href="https://www.linux.org/">Linux</a>.</p>
+<p>This said, there's plenty of other operating systems out there to explore, and
+a significant fraction of those alternatives are labelled &quot;BSD&quot;, referring to
+the <a href="https://en.wikipedia.org/wiki/Berkeley_Software_Distribution">Berkeley Software Distribution</a>
+derivatives of the <a href="https://en.wikipedia.org/wiki/Unix">Unix</a> operating system that
+emerged shortly after <a href="https://en.wikipedia.org/wiki/Bell_Labs">Bell Labs</a> dissolved.</p>
+<p>What's nice about BSD Unix is that most of them try to stay relatively
+true to the original Unix philosophy, and remain as free as they possibly
+can without sacrificing quality. Why not start, then, by dipping our toes into the
+water with the OS that claims to be <a href="https://www.openbsd.org/faq/faq1.html">&quot;all free&quot;</a>?</p>
+<h2>OpenBSD</h2>
+<p>...or maybe it was a leap.</p>
+<p>I set out on my OpenBSD expedition to build a router for my roommate and I while
+we were waiting on another, who had a router/wireless AP. Faced with a cable
+modem from our local ISP, we had no choice but to pursue making a router of our
+internet-facing machine.</p>
+<p>I browsed on over to the <a href="https://www.openbsd.org/">OpenBSD website</a>, likely
+bouncing off a few <code>(Free|Open)</code>BSD servers before hitting the OpenBSD box
+hosting the site.</p>
+<p>On the Internet, these BSD-derivatives are ubiquitous for critical systems. At least
+in the case of OpenBSD, this is for good reason: the
+operating system <a href="https://www.openbsd.org/faq/upgrade63.html">relinks the kernel on boot</a>,
+introduced <a href="https://en.wikipedia.org/wiki/W%5EX">W^X</a>, and opportunistically integrates cryptography
+throughout. The team isn't afraid to tote this around -- they even have a page
+basically <a href="https://www.openbsd.org/crypto.html">flipping off a few governments</a>.</p>
+<h2>UX</h2>
+<p>Post-download, I imaged a flash drive, spun up the years-old hardware destined
+to become our temporary router, and dove right in.</p>
+<p>The OpenBSD experience is classic. It's still using <a href="https://www.freebsd.org/cgi/man.cgi?query=ffs&amp;sektion=7"><code>ffs(7)</code></a>, has an
+exceedingly stable kernel with a <a href="https://en.wikipedia.org/wiki/Giant_lock">sizable lock</a>,
+and isn't very quick to adopt
+the latest technologies (Intel's <a href="https://www.intel.com/content/www/us/en/architecture-and-technology/advanced-encryption-standard-aes/data-protection-aes-general-technology.html">AES-NI</a> comes to mind). If you do happen
+to have a few terabytes onboard your OpenBSD computer, it might take a couple
+hours to run <a href="https://man.openbsd.org/fsck"><code>fsck(8)</code></a> if shit hits the fan.</p>
+<p>These aren't necessarily bad things. My little server
+does not need more than a few gigabytes of storage and two cores for what it's
+doing, and all I really demand of an operating system for its purposes is stability.</p>
+<p>Luckily, the setup process is far from classic. The install is very, very
+smooth. Compared to something like <a href="https://wiki.gentoo.org/">Gentoo</a>, it's a breeze with just a few
+prompts mirroring what you'd see in your average Debian installation wizard.</p>
+<p>Once inside, OpenBSD is a well-documented, well-polished system with very few &quot;huh?&quot;
+situations. By that, I mean situations where I found myself face-to-face with a
+bug the manpages didn't give me explicit instruction against -- it does a great
+job of easing the user into the operating system so that info dumps are more
+sparse, and the learning curve is gradual.</p>
+<p>You will learn to use <a href="https://man.openbsd.org/man.1"><code>man(1)</code></a>.
+You will learn what your <a href="https://man.openbsd.org/hier"><code>/etc</code></a> directory is for.
+These are all good things.</p>
+<p>I set up a router, firewall, and FTP server for our apartment with ease, and
+was even comfortable enough to set up a few network tunnels (see: <a href="https://man.openbsd.org/tun.4"><code>tun(4)</code></a>)
+for certain applications.</p>
+<p>The only &quot;mystery bug&quot; that I encountered was that every now and again, our packet
+filter would drop a few packets for maybe a half-second, even using the default
+configuration. Time to resolve this problem: we put down our manpages. We turn
+to Google.</p>
+<h2>Community</h2>
+<p>Googling around for a fix for that little half-second packet drop issue took
+me almost two days of inconclusive results, but I was <em>not</em> about to hop on
+the mailing lists or forums and ask a question so broad.</p>
+<p>The community for OpenBSD is <a href="https://distrowatch.com/table.php?distribution=freebsd">dwarfed</a> compared to <a href="https://www.freebsd.org/">FreeBSD</a> or any Linux flavor.
+I'd compare it in size to something like <a href="https://www.bunsenlabs.org/">BunsenLabs Linux</a>.
+Unlike BunsenLabs, though, OpenBSD's community has a reputation of being <em>exceedingly</em> unyielding. A
+large part of this could be attributed to the personality of its
+leader, who, by Linus' account, is <a href="https://www.forbes.com/2005/06/16/linux-bsd-unix-cz_dl_0616theo.html">&quot;difficult&quot;</a>.</p>
+<p>This is the argument that most people will give you, but, in my opinion,
+there's a much easier, less personal take.</p>
+<p>One of the downsides of having extensive documentation is that developers
+and users may grow frustrated reading questions answered in the docs
+they just updated over and over again. For the new user, unfamiliar with
+mailing lists, past answers may not be as readily available. Mix these two
+together and you have a situation akin to the Linux mailing lists, but with
+less margin for discussion.</p>
+<h2>Freedom and Software</h2>
+<p>If I had to pick a straw that might break the camel's back for an OpenBSD
+novice like me, it's probably OpenBSD's lack of software.</p>
+<p>I was trying to port my little file sharing server to the operating system
+earlier today. The problem is that it's written in Rust. I definitely
+could have written the program in another language like C or Go or something,
+but I felt like writing it in Rust.</p>
+<p>Unfortunately, <a href="https://rustup.rs/"><code>rustup</code></a> isn't available on <a href="https://openports.se/">OpenBSD ports</a>,
+and OpenBSD itself is a <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-3">tier 3 platform</a>
+for Rust compilation. This means that compiling Rust natively is painful, and
+cross-compiling Rust is next to impossible.</p>
+<p>This is when the cracks in the facade start to show for OpenBSD. Compared
+to FreeBSD, which has a huge number of packages available for download and
+<a href="https://docs.freebsd.org/en/books/handbook/linuxemu/">binary compatibility with Linux</a>,
+OpenBSD keeps their software repositories pretty tight
+to maintain their openness and keep their interoperability with older systems.
+They also discourage use of proprietary drivers.</p>
+<p>That is, OpenBSD seems to place its focus in expanding the freedom of software,
+sometimes at expense of the user's freedom of choice.</p>
+<h2>Purpose Built; Proper Abstractions</h2>
+<p>OpenBSD is an operating system that is built to run on hardware,
+<a href="https://www.virtualbox.org/ticket/639">not virtualized</a>.
+It is built for security, software freedom, and stability. It is
+easy to understand and secure by default. The issues I encountered in my experience
+with it were pretty tame compared to those I ran into on any Linux derivative.</p>
+<p>Thinking back to something as elementary as rebooting my computer after my first
+Linux installation, I remember <a href="https://unix.stackexchange.com/q/249654">getting softlocked at shutdown</a>.</p>
+<p>Reflecting on more recent experiences with Manjaro, I recall my configuration files
+for system-critical processes being scattered everywhere, and having too much power
+granted to me with too little knowledge. Garbage was left behind by packages without
+my knowledge, and without any clear way to locate it all.</p>
+<p>A lot of these issues can be chalked up to Linux distributions getting filled with bloatware
+and one-off abstractions that fail to empower their users in efforts of being
+&quot;the best OS&quot;. Consider Ubuntu's redundancies: <a href="https://manpages.ubuntu.com/manpages/precise/en/man8/iptables.8.html"><code>iptables(8)</code></a>, <a href="https://manpages.ubuntu.com/manpages/bionic/man8/ufw.8.html"><code>ufw(8)</code></a>, <a href="https://manpages.ubuntu.com/manpages/xenial/man8/apt.8.html"><code>apt(8)</code></a>, <a href="https://manpages.ubuntu.com/manpages/impish/en/man8/snap.8.html"><code>snap(8)</code></a>. Consider Gentoo's behemoth <a href="https://wiki.gentoo.org/wiki/Portage"><code>portage(5)</code></a>.</p>
+<p>OpenBSD's objectives, on the other hand, are precise, and it is a damn good
+solution to them.</p>
+<blockquote>
+<p>So does all of this mean that BSD is superior to Linux?</p>
+</blockquote>
+<p>eh.</p>
+
+</article>
+
+
+      <footer class="footer py-8 text-slate-500">
+        <div>
+          <p>Copyright &copy; 2022 Leonid Krashanoff</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
