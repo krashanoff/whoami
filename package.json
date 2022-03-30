@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "ELEVENTY_PRODUCTION=true eleventy && NODE_ENV=production npx tailwindcss -i src/styles/index.css -c tailwind.config.js -o _site/dist.css --minify",
-    "start": "eleventy --serve & npx tailwindcss -i src/styles/index.css -c tailwind.config.js -o _site/dist.css --watch"
+    "start": "eleventy --serve --quiet & npx tailwindcss -i src/styles/index.css -c tailwind.config.js -o _site/dist.css --watch --quiet"
   },
   "devDependencies": {
     "@11ty/eleventy": "^1.0.0",

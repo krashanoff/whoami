@@ -5,12 +5,8 @@ draft: false
 layout: layouts/post.njk
 ---
 
-Hello. I'm Leo, a fourth year computer science undergrad at UCLA and incoming engineer at
-Booz Allen Hamilton. My pronouns are he/him. I write software and write about software.
-In my free time, I study Japanese.
+Hello. I'm Leo, an incoming engineer at Booz Allen Hamilton. My pronouns are he/him. I focus on networks and security. In my free time, I study programming languages and Japanese. Thoughts expressed on my blog are my own.
 
 You can find me on GitHub as [@krashanoff](https://github.com/krashanoff).
-
-Thoughts expressed on my blog are my own.
 
 Need to email me? Email `hello` at this address.
