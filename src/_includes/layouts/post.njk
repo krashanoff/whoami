@@ -3,7 +3,7 @@ layout: layouts/default.njk
 ---
 
 <article class="prose lg:prose-xl pt-[1rem]">
-  <small class="text-slate-500"><date>{{ date | date }}</date></small>
+  <small class="text-slate-500"><date>{{ date | datePlain }}</date></small>
   <h1>{{ title }}</h1>
   {{ content | safe }}
 </article>

@@ -11,7 +11,7 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.setLibrary("md", markdownIt(options).use(require("markdown-it-footnote")));
 
   // Date formatting.
-  eleventyConfig.addFilter("date", (value) => new Date(value).toLocaleDateString('en-US', {
+  eleventyConfig.addFilter("datePlain", (value) => new Date(value).toLocaleDateString('en-US', {
     dateStyle: 'medium'
   }));
 
