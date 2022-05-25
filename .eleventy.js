@@ -22,8 +22,8 @@ module.exports = (eleventyConfig) => {
   });
 
   // CNAME
-  eleventyConfig.addPassthroughCopy("src/static");
-  eleventyConfig.addPassthroughCopy("src/CNAME");
+  const static = ["static", "CNAME", "robots.txt"];
+  static.forEach(v => eleventyConfig.addPassthroughCopy(`src/${v}`));
 
   return {
     dir: {
