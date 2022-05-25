@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" data-theme="corporate">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The blog of Leo Krashanoff">
+    <title>Protobufs, QUIC, Rust, and Qt</title>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC" type="image/png" />
+    <link rel="stylesheet" type="text/css" href="/dist.css" />
+  </head>
+  <body>
+    <div class="container mx-auto mx-w-prose">
+      <nav class="navbar px-0">
+        <a class="btn btn-ghost normal-case text-2xl" href=/>krashanoff</a>
+        <a class="btn btn-ghost normal-case text-xl" href=/about>about</a>
+      </nav>
+      
+      
+<article class="prose lg:prose-xl pt-[1rem]">
+  <small class="text-slate-500"><date>Apr 8, 2022</date></small>
+  <h1>Protobufs, QUIC, Rust, and Qt</h1>
+  <p>What if we wrote an open-source Discord?</p>
+<p>I was trying to write a small communication client/server for my girlfriend and I in my spare time.
+We would just use it for text chat or voice chat. At the beginning, I didn't have much of a purpose for
+writing it aside from running away from Discord after they started talking about NFTs, but I eventually
+made it my goal to make it as intricate as possible - a polyglot project. I never actually finished it,
+but it left me with lessons in working with intricate software.</p>
+<p>For an application that might transport things like photos, videos, or voice communications,
+security is pretty paramount. One aspect of security is <em>whose hands the data is in</em>. For
+my purposes of chatting with friends, family, etc., I'd like to keep it in my own. This meant the
+servers would be self-hosted, and should be designed with this in mind. I have been writing a
+lot of Rust, so I figured I would write the server in Rust. To keep the code easy-to-maintain,
+I would make the server async.</p>
+<p>I also wanted the client applications to be performant. There isn't much wiggle room on this
+front. Pretty much the only good-looking, non-web-based GUI framework these days is Qt, which
+only <em>really</em> works if you're writing your application in C++ (although there are some high-quality
+bindings to other programming languages).</p>
+<p>Rust and C++ serialization formats don't exactly play well together, though. This meant I needed a
+lingua-franca for the two to communicate with one another on the wire. I
+settled on QUIC-transported protobufs for speed and security. The rest of this entry will be some
+thoughts on how I built this toolchain on Windows and Mac, and the hardships I encountered throughout.</p>
+<h2>On QUIC</h2>
+<p>Choosing QUIC was a good call. QUIC is secure by default and designed with speed in mind. It enforces use of
+TLS, and keeps things speedy by modeling network communications between computers as multiple simultaneous, uni-or-bidirectional
+streams over a UDP &quot;connection&quot;. Since packets don't need to all be delivered in order, multiple streams can
+be processed concurrently. This gave me a lot of freedom in how I modeled the endpoints
+for communication between client and server.</p>
+<p>I treated the server as though it were a single endpoint, where each stream ID per-client dictated the type of traffic
+involved. This proved to be more of a headache than I thought, as QUIC streams aren't exactly opened and
+closed like TCP sockets, but instead treated like green threads. You won't get a specific ID unless you
+ask explicitly for it. This is why QUIC is superior to TCP, but also what makes it more complex.</p>
+<p>The big thing I didn't anticipate is that <strong>QUIC has weird libraries!</strong> QUIC is a protocol that was designed
+to be testable, which means that all the libraries out there are Bring Your Own IO. The problem with this is that
+libraries are pretty pigeonholed into working something like this:</p>
+<p><a href="https://mermaid.live/edit#pako:eNqdkr9OAzEMxl8l8lSk8gI3VELAwIgQ2y1W4juiXuw0cVqhqu9OruQqEB2ADBn8ff75y58jWHEEHWTaFWJLDx7HhKFnU1fEpN76iKzmLsafxefXp_vP6iQSDTrjefDstTSCmftuN5u6dyaR3Q9JwurmuzhTzir5Pbk6wG5JF8ssXjwxiaWcr1mWIdfQI6lhOtRwVoLn8dzRIPkXlJYerRqVStKDpO31QUwJ9XKI_OeIUnSU_0bMxE5l9bW1XXUVYA2BUkDv6nMf53IP-kaBeqgwcDRgmbSHnk_VWqKr53h0XiVBN-CUaQ1YVF7e2UKnqdBial-muU4fqdK4sQ"><img src="https://mermaid.ink/img/pako:eNqdkr9OAzEMxl8l8lSk8gI3VELAwIgQ2y1W4juiXuw0cVqhqu9OruQqEB2ADBn8ff75y58jWHEEHWTaFWJLDx7HhKFnU1fEpN76iKzmLsafxefXp_vP6iQSDTrjefDstTSCmftuN5u6dyaR3Q9JwurmuzhTzir5Pbk6wG5JF8ssXjwxiaWcr1mWIdfQI6lhOtRwVoLn8dzRIPkXlJYerRqVStKDpO31QUwJ9XKI_OeIUnSU_0bMxE5l9bW1XXUVYA2BUkDv6nMf53IP-kaBeqgwcDRgmbSHnk_VWqKr53h0XiVBN-CUaQ1YVF7e2UKnqdBial-muU4fqdK4sQ" alt=""></a></p>
+<p>There were a few libraries that handle the IO for you, but there really weren't
+enough <strong>high-level, easy to use libraries</strong> out there in the same way that there are for protocols like RTMP.
+There's Amazon's <code>s2n</code>, but the library doesn't allow the user a great degree of control over the granularity of parallelism,
+favoring a massively-parallel green-thread approach. The best one riding that fine line that I found was Cloudflare's <code>quiche</code>, although this too had its shortcomings<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> in the form of C-friendly event-loop-style packet processing.</p>
+<p>Quiche aside, I played around with almost <em>every major QUIC library</em> just to get a feel for how they worked. I tried MsQuic and Quiche on my GUI;
+Quiche, Quinn, and s2n on my Rust backend; quic-go on a tiny little Go client for testing; and aioquic on another
+Python client that I built for testing. Overall, it was an insane amount of work for what felt like minimal payoff
+when I just came back to using Quiche. Here are a few thoughts on each of these, though:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Language(s)</th>
+<th style="text-align:left">Review</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/cloudflare/quiche">Quiche</a></td>
+<td>Rust, C/C++</td>
+<td style="text-align:left">Good, but verbose</td>
+</tr>
+<tr>
+<td><a href="https://github.com/quinn-rs/quinn">Quinn</a></td>
+<td>Rust</td>
+<td style="text-align:left">Where's the <em>real</em> entry point for the library?</td>
+</tr>
+<tr>
+<td><a href="https://github.com/aws/s2n-quic">s2n</a></td>
+<td>Rust</td>
+<td style="text-align:left">Good, but maybe a little <em>too</em> abstract. Almost every single part of the library is carried out on its own async task.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/lucas-clemente/quic-go">quic-go</a></td>
+<td>Go</td>
+<td style="text-align:left">Easy to use</td>
+</tr>
+<tr>
+<td><a href="https://github.com/aiortc/aioquic">aioquic</a></td>
+<td>Python</td>
+<td style="text-align:left">Confusing</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/msquic">MsQuic</a></td>
+<td>C/C++</td>
+<td style="text-align:left">OK, but the use of a function table and registry is confusing</td>
+</tr>
+</tbody>
+</table>
+<h2>On Protobufs</h2>
+<p>Again, the right call was protobufs. The serialization format is well-defined and easily interoperable
+with other languages like Python and Go. There are also unofficial extensions to allow protobufs to
+operate within Rust.</p>
+<p><em>Deploying</em> protobufs was a little more trouble than I thought it would be, though -- especially on Windows.
+When I was building the library, I had to sit there and agonize about which linker I was using.
+After pulling your hair out over which linker is the same one that Qt is using, then you have to find out
+whether the linker is building the library multithreaded or not, then override flags in the Qt Makefile
+configuration to fix the link issue.</p>
+<p>In my case, protobufs was being built singlethreaded, but my Qt application was not. I wanted to
+statically-link the library, though, so I disabled the multithreaded linking.</p>
+<h2>On Async Rust</h2>
+<p>My initial architecture for the Rust-based server was programmatically intuitive, at expense
+of design complexity. Each time the server received a connection, it spawn
+off a data structure to handle future requests from the client. The structure can send the &quot;conductor&quot;
+messages through its transmitting MPSC channel, and handle incoming messages through its receiving channel.
+Then when we need to talk to the individual client from the conductor, we fetch its sender handle.</p>
+<p>This established a strong separation of concerns and was motivated by the idea of ensuring that the bottleneck for the program was in the QUIC
+state manager - not the database operations or global state updates. Frogs could handle the
+operation requested by the client on their own time, then send the messages back to the
+<code>Bullfrog</code> to relay.</p>
+<p>Something that I overlooked when building this though was the overhead from the async runtime.
+All those channels moving data across thread boundaries is <em>expensive</em>, even for something in
+Rust. Two great quotes came to mind while I was building this ridiculously complicated setup.</p>
+<blockquote>
+<p>Think of it this way: threads are like salt, not like pasta. You like salt, I like salt, we all like salt. But we eat more pasta.</p>
+<p>— Larry McVoy<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+</blockquote>
+<blockquote>
+<p>A computer is a state machine. Threads are for people who can't program state machines.</p>
+<p>— Alan Cox<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup></p>
+</blockquote>
+<p>The second one really started to stick with me when I went back to review the architecture of
+the server source given in the official Quiche examples. Their server is a simple state machine.
+I tried refactoring mine to reflect this, but managing futures for database transactions proved
+a headache.</p>
+<p>In an unexpected turn, I settled on using Amazon's <code>s2n-quic</code> and its massively-parallel approach.
+It was just easier to use, but the problem was that maintaining shared state became expensive for the
+same reasons I encountered in my original approach.</p>
+<h2>On Qt</h2>
+<p>Qt is pretty much the only GUI framework that isn't web-based. I like the ideas presented by projects like iced or yew, but they are still, ultimately, web technologies. I don't really wanna deal with a JS interpreter or JIT compiler - give me native widgets, please. Qt's new markup language, QML, is a lot higher level than the widgets bindings, but
+computationally more expensive. Under the hood, it uses OpenGL and what amounts to a stripped-down web engine - the very thing I was trying to avoid from the get-go.</p>
+<p>In keeping with my goal of making the application as lightweight as possible, I opted to use
+widgets, but designing my components to be QML-compatible as well. This is accomplished with macros in header files
+for Qt types.</p>
+<p>I like the ideas of Qt. It's a very easy-to-grasp parallel GUI framework that lets
+the developer do pretty much anything they want to...</p>
+<p>...except capture AV.</p>
+<p>In Qt6, they have done no favors in making it easy to access the underlying frames of a camera or the PCM audio. They have this
+brand new thing <code>QMediaCaptureSession</code>, and they <em>really</em> want you to use their <code>QMediaRecorder</code> class to record
+videos and stuff. The problem is that there's almost <strong>zero</strong> extensibility in the <code>QMediaRecorder</code> class. There's no
+way for the developer to implement their own. I had middling success implementing a <code>QVideoSink</code> and <code>QAudioSink</code> to catch the recording output, but I think I'd just use <code>ffmpeg</code> instead.</p>
+<h2>Takeaways</h2>
+<p>I didn't really do much! I just kinda explored a bunch of different technologies and tried - to varying levels of success - to use them all together. GUI is hard; capturing A/V from C++ is hard; emerging protocols are still getting their footing.</p>
+<p>Writing projects that bridge languages isn't too hard as long as you have a lingua franca for them to speak over the network or interprocess. There's a great read about that somewhere<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. In my case, I used protobufs on QUIC, and it worked pretty well. For future projects, I would likely avoid QUIC as the libraries aren't high-level enough yet that they're ergonomic to use.</p>
+<p>There's also the issue of deployment. Protobufs were difficult to deploy on machines that run Windows, as static linkage issues were pretty common. On OSX/UNIX-like, it was a breeze.</p>
+<p>I like the ideas in Qt - conceptually they are powerful - however the lack of extensibility for the <code>QMediaRecorder</code> type made native audio and video capture pretty difficult. It wasn't exactly friendly to streaming AV capture. I would rather do the project in something like Python with Qt bindings or maybe something that uses <a href="https://gstreamer.freedesktop.org/">GStreamer</a>, I think. With PyQt, I could do more intricate image processing of live captures with something like pillow. The only concern there is performance and deployment woes.</p>
+<p>This project will likely be retired, but in any case, it was a good experience being able to explore new technologies and tying heterogeneous programs together.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://github.com/cloudflare/quiche/pull/1085">https://github.com/cloudflare/quiche/pull/1085</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Both of these quotes are from the Qt wiki, actually. <a href="https://wiki.qt.io/Threads_Events_QObjects">https://wiki.qt.io/Threads_Events_QObjects</a> <a href="#fnref2" class="footnote-backref">↩︎</a> <a href="#fnref2:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="https://gankra.github.io/blah/c-isnt-a-language/">https://gankra.github.io/blah/c-isnt-a-language/</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+</article>
+
+
+      <footer class="footer py-8 text-slate-500">
+        <div>
+          <p>Copyright &copy; 2022 Leonid Krashanoff</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
