@@ -9,7 +9,7 @@ First, let's discuss the chaos that is "libav". The library behind FFMPEG is cal
 
 libav (the forked one) is no longer under development, as far as I can tell. The last release was in 2018. The last commit to `master` was in 2019. My brain is still stuck in the 2010s, so I have to remind myself that's **three years without a commit**. That seems pretty abandoned to me.
 
-Normally, that a fork of a major project ceased development is no big deal, but it poses a challenge for developers; particularly when they need help. Google something about "libav" and look for a StackOverflow answer. It's a Russian Roulette of whether the answer you're going to get is about "libav" or *"libav"*.[^1]
+Normally, when a fork of a major project ceases development, it's no big deal, but it poses a challenge for developers; particularly when they need help. Google something about "libav" and look for a StackOverflow answer. It's a russian roulette of whether the answer you're going to get is about "libav" or *"libav"*.[^1]
 
 Another complicated part: the eager developer might run into is that the documentation of the actual libav is terse. It is so distilled, so crystallized, that it takes a lot of careful inference and/or luck to get the hang of. There's also quite a few structure-specific quirks. For example, `AVChannelLayout` is a member of a few different data structures, and is initialized with some predefined initializers. Unlike structures in libav initialized with predefined constants, though, it must be copied with a specific function, and uninitialized with another.[^2]
 
@@ -17,7 +17,7 @@ Another complicated part: the eager developer might run into is that the documen
 
 There are also a few missing features from the library. For one, [there is no way to programmatically enumerate devices](https://trac.ffmpeg.org/wiki/DirectShow#Howtoprogrammaticallyenumeratedevices). Instead, the programmer could either shell out to `ffmpeg`, defeating the purpose of using libav in most cases, or install a log capture handler via [`log_set_callback()`](https://ffmpeg.org/doxygen/trunk/group__lavu__log.html#ga14034761faf581a8b9ed6ef19b313708).
 
-The final barrier to entry is building the library into software. Engineering complex software in C/C++ is pretty hard to get right, but baking it all together in the right ways on every platform is especially difficult. This is why almost all (if not every) modern programming language has its own toolchain that manages the compilation and linking for you. libav is designed to build on a whole lot of platforms, though, and not many programming languages short of Go can make claims to C's throne of portability.
+The final barrier to entry is building the library into software. Engineering complex software in C/C++ is pretty hard to get right, but baking it all together in the right ways on every platform is especially difficult. This is why almost all modern programming languages have their own toolchain that manages the compilation and linking for you. libav is designed to build on a whole lot of platforms, though, and not many programming languages short of Go can make claims to C's throne of portability.
 
 Building `ffmpeg` is actually incredibly easy if you have the dependencies on your system; just `./configure && make` like any other. Even if you don't have all the dependencies, you can avoid their use by just disabling them in your call to `configure`. To build it into another piece of software using something like CMake, the developer is kind of on their own with linking in all the required dependencies of the libraries. I ended up using `pkg-config`. To point `pkg-config` in the right direction in CMake, though, one has to set the `PKG_CONFIG_PATH`. My current approach is this in the root `CMakeLists.txt`:
 
@@ -67,7 +67,7 @@ If I were to write out a complete example, it would probably end up being in the
 6. `av_find_encoder`/`av_find_decoder`; `avcodec_open2`
 7. `av_read_frame`
 
-Anyways, what I'm trying to say is that using FFMPEG is a laborious process. As they say in the world of Gentoo, though, FFMPEG is a lot like configuring a kernel:
+Anyways, what I'm trying to say is that using FFMPEG is a laborious process. I find that using it is comparable to how Gentoo describes configuring a kernel:
 
 > Manually configuring a kernel is often seen as the most difficult procedure a Linux user ever has to perform. Nothing is less true -- after configuring a couple of kernels you don't even remember that it was difficult ;) [^3]
 
