@@ -12,9 +12,10 @@ layout: layouts/default.njk
 <p>
   I am an engineer at Booz Allen Hamilton. My pronouns are he/him. I focus on
   networks and security. In my free time, I study programming languages and
-  Japanese.
+  information studies. If you'd like to get in touch with me, email
+  <code>hello</code> at this address.
 </p>
-<ul>
+<ul class="no-list">
   {%- for post in collections.posts -%}
   <li>
     <a href="{{ post.url | url }}">{{ post.data.title }}</a>

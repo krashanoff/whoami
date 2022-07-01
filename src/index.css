@@ -57,3 +57,8 @@ blockquote {
   padding-left: 2rem;
   border-left: 0.5rem solid black;
 }
+
+.no-list {
+  list-style: none;
+  padding-left: 0;
+}
