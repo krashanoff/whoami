@@ -1,24 +1,24 @@
-<!doctype html>
-<html lang="en" data-theme="corporate">
+
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
+    <title>krashanoff</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The blog of Leo Krashanoff">
-    <title>An SSH Tarpit in 24 Lines</title>
-    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC" type="image/png" />
-    <link rel="stylesheet" type="text/css" href="/dist.css" />
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
   </head>
   <body>
-    <div class="container mx-auto mx-w-prose">
-      <nav class="navbar px-0">
-        <a class="btn btn-ghost normal-case text-2xl" href=/>krashanoff</a>
-        <a class="btn btn-ghost normal-case text-xl" href=/about>about</a>
-      </nav>
-      
-      
-<article class="prose lg:prose-xl pt-[1rem]">
-  <small class="text-slate-500"><date>Sep 27, 2021</date></small>
+    
+<a href="/">krashanoff</a>
+<article>
   <h1>An SSH Tarpit in 24 Lines</h1>
+  <small><date>Sep 27, 2021</date></small>
   <p>I found Chris Wellons' <a href="https://nullprogram.com/blog/2019/03/22/">endlessh</a>
 to be very neat, so I wrote a short one in Rust. This compiles down to about
 337kB after stripping metadata on the <code>current-thread</code> flavor of <a href="https://tokio.rs/"><code>tokio</code></a>.</p>
@@ -52,11 +52,8 @@ async fn main() {
 </article>
 
 
-      <footer class="footer py-8 text-slate-500">
-        <div>
-          <p>Copyright &copy; 2022 Leonid Krashanoff</p>
-        </div>
-      </footer>
-    </div>
+    <footer>
+      Copyright &copy; 2022 Leonid Krashanoff
+    </footer>
   </body>
 </html>
