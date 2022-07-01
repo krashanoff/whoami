@@ -1,0 +1,78 @@
+---
+title: "Libav is complicated"
+date: 2022-06-30T00:00:00-07:00
+---
+
+Libav is the crustiest library I have ever used. In a cruel paradox, it is also the state of the art in multimedia processing. Nothing comes close in performance and capability. I have been trying to write a program using it and have since gained an understanding of how to use it (kind of). With use, I feel my appreciation swelling for it, but it is still quite the complicated beast.
+
+First, let's discuss the chaos that is "libav". The library behind FFMPEG is called "libav". Most of the library components follow the same pattern: "libavdevice, libavutil", etc. Long ago, when FFMPEG was getting some traction, some folks forked the library component of it and tried to make it easier to use, or something... This mysterious spinoff was -- as in the infinite wisdom of the universe -- *also* named "libav".
+
+libav (the forked one) is no longer under development, as far as I can tell. The last release was in 2018. The last commit to `master` was in 2019. My brain is still stuck in the 2010s, so I have to remind myself that's **three years without a commit**. That seems pretty abandoned to me.
+
+Normally, that a fork of a major project ceased development is no big deal, but it poses a challenge for developers; particularly when they need help. Google something about "libav" and look for a StackOverflow answer. It's a Russian Roulette of whether the answer you're going to get is about "libav" or *"libav"*.[^1]
+
+Another complicated part: the eager developer might run into is that the documentation of the actual libav is terse. It is so distilled, so crystallized, that it takes a lot of careful inference and/or luck to get the hang of. There's also quite a few structure-specific quirks. For example, `AVChannelLayout` is a member of a few different data structures, and is initialized with some predefined initializers. Unlike structures in libav initialized with predefined constants, though, it must be copied with a specific function, and uninitialized with another.[^2]
+
+![documentation for avchannel]({{ '/static/img/libav/avchannel.png' | url }})
+
+There are also a few missing features from the library. For one, [there is no way to programmatically enumerate devices](https://trac.ffmpeg.org/wiki/DirectShow#Howtoprogrammaticallyenumeratedevices). Instead, the programmer could either shell out to `ffmpeg`, defeating the purpose of using libav in most cases, or install a log capture handler via [`log_set_callback()`](https://ffmpeg.org/doxygen/trunk/group__lavu__log.html#ga14034761faf581a8b9ed6ef19b313708).
+
+The final barrier to entry is building the library into software. Engineering complex software in C/C++ is pretty hard to get right, but baking it all together in the right ways on every platform is especially difficult. This is why almost all (if not every) modern programming language has its own toolchain that manages the compilation and linking for you. libav is designed to build on a whole lot of platforms, though, and not many programming languages short of Go can make claims to C's throne of portability.
+
+Building `ffmpeg` is actually incredibly easy if you have the dependencies on your system; just `./configure && make` like any other. Even if you don't have all the dependencies, you can avoid their use by just disabling them in your call to `configure`. To build it into another piece of software using something like CMake, the developer is kind of on their own with linking in all the required dependencies of the libraries. I ended up using `pkg-config`. To point `pkg-config` in the right direction in CMake, though, one has to set the `PKG_CONFIG_PATH`. My current approach is this in the root `CMakeLists.txt`:
+
+```cmake
+set($ENV{PKG_CONFIG_PATH} "${FFMPEG_DIR}/pkgconfig")
+find_package(PkgConfig REQUIRED)
+if(NOT ${PKG_CONFIG_FOUND})
+  message(FATAL_ERROR "Missing pkg-config!")
+endif()
+pkg_check_modules(CODEC REQUIRED IMPORTED_TARGET libavcodec)
+pkg_check_modules(DEVICE REQUIRED IMPORTED_TARGET libavdevice)
+pkg_check_modules(FILTER REQUIRED IMPORTED_TARGET libavfilter)
+pkg_check_modules(FORMAT REQUIRED IMPORTED_TARGET libavformat)
+pkg_check_modules(UTIL REQUIRED IMPORTED_TARGET libavutil)
+pkg_check_modules(POSTPROC REQUIRED IMPORTED_TARGET libpostproc)
+pkg_check_modules(SWRESAMPLE REQUIRED IMPORTED_TARGET libswresample)
+pkg_check_modules(SWSCALE REQUIRED IMPORTED_TARGET libswscale)
+```
+
+Then, for the executables that need it, they can include the libraries in their subdirectories:
+
+```cmake
+target_link_libraries(myExecutable PRIVATE
+  PkgConfig::UTIL
+  PkgConfig::SWSCALE
+)
+```
+
+In the face of all this complexity, I have been able to get my software building and learn quite a bit in the process. Greatly simplifying, the basic setup of a program using libav boils down to:
+
+1. Provide hints about what you want to encode or decode
+2. Open the input or output device in the `InputContext` or `OutputContext`
+3. Find the stream you want matching the format you want
+4. Allocate a `CodecContext`
+5. Copy the codec parameters to the context (the parameters from
+   your discovered stream)
+6. Load the decoder you want
+7. Start reading/writing data
+
+If I were to write out a complete example, it would probably end up being in the ballpark of 500-1000 lines, so I'll abbreviate. A few relevant calls for this are:
+
+1. `av_dict_set`; `av_find_*_format`
+2. `avformat_open_input`
+3. `avformat_find_stream_info`
+4. `avcodec_alloc_context`
+5. `avcodec_parameters_to_context`
+6. `av_find_encoder`/`av_find_decoder`; `avcodec_open2`
+7. `av_read_frame`
+
+Anyways, what I'm trying to say is that using FFMPEG is a laborious process. As they say in the world of Gentoo, though, FFMPEG is a lot like configuring a kernel:
+
+> Manually configuring a kernel is often seen as the most difficult procedure a Linux user ever has to perform. Nothing is less true -- after configuring a couple of kernels you don't even remember that it was difficult ;) [^3]
+
+[^1]: And what a mess it is!
+    - https://video.stackexchange.com/questions/15346/libav-x264-failed-to-compile-with-hi422p-profile-and-mp4-container-support#comment20623_15346
+    - https://stackoverflow.com/questions/25716829/using-ffmpeg-and-libav
+[^2]: https://ffmpeg.org/doxygen/trunk/structAVChannelLayout.html
+[^3]: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel

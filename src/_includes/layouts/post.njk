@@ -2,8 +2,9 @@
 layout: layouts/default.njk
 ---
 
-<article class="prose lg:prose-xl pt-[1rem]">
-  <small class="text-slate-500"><date>{{ date | datePlain }}</date></small>
+<a href="{{ '/' | url }}">krashanoff</a>
+<article>
   <h1>{{ title }}</h1>
+  <small><date>{{ date | datePlain }}{% if updated %}; last updated {{ updated | datePlain }}{% endif %}</date></small>
   {{ content | safe }}
 </article>

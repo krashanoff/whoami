@@ -1,27 +1,25 @@
-<!doctype html>
-<html lang="en" data-theme="corporate">
+---
+---
+
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
+    <title>krashanoff</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The blog of Leo Krashanoff">
-    <title>{% if title %}{{ title }}{% else %}krashanoff{% endif %}</title>
-    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC" type="image/png" />
-    <link rel="stylesheet" type="text/css" href="{{ '/dist.css' | url }}" />
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="{{ '/index.css' | url }}" />
   </head>
   <body>
-    <div class="container mx-auto mx-w-prose">
-      <nav class="navbar px-0">
-        <a class="btn btn-ghost normal-case text-2xl" href={{ '/' | url }}>krashanoff</a>
-        <a class="btn btn-ghost normal-case text-xl" href={{ '/about' | url }}>about</a>
-      </nav>
-      
-      {{ content | safe }}
+    {{ content | safe }}
 
-      <footer class="footer py-8 text-slate-500">
-        <div>
-          <p>Copyright &copy; 2022 Leonid Krashanoff</p>
-        </div>
-      </footer>
-    </div>
+    <footer>
+      Copyright &copy; 2022 Leonid Krashanoff
+    </footer>
   </body>
 </html>
