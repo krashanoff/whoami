@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>krashanoff | Run-time dynamic linking in Azure Functions</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+  </head>
+  <body>
+    
+<a href="/">krashanoff</a>
+<article>
+  <h1>Run-time dynamic linking in Azure Functions</h1>
+  <small><date>Jul 19, 2022</date></small>
+  <p><em>tl;dr: it isn't exactly possible in C#.</em></p>
+<p>If you read over the Microsoft article <a href="https://docs.microsoft.com/en-us/azure/azure-functions/bring-dependency-to-functions?pivots=programming-language-python">&quot;Bring dependencies or third party library to Azure Functions&quot;</a>, you might be led to believe that you can bundle dynamic libraries like Opus or maybe even libav into an <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview">Azure Function app</a> and load them at run-time.</p>
+<p>I investigated this when attempting to integrate some C# code with a C++ library. There's no concrete example for including any shared code in a C# function application in this documentation page (likely because all C# code is a DLL at the end of the day anyway). In theory, it should be as easy as including the library code and associated bindings in the uploaded bundle.</p>
+<h2>Background</h2>
+<p>Let's write a very simple shared library to bundle into a C# application.</p>
+<pre><code class="language-cpp">#include &lt;string&gt;
+using std::string;
+
+extern &quot;C&quot; {
+bool test(const char *i) {
+    string a(i);
+    return a.size() == 0 || a.back() == 'a';
+}
+}
+</code></pre>
+<p>Here, we have a simple C++ FFI library that could be compiled to a shared object with <code>g++ -shared -o libtest.so test.cpp</code>. The typical way of including this functionality in a C# program would be to use C#'s <a href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?view=net-6.0"><code>DllImport</code></a> attribute. Here's an example class binding to the function.</p>
+<pre><code class="language-cs">using System;
+using System.Runtime.InteropServices;
+
+public class TestLib {
+    [DllImport(&quot;libtest.so&quot;)]
+    public unsafe static bool test(IntPtr i);
+}
+</code></pre>
+<p>In production, some additional considerations are warranted:</p>
+<ul>
+<li>Set the <code>EntryPoint</code> property of the <code>DllImport</code> attribute.</li>
+<li>We could be using a <code>string</code> instead of an <code>IntPtr</code> since their representation is - in practical application - the same.</li>
+<li>Wrap the <code>unsafe</code> functionality in a safe, C#-native function call.</li>
+</ul>
+<p>To integrate this into a published package, we could copy the library to the publish directory with an additional <code>ItemGroup</code> in the <code>.csproj</code> file for our application or library:</p>
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+    &lt;None Update=&quot;libtest.so&quot; CopyToOutputDirectory=&quot;Always&quot; /&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<p>This is easily incorporated into a Azure class library function by adding a reference in its <code>.csproj</code>. Running the resulting function app locally with <code>func start</code> works without issue. I tested this on both my WSL subsystem and my Windows native system.</p>
+<h2>Deploying to Azure + Debugging</h2>
+<p>After deploying a function that utilizes our shared library, though, any request against it will return a 501.</p>
+<p>The Azure Function app runtime is a bit of a black box. There isn't much documentation about what file system operations are permitted, what container capabilities are missing or forbidden, or exactly how it launches your code.</p>
+<p>With some early function returns and a lot of patience, I confirmed that the function runs fine until the library tries to load. With additional response-based testing on a live runtime, I was able to determine that:</p>
+<ul>
+<li>The shared library still exists on the runtime's disk.</li>
+<li>The library can have its permissions changed, even through calls to <code>chmod</code>.</li>
+<li>Any attempt to call code using it will immediately halt the function, returning a 501. Any code running before the call works fine. That is, the library is dynamically linked at run-time.</li>
+</ul>
+<p>Hang on... The library can be <code>chmod</code>'d... How did I <code>chmod</code> the library in my code? <strong>I shelled out.</strong></p>
+<p>Following this train of thought, I tried spawning an instance of <code>echo</code> in a function app on the Linux runtime and sending an HTTP response with its output, and it operated as expected. So if shelling out works, then the &quot;dependencies&quot; part of the documentation was right, but I can't seem to get the &quot;library&quot; part to work! Was I led astray?</p>
+<p>Maybe, but it's more likely that I made an incorrect inference. The documentation never once mentioned anything about libraries save for the introduction. The only examples given used a statically-linked <code>ffmpeg</code>. They may have aluded to being able to include shared libraries, but they never explicitly stated it. They <em>especially</em> didn't state it in C# - there wasn't even an example.</p>
+<h2>The Solution</h2>
+<p>Instead of providing C# bindings to the C++ library, I made the library's functionality accessible through a statically-linked CLI application. This was then exposed to the main application using a C# wrapper around <a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process?view=net-6.0"><code>System.Diagnostics.Process</code></a>.</p>
+<p>Lo and behold, it worked without a hitch. The hard part was combining the C++ and C# build systems into a coherent, one-line command. I may write about this more at a later date, but I did so with PowerShell.</p>
+<h2>Takeaways</h2>
+<p>The Azure Function app runtime cannot load non-C# shared libraries, but it <em>can</em> shell out to statically-linked executables. This holds despite Azure's documentation and local development tools suggesting otherwise. If you absolutely need to integrate shared code to an Azure Function app, make a simple CLI for the subset of functionality your app requires.</p>
+<p>Load-time dynamic linking is likely disabled for security reasons. Maybe it's on me for failing to research enough, but I couldn't find any other documentation on how the Azure runtime handles shared libraries for the life of me, and ended up sinking way too much time into debugging. Hopefully this knowledge will help others.</p>
+<h2>Other Reading</h2>
+<ul>
+<li><a href="https://mark-borg.github.io/blog/2017/interop/">https://mark-borg.github.io/blog/2017/interop/</a></li>
+<li><a href="https://docs.microsoft.com/en-us/cpp/dotnet/dotnet-programming-with-cpp-cli-visual-cpp">https://docs.microsoft.com/en-us/cpp/dotnet/dotnet-programming-with-cpp-cli-visual-cpp</a></li>
+</ul>
+
+</article>
+
+
+    <footer>
+      Copyright &copy; 2022 Leonid Krashanoff
+    </footer>
+  </body>
+</html>

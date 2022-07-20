@@ -28,6 +28,7 @@ body {
   max-width: 45rem;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.25rem;
+  word-wrap: break-word;
 }
 
 footer {
@@ -62,3 +63,4 @@ blockquote {
   list-style: none;
   padding-left: 0;
 }
+
