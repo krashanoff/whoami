@@ -1,8 +1,13 @@
+const markdownIt = require("markdown-it");
+const rss = require("@11ty/eleventy-plugin-rss");
+
 module.exports = (eleventyConfig) => {
   eleventyConfig.addWatchTarget('styles/**/*.pcss');
 
+  // RSS moment
+  eleventyConfig.addPlugin(rss);
+
   // I need footnotes.
-  let markdownIt = require("markdown-it");
   let options = {
     html: true,
     breaks: false,
