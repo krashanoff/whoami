@@ -4,7 +4,7 @@
   <subtitle>The blog of Leonid Krashanoff.</subtitle>
   <link href="https://krashanoff.com/feed.xml" rel="self"/>
   <link href="https://krashanoff.com/"/>
-  <updated>2022-07-19T05:48:00Z</updated>
+  <updated>2022-08-20T06:00:00Z</updated>
   <id>https://krashanoff.com/</id>
   <author>
     <name>Leonid Krashanoff</name>
@@ -1146,6 +1146,44 @@ public class TestLib {
 &lt;li&gt;&lt;a href=&quot;https://mark-borg.github.io/blog/2017/interop/&quot;&gt;https://mark-borg.github.io/blog/2017/interop/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/cpp/dotnet/dotnet-programming-with-cpp-cli-visual-cpp&quot;&gt;https://docs.microsoft.com/en-us/cpp/dotnet/dotnet-programming-with-cpp-cli-visual-cpp&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Unresponsive web design</title>
+    <link href="https://krashanoff.com/2022/08/20/unresponsive-web-design/"/>
+    <updated>2022-08-20T06:00:00Z</updated>
+    <id>https://krashanoff.com/2022/08/20/unresponsive-web-design/</id>
+    <content xml:lang="en" type="html">&lt;p&gt;&lt;em&gt;Responsive web design is good, but if you need to use HTML/CSS to format a document for print, the funky real-life units come in handy.&lt;/em&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;I used a Google Doc to create my resume for quite some time. It was the basic two-column template that shows up on the homepage.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://krashanoff.com/static/img/resume/gdoc.png&quot; alt=&quot;google docs default resume template&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;I also tried using LaTeX to format my resume. There&#39;s a slew of templates online. You can imagine how that one went:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://krashanoff.com/static/img/resume/latex.png&quot; alt=&quot;latex template&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;But there&#39;s all sorts of specific units in CSS. There&#39;s &lt;code&gt;em&lt;/code&gt;, &lt;code&gt;px&lt;/code&gt;, &lt;code&gt;vw&lt;/code&gt;, &lt;code&gt;vh&lt;/code&gt;, ... There&#39;s also &lt;code&gt;pt&lt;/code&gt;, &lt;code&gt;in&lt;/code&gt;, or &lt;code&gt;cm&lt;/code&gt;. Imagine that: &lt;em&gt;inches&lt;/em&gt; in &lt;strong&gt;web design&lt;/strong&gt;! That would absolutely butcher the webpage between viewports. What about vertical monitors? I don&#39;t even want to think about cell phones. Responsive design is the name of the game in the era of flexbox and SPAs. There is no place for &lt;code&gt;&amp;lt;table&amp;gt;&lt;/code&gt;s for formatting or inches as a unit of measure. Not in the HTML/CSS era I grew up in.&lt;/p&gt;
+&lt;p&gt;You know what those units are great for? &lt;strong&gt;Text documents.&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;body {
+  width: 8.5in;
+  height: 11in;
+  font-size: 12pt;
+  margin: 0.5in;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Your webpage is now U.S. letter stock in 12pt font with a half-inch margin. But I&#39;ll do you one better. We can limit the amount of content printed to the page with an &lt;code&gt;@media&lt;/code&gt; query&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://krashanoff.com/2022/08/20/unresponsive-web-design/#fn1&quot; id=&quot;fnref1&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;@media print
+{
+  .noprint {
+    display: none !important;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This lets us control what actually shows up in the printed copy. I ended up using these techniques to make my &lt;a href=&quot;https://krashanoff.com/resume&quot;&gt;current resume&lt;/a&gt;.&lt;/p&gt;
+&lt;hr class=&quot;footnotes-sep&quot; /&gt;
+&lt;section class=&quot;footnotes&quot;&gt;
+&lt;ol class=&quot;footnotes-list&quot;&gt;
+&lt;li id=&quot;fn1&quot; class=&quot;footnote-item&quot;&gt;&lt;p&gt;I saw this on StackOverflow originally, but I can&#39;t find the source anymore. There&#39;s plenty of spots, though. &lt;a href=&quot;https://www.geeksforgeeks.org/how-to-hide-an-element-when-printing-a-web-page-using-css/&quot;&gt;https://www.geeksforgeeks.org/how-to-hide-an-element-when-printing-a-web-page-using-css/&lt;/a&gt; &lt;a href=&quot;https://krashanoff.com/2022/08/20/unresponsive-web-design/#fnref1&quot; class=&quot;footnote-backref&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
 </content>
   </entry>
 </feed>
