@@ -1,6 +1,9 @@
 ---
 title: "Idiomatic Semantics in Golang"
 date: 2021-11-08T00:00:00-07:00
+tags:
+  - sw
+  - thoughts
 ---
 
 I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.

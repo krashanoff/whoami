@@ -73,7 +73,22 @@ blockquote {
 
 .no-list {
   list-style: none;
+  list-style-type: none;
   padding-left: 0;
+}
+
+.tags {
+  list-style: none;
+  padding: 0;
+}
+
+.tags:last-child {
+  margin-right: 0;
+}
+
+.tags > li {
+  display: inline-block;
+  margin-right: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {

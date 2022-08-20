@@ -1,6 +1,9 @@
 ---
 title: "Protobufs, QUIC, Rust, and Qt"
 date: 2022-04-07T21:34:15-08:00
+tags:
+  - sw
+  - server
 ---
 
 What if we wrote an open-source Discord?

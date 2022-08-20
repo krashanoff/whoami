@@ -1,6 +1,8 @@
 ---
 title: "Virtualizing a Minecraft Server on OpenBSD"
 date: 2022-01-29T05:02:00-08:00
+tags:
+  - server
 ---
 
 *"Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,

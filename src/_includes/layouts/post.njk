@@ -6,5 +6,12 @@ layout: layouts/default.njk
 <article>
   <h1>{{ title }}</h1>
   <small><date>{{ date | datePlain }}{% if updated %}; last updated {{ updated | datePlain }}{% endif %}</date></small>
+  <ul class="tags">
+    {% for tag in tags %}
+    {% if tag != 'post' %}
+    <li><a href="{{ ['/tag/', tag] | join | url }}">#{{ tag }}</a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
   {{ content | safe }}
 </article>

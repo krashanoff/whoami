@@ -15,11 +15,11 @@ layout: layouts/default.njk
   <code>hello</code> at this address.
   You can review my resume at <a href="{{ 'resume' | url }}"><code>/resume</code></a>.
 </p>
-<ul class="no-list">
+<ol class="no-list">
   {%- for post in collections.posts -%}
   <li>
     <a href="{{ post.url | url }}">{{ post.data.title }}</a>
     <small><time>{{ post.data.date | datePlain }}</time></small>
   </li>
   {%- endfor -%}
-</ul>
+</ol>

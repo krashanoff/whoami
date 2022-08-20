@@ -1,6 +1,9 @@
 ---
 title: "Understanding Haskell Through Rust (and vice versa)"
 date: 2021-10-29T00:00:00-07:00
+tags:
+  - sw
+  - thoughts
 ---
 
 Haskell is a very strange programming language. I have never had a particular reason to
