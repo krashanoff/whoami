@@ -19,6 +19,15 @@
 <article>
   <h1>Run-time dynamic linking in Azure Functions</h1>
   <small><date>Jul 19, 2022</date></small>
+  <ul class="tags">
+    
+    
+    
+    
+    <li><a href="/tag/sw">#sw</a></li>
+    
+    
+  </ul>
   <p><em>tl;dr: it isn't exactly possible in C#.</em></p>
 <p>If you read over the Microsoft article <a href="https://docs.microsoft.com/en-us/azure/azure-functions/bring-dependency-to-functions?pivots=programming-language-python">&quot;Bring dependencies or third party library to Azure Functions&quot;</a>, you might be led to believe that you can bundle dynamic libraries like Opus or maybe even libav into an <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview">Azure Function app</a> and load them at run-time.</p>
 <p>I investigated this when attempting to integrate some C# code with a C++ library. There's no concrete example for including any shared code in a C# function application in this documentation page (likely because all C# code is a DLL at the end of the day anyway). In theory, it should be as easy as including the library code and associated bindings in the uploaded bundle.</p>
