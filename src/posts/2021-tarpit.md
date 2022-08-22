@@ -3,7 +3,7 @@ title: "An SSH Tarpit in 24 Lines"
 date: 2021-09-27T00:00:00-07:00
 tags:
   - thoughts
-  - sw
+  - software
 ---
 
 I found Chris Wellons' [endlessh](https://nullprogram.com/blog/2019/03/22/)

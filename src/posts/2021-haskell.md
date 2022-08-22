@@ -2,7 +2,7 @@
 title: "Understanding Haskell Through Rust (and vice versa)"
 date: 2021-10-29T00:00:00-07:00
 tags:
-  - sw
+  - software
   - thoughts
 ---
 

@@ -2,7 +2,7 @@
 title: "Libav is complicated"
 date: 2022-06-30T00:00:00-07:00
 tags:
-  - sw
+  - software
 ---
 
 Libav is the crustiest library I have ever used. In a cruel paradox, it is also the state of the art in multimedia processing. Nothing comes close in performance and capability. I have been trying to write a program using it and have since gained an understanding of how to use it (kind of). With use, I feel my appreciation swelling for it, but it is still quite the complicated beast.
