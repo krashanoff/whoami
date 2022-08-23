@@ -1,12 +1,15 @@
 ---
 title: Run-time dynamic linking in Azure Functions
 date: 2022-07-18T21:48:00-08:00
+updated: 2022-08-23T21:48:00-08:00
 tags:
   - software
   - reverse_engineering
 ---
 
-*tl;dr: it isn't exactly possible in C#.*
+Linking C++ code to C# code is easily accomplished with a `[DllImport]`. Deploying it on an Azure Function is another beast. Through exhaustive trial-and-error, it can be determined the Azure Function VM doesn't permit run-time dynamic linking, but *does* permit execution of pre-compiled binaries. To work around this problem, engineers can incorporate the shared C++ code as a separate executable that is shelled out to. There are build issues introduced in this approach that are unaddressed in this article, but may be addressed in a later entry.
+
+***
 
 If you read over the Microsoft article ["Bring dependencies or third party library to Azure Functions"](https://docs.microsoft.com/en-us/azure/azure-functions/bring-dependency-to-functions?pivots=programming-language-python), you might be led to believe that you can bundle dynamic libraries like Opus or maybe even libav into an [Azure Function app](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview) and load them at run-time.
 
