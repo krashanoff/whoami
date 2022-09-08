@@ -28,7 +28,7 @@
     
     
   </ul>
-  <p>WSL2 uses a real Linux kernel, but its networking is proxied through the host system. For corporate laptops using ZScaler, there is a root CA certificate installed to the machine to allow sniffing of TLS/SSL traffic as it travels through the intranet. This poses problems for virtualized hosts. If you try to <code>curl</code> an HTTPS address on your WSL virtual machine, the program will complain of an invalid certificate. We subvert this by copying the root certificate to our virtual machine.</p>
+  <p>WSL2 uses a real Linux kernel, but its networking is proxied through the host system. For corporate laptops using ZScaler, there is a root CA certificate installed to the machine to allow sniffing of TLS/SSL traffic as it travels through the intranet. This poses a problem for virtualized hosts. If you try to <code>curl</code> an HTTPS address on your WSL virtual machine, for example, the program will complain of an invalid certificate. We subvert this by copying the root certificate to our virtual machine.</p>
 <p>Assuming that your host machine has WSL2 installed and configured, the setup process is as follows:</p>
 <ol>
 <li>Open the Windows certificate manager and navigate to your &quot;Trusted Root Certification Authorities&quot;.</li>

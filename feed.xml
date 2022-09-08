@@ -1192,7 +1192,7 @@ public class TestLib {
     <link href="https://krashanoff.com/2022/09/08/wsl-and-zscaler/"/>
     <updated>2022-09-08T06:00:00Z</updated>
     <id>https://krashanoff.com/2022/09/08/wsl-and-zscaler/</id>
-    <content xml:lang="en" type="html">&lt;p&gt;WSL2 uses a real Linux kernel, but its networking is proxied through the host system. For corporate laptops using ZScaler, there is a root CA certificate installed to the machine to allow sniffing of TLS/SSL traffic as it travels through the intranet. This poses problems for virtualized hosts. If you try to &lt;code&gt;curl&lt;/code&gt; an HTTPS address on your WSL virtual machine, the program will complain of an invalid certificate. We subvert this by copying the root certificate to our virtual machine.&lt;/p&gt;
+    <content xml:lang="en" type="html">&lt;p&gt;WSL2 uses a real Linux kernel, but its networking is proxied through the host system. For corporate laptops using ZScaler, there is a root CA certificate installed to the machine to allow sniffing of TLS/SSL traffic as it travels through the intranet. This poses a problem for virtualized hosts. If you try to &lt;code&gt;curl&lt;/code&gt; an HTTPS address on your WSL virtual machine, for example, the program will complain of an invalid certificate. We subvert this by copying the root certificate to our virtual machine.&lt;/p&gt;
 &lt;p&gt;Assuming that your host machine has WSL2 installed and configured, the setup process is as follows:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Open the Windows certificate manager and navigate to your &amp;quot;Trusted Root Certification Authorities&amp;quot;.&lt;/li&gt;
