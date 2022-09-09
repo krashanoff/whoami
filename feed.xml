@@ -460,11 +460,13 @@ func getValue(db *MyDB, username string) string {
     <link href="https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/"/>
     <updated>2022-01-29T13:02:00Z</updated>
     <id>https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/</id>
-    <content xml:lang="en" type="html">&lt;p&gt;&lt;em&gt;&amp;quot;Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
+    <content xml:lang="en" type="html">&lt;p&gt;Addendum 08 September 2022: as of OpenBSD 7.0, later versions of OpenJDK are supported, which means you can now natively run the Minecraft server that this post was setting up. This was brought to my attention by &lt;a href=&quot;https://www.lifewaza.com/&quot;&gt;Gabriel Guzman&lt;/a&gt;; thanks for the feedback!&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;&amp;quot;Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
 and a megaphone.&amp;quot;&lt;/em&gt;&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/#fn1&quot; id=&quot;fnref1&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 &lt;p&gt;Minecraft recently got its bump to version 1.18.1, and my girlfriend and I have been looking
 for a way to play without running the server locally on my machine. I have an OpenBSD box (see
-&lt;a href=&quot;https://krashanoff.com/2022/01/29/virtualizing-a-minecraft-server-on-openbsd/2021-exploring-bsd&quot;&gt;my previous post&lt;/a&gt;) that I have been using for my remote
+&lt;a href=&quot;https://krashanoff.com/2021/09/24/exploring-openbsd/&quot;&gt;my previous post&lt;/a&gt;) that I have been using for my remote
 needs, so I figured I could run the server on it fairly easily.&lt;/p&gt;
 &lt;h2&gt;The Hardware&lt;/h2&gt;
 &lt;p&gt;First, let&#39;s meet the lambo I plan to have running this:&lt;/p&gt;
