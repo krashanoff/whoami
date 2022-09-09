@@ -1,8 +1,19 @@
 const markdownIt = require("markdown-it");
 const rss = require("@11ty/eleventy-plugin-rss");
+const math = require("eleventy-plugin-mathjax");
 
 module.exports = (eleventyConfig) => {
   eleventyConfig.addWatchTarget('styles/**/*.pcss');
+
+  // Math moment
+  eleventyConfig.addPlugin(math, {
+    output: "chtml",
+    chtml: {
+      fontURL:
+        "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+    },
+    ignoreFiles: ["./src/resume.njk"],
+  });
 
   // RSS moment
   eleventyConfig.addPlugin(rss);
@@ -29,6 +40,18 @@ module.exports = (eleventyConfig) => {
     let posts = collection.getFilteredByGlob("src/posts/**/*.md");
     posts.reverse();
     return posts;
+  });
+  eleventyConfig.addCollection("nist", (collection) => {
+    let docs = collection.getFilteredByGlob("src/cyber/nist/**/*.md");
+    return docs;
+  });
+  eleventyConfig.addCollection("fips", (collection) => {
+    let docs = collection.getFilteredByGlob("src/cyber/fips/**/*.md");
+    return docs;
+  });
+  eleventyConfig.addCollection("etc", (collection) => {
+    let docs = collection.getFilteredByGlob("src/cyber/etc/**/*.md");
+    return docs;
   });
 
   // CNAME

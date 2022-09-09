@@ -1,0 +1,5 @@
+{
+  "layout": "layouts/post.njk",
+  "tags": ["nist-800", "special-series"],
+  "permalink": "/cyber/nist/{{ page.fileSlug }}/index.html"
+}
