@@ -1,16 +1,21 @@
 ---
 title: "Virtualizing a Minecraft Server on OpenBSD"
 date: 2022-01-29T05:02:00-08:00
+updated: 2022-09-08T18:15:00-08:00
 tags:
   - server
 ---
+
+Addendum 08 September 2022: as of OpenBSD 7.0, later versions of OpenJDK are supported, which means you can now natively run the Minecraft server that this post was setting up. This was brought to my attention by [Gabriel Guzman](https://www.lifewaza.com/); thanks for the feedback!
+
+***
 
 *"Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
 and a megaphone."*[^1]
 
 Minecraft recently got its bump to version 1.18.1, and my girlfriend and I have been looking
 for a way to play without running the server locally on my machine. I have an OpenBSD box (see
-[my previous post]({{ './2021-exploring-bsd' | url }})) that I have been using for my remote
+[my previous post]({{ '/2021/09/24/exploring-openbsd/' | url }})) that I have been using for my remote
 needs, so I figured I could run the server on it fairly easily.
 
 ## The Hardware
