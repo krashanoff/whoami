@@ -1,18 +1,22 @@
 const markdownIt = require("markdown-it");
 const rss = require("@11ty/eleventy-plugin-rss");
 const math = require("eleventy-plugin-mathjax");
+const pluginMermaid = require("@kevingimbel/eleventy-plugin-mermaid");
 
 module.exports = (eleventyConfig) => {
   eleventyConfig.addWatchTarget('styles/**/*.pcss');
 
   // Math moment
-  eleventyConfig.addPlugin(math, {
-    output: "chtml",
-    chtml: {
-      fontURL:
-        "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
-    },
-    ignoreFiles: ["./src/resume.njk"],
+  // eleventyConfig.addPlugin(math, {
+  //   output: "chtml",
+  //   chtml: {
+  //     fontURL:
+  //       "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+  //   },
+  //   ignoreFiles: ["./src/resume.njk"],
+  // });
+  eleventyConfig.addPlugin(pluginMermaid, {
+    extra_classes: 'mermaid'
   });
 
   // RSS moment

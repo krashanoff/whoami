@@ -52,7 +52,7 @@ table {
   border-spacing: 1rem;
 }
 
-article img {
+article img,.mermaid {
   margin: auto;
   padding: 0.5rem;
   max-width: calc(100% - 1rem);
@@ -89,6 +89,11 @@ blockquote {
 .tags > li {
   display: inline-block;
   margin-right: 0.5rem;
+}
+
+.mermaid {
+  background: var(--black);
+  color: var(--white);
 }
 
 @media (prefers-color-scheme: dark) {
