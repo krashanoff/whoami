@@ -1,20 +1,10 @@
 const markdownIt = require("markdown-it");
 const rss = require("@11ty/eleventy-plugin-rss");
-const math = require("eleventy-plugin-mathjax");
 const pluginMermaid = require("@kevingimbel/eleventy-plugin-mermaid");
 
 module.exports = (eleventyConfig) => {
   eleventyConfig.addWatchTarget('styles/**/*.pcss');
 
-  // Math moment
-  // eleventyConfig.addPlugin(math, {
-  //   output: "chtml",
-  //   chtml: {
-  //     fontURL:
-  //       "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
-  //   },
-  //   ignoreFiles: ["./src/resume.njk"],
-  // });
   eleventyConfig.addPlugin(pluginMermaid, {
     extra_classes: 'mermaid'
   });
@@ -26,11 +16,19 @@ module.exports = (eleventyConfig) => {
   let options = {
     html: true,
     breaks: false,
-    linkify: true
+    linkify: true,
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(str, { language: lang }).value;
+        } catch (__) {}
+      }
+      return ''; // use external default escaping
+    },
   };
   let markdown = markdownIt(options).use(require("markdown-it-footnote"));
 
-  // I also need markdown and YAML data files.
+  // I also need markdown.
   eleventyConfig.setLibrary("md", markdown);
 
   // Date formatting.
@@ -47,10 +45,28 @@ module.exports = (eleventyConfig) => {
   });
   eleventyConfig.addCollection("nist", (collection) => {
     let docs = collection.getFilteredByGlob("src/cyber/nist/**/*.md");
+    docs.sort((a, b) => {
+      const groupA = a.data.title.match(/.*800-([0-9]{2}).*/)?.at(-1) || '';
+      const groupB = b.data.title.match(/.*800-([0-9]{2}).*/)?.at(-1) || '';
+      if (a.data.title.startsWith("WIP"))
+        return 1;
+      if (b.data.title.startsWith("WIP"))
+        return -1;
+      return Number(groupA) - Number(groupB);
+    });
     return docs;
   });
   eleventyConfig.addCollection("fips", (collection) => {
     let docs = collection.getFilteredByGlob("src/cyber/fips/**/*.md");
+    docs.sort((a, b) => {
+      const groupA = a.data.title.match(/.*-([0-9]{2}).*/)?.at(-1) || '';
+      const groupB = b.data.title.match(/.*-([0-9]{2}).*/)?.at(-1) || '';
+      if (a.data.title.startsWith("WIP"))
+        return 1;
+      if (b.data.title.startsWith("WIP"))
+        return -1;
+      return Number(groupA) - Number(groupB);
+    });
     return docs;
   });
   eleventyConfig.addCollection("etc", (collection) => {

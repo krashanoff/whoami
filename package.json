@@ -7,7 +7,7 @@
     "@11ty/eleventy": "^1.0.1",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
     "@kevingimbel/eleventy-plugin-mermaid": "^2.0.0",
-    "eleventy-plugin-mathjax": "github:krashanoff/eleventy-plugin-mathjax#main",
+    "highlight.js": "^11.6.0",
     "markdown-it": "^12.3.2",
     "markdown-it-footnote": "^3.0.3"
   }

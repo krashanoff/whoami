@@ -20,7 +20,7 @@ Now, without further ado...
 
 ## NIST in a Nutshell
 
-The way that I would (and am, as I write it) approach these documents is by first ensuring sufficient knowledge of the provided NIST 800 documents (not the 140 series). This will guarantee that you're familiar with the jargon.
+The way that I would approach (and am approaching, as I write it) these documents is by first ensuring sufficient knowledge of the provided NIST 800 documents (not the 140 series). This will guarantee that you're familiar with the jargon.
 
 ### NIST 800
 
@@ -62,7 +62,7 @@ The way that I would (and am, as I write it) approach these documents is by firs
 All documents are in NIST's 800 series of publications.
 
 Doc | Purpose and synopsis
--|:-
+:-:|:-
 38A | Legacy special publication describing cryptographic modes of operation. ECB, CBC, CF, OF, and counter modes. Also contains some recommendations for padding data.
 38G | Rather than 38a’s five modes of operation, describes two. FF1 and FF3. Both modes are general-purpose, and utilize a common block cipher.
 56A | Key-agreement. Essentially, DH or Noise-like protocols.
@@ -74,3 +74,11 @@ Doc | Purpose and synopsis
 131A | Transitioning the government to use elliptic curve cryptography as standard.
 132 | How to derive keying material from a password using a Password-Based Key Derivation Function (PBKDF), taking the password, length of the key, and a salt as input.
 133 | Description of how key pairs should be generated. There are many ways to generate symmetric keys, but only a few to generate asymmetric ones.
+
+### FIPS 140 Document Overview
+
+All documents are in NIST's FIPS 140 series of publications.
+
+Doc | Purpose and synopsis
+:-:|:-
+140-3 | Latest version of the Federal Information Processing Standard (FIPS) and its Cryptographic Module Validation Program (CMVP). Adheres heavily to ISO 19790:2012(E) and ISO 24759:2017(E).

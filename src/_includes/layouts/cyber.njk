@@ -1,0 +1,33 @@
+---
+layout: layouts/default.njk
+---
+
+<a href="{{ '/' | url }}">krashanoff</a>
+<article>
+  <h1>{{ title }}</h1>
+  <small><date>{{ date | datePlain }}{% if updated %}; last updated {{ updated | datePlain }}{% endif %}</date></small>
+  <ul class="tags">
+    {% for tag in tags %}
+    {% if tag != 'post' %}
+    <li><a href="{{ ['/tag/', tag] | join | url }}">#{{ tag }}</a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+  {{ content | safe }}
+</article>
+
+{% mermaid_js %}
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
