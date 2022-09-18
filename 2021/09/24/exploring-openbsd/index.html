@@ -12,6 +12,7 @@
       type="image/png"
     />
     <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
   </head>
   <body>
     
@@ -38,7 +39,7 @@ emerged shortly after <a href="https://en.wikipedia.org/wiki/Bell_Labs">Bell Lab
 true to the original Unix philosophy, and remain as free as they possibly
 can without sacrificing quality. Why not start, then, by dipping our toes into the
 water with the OS that claims to be <a href="https://www.openbsd.org/faq/faq1.html">&quot;all free&quot;</a>?</p>
-<h2>OpenBSD</h2>
+<h2 id="openbsd" tabindex="-1">OpenBSD</h2>
 <p>...or maybe it was a leap.</p>
 <p>I set out on my OpenBSD expedition to build a router for my roommate and I while
 we were waiting on another, who had a router/wireless AP. Faced with a cable
@@ -53,7 +54,7 @@ operating system <a href="https://www.openbsd.org/faq/upgrade63.html">relinks th
 introduced <a href="https://en.wikipedia.org/wiki/W%5EX">W^X</a>, and opportunistically integrates cryptography
 throughout. The team isn't afraid to tote this around -- they even have a page
 basically <a href="https://www.openbsd.org/crypto.html">flipping off a few governments</a>.</p>
-<h2>UX</h2>
+<h2 id="ux" tabindex="-1">UX</h2>
 <p>Post-download, I imaged a flash drive, spun up the years-old hardware destined
 to become our temporary router, and dove right in.</p>
 <p>The OpenBSD experience is classic. It's still using <a href="https://www.freebsd.org/cgi/man.cgi?query=ffs&amp;sektion=7"><code>ffs(7)</code></a>, has an
@@ -83,7 +84,7 @@ for certain applications.</p>
 filter would drop a few packets for maybe a half-second, even using the default
 configuration. Time to resolve this problem: we put down our manpages. We turn
 to Google.</p>
-<h2>Community</h2>
+<h2 id="community" tabindex="-1">Community</h2>
 <p>Googling around for a fix for that little half-second packet drop issue took
 me almost two days of inconclusive results, but I was <em>not</em> about to hop on
 the mailing lists or forums and ask a question so broad.</p>
@@ -100,7 +101,7 @@ they just updated over and over again. For the new user, unfamiliar with
 mailing lists, past answers may not be as readily available. Mix these two
 together and you have a situation akin to the Linux mailing lists, but with
 less margin for discussion.</p>
-<h2>Freedom and Software</h2>
+<h2 id="freedom-and-software" tabindex="-1">Freedom and Software</h2>
 <p>If I had to pick a straw that might break the camel's back for an OpenBSD
 novice like me, it's probably OpenBSD's lack of software.</p>
 <p>I was trying to port my little file sharing server to the operating system
@@ -119,7 +120,7 @@ to maintain their openness and keep their interoperability with older systems.
 They also discourage use of proprietary drivers.</p>
 <p>That is, OpenBSD seems to place its focus in expanding the freedom of software,
 sometimes at expense of the user's freedom of choice.</p>
-<h2>Purpose Built; Proper Abstractions</h2>
+<h2 id="purpose-built%3B-proper-abstractions" tabindex="-1">Purpose Built; Proper Abstractions</h2>
 <p>OpenBSD is an operating system that is built to run on hardware,
 <a href="https://www.virtualbox.org/ticket/639">not virtualized</a>.
 It is built for security, software freedom, and stability. It is
@@ -147,5 +148,6 @@ solution to them.</p>
     <footer>
       Copyright &copy; 2022 Leonid Krashanoff
     </footer>
+
   </body>
 </html>
