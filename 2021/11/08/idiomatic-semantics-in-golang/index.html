@@ -12,7 +12,6 @@
       type="image/png"
     />
     <link rel="stylesheet" type="text/css" href="/index.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
   </head>
   <body>
     
@@ -56,7 +55,7 @@ func RequestBodyTo(r *http.Request, i interface{}) error {
 }
 </code></pre>
 <p>This is one of those things that -- while I was learning Go -- I had wished the language didn’t take so strongly to. Now that I’ve spent more time with the language, though, and worked on some larger projects, I’ve come to a point where I feel comfortable talking about these design decisions and how they reflect on everything else. You see...</p>
-<h2 id="go-wants-to-force-you-to-write-code-the-designers-like." tabindex="-1">Go wants to force you to write code the designers like.</h2>
+<h2>Go wants to force you to write code the designers like.</h2>
 <p>I think that this is the paradigm that makes everyone so uneasy. We aren’t presented with the amount of rigidity introduced to Go in any programming language that I know of, except for maybe Scratch, but that’s hardly a use case.</p>
 <p>So what was going through the designers’ heads? And where the hell is my ternary? Look to the language designers’ presentations at SPLASH 2012 for some more context -- specifically, slide 10<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>:</p>
 <blockquote>
@@ -82,7 +81,7 @@ func getValue(db *MyDB, username string) string {
 }
 </code></pre>
 <p>...Go just tries to make that as painful a process as possible.</p>
-<h2 id="where-is-my-ternary%3F" tabindex="-1">Where is my ternary?</h2>
+<h2>Where is my ternary?</h2>
 <p>Well, it isn't there. It's gone forever in Go. They threw it out because it was deemed unclear or confusing. Let’s go through a few features that <strong>C and C++ have, but Go doesn’t.</strong> I want you to glance through them and think about which features you absolutely loved having.</p>
 <ul>
 <li>Ternary operator</li>
@@ -119,6 +118,5 @@ func getValue(db *MyDB, username string) string {
     <footer>
       Copyright &copy; 2022 Leonid Krashanoff
     </footer>
-
   </body>
 </html>

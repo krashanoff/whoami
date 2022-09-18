@@ -11,47 +11,24 @@ h4,
 h5,
 h6,
 p,
+ul,
 a {
-  line-height: 1.5;
-}
-
-h1::before {
-  content: '# ';
-}
-h2::before {
-  content: '## ';
-}
-h3::before {
-  content: '### ';
-}
-h4::before {
-  content: '#### ';
-}
-h5::before {
-  content: '##### ';
-}
-h6::before {
-  content: '###### ';
-}
-
-ul li, ol li {
-  line-height: 2;
-}
-
-article ul li, article ol li {
-  line-height: 1.5;
-  height: auto;
+  line-height: 1.25;
 }
 
 a, a:visited {
   color: var(--link);
 }
 
-/* footnotes */
-ol {
-  list-style: decimal;
+ol li {
+  line-height: 2;
 }
-ol ol {
+ul li {
+  line-height: 2;
+}
+
+/* footnotes */
+ol li ul {
   list-style: lower-alpha;
 }
 
@@ -60,7 +37,7 @@ body {
   padding: 0 3vw;
   max-width: 45rem;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   word-wrap: break-word;
   color: var(--black);
   background: var(--white);
@@ -76,10 +53,9 @@ table {
 }
 
 article img {
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin: auto;
   padding: 0.5rem;
-  max-width: calc(100% - 5rem);
+  max-width: calc(100% - 1rem);
   border: 1px solid var(--black);
 }
 

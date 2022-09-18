@@ -12,7 +12,6 @@
       type="image/png"
     />
     <link rel="stylesheet" type="text/css" href="/index.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
   </head>
   <body>
     
@@ -41,7 +40,7 @@ can't say that I'd jump to using Haskell. I had always found it a curiosity, and
 then give up when I get to parts about monads and all this other category theory stuff.</p>
 <p>This October, I took another dive into it after getting burnt out writing a <em>lot</em> of
 Rust. For whatever reason, this time, it made a lot more sense to me.</p>
-<h2 id="learning-struggles" tabindex="-1">Learning Struggles</h2>
+<h2>Learning Struggles</h2>
 <p>I think the thing that it boiled down to for me while struggling to learn is the syntax of the
 language. Yeah, it's functional, so it's pretty unfamiliar, but even if you're coming from
 something like OCaml, as I was in my second year of college, it's still just <em>weird</em>.</p>
@@ -97,7 +96,7 @@ simple example. Depending on which way one approaches it, the immediate meaning 
 <p>In nontrivial codebases, the voice of the author determines its maintainability -- how terse it
 will be. For more complicated Haskell programs, functions can reach tens of lines. Doesn't sound
 like much, except each line comes with this same exceptional information density.</p>
-<h2 id="rust-parallels" tabindex="-1">Rust Parallels</h2>
+<h2>Rust Parallels</h2>
 <p>Looking over these functions after writing a ton of Rust, though, I realized these semantics reminded me
 of a fundamental example.</p>
 <pre><code class="language-rs">fn potentially_increment(u: Option&lt;u32&gt;) -&gt; Option&lt;u32&gt; {
@@ -145,7 +144,7 @@ familiarity of the imperative, at expense of verbosity.</p>
 <p>Others have written about the more direct similarities between Haskell and Rust<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>,
 but I'd like to quickly talk about two trade-offs Rust has made to inherit some of their
 ideas beyond syntax.</p>
-<h2 id="currying-and-fluency" tabindex="-1">Currying and Fluency</h2>
+<h2>Currying and Fluency</h2>
 <p>Haskell is built around currying. Applying a parameter to a function produces a new
 function that simply takes one less parameter:</p>
 <pre><code>Prelude&gt; :t (+)
@@ -174,7 +173,7 @@ through functions, generating new partial data structures.</p>
                         .unwrap();
 </code></pre>
 <p>This adopts a functional approach to object-oriented operations.</p>
-<h2 id="monads-vs.-results-%2B-options" tabindex="-1">Monads vs. Results + Options</h2>
+<h2>Monads vs. Results + Options</h2>
 <p>I pinned down monads as a container type in the same vein as <code>Option&lt;T&gt;</code>. Let's compare
 <code>Option&lt;T&gt;</code> to <code>Maybe</code>:</p>
 <table>
@@ -237,6 +236,5 @@ a small change in perspective.</p>
     <footer>
       Copyright &copy; 2022 Leonid Krashanoff
     </footer>
-
   </body>
 </html>

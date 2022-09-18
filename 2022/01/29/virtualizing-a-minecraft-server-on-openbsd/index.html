@@ -12,7 +12,6 @@
       type="image/png"
     />
     <link rel="stylesheet" type="text/css" href="/index.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
   </head>
   <body>
     
@@ -37,7 +36,7 @@ and a megaphone.&quot;</em><sup class="footnote-ref"><a href="#fn1" id="fnref1">
 for a way to play without running the server locally on my machine. I have an OpenBSD box (see
 <a href="/2021/09/24/exploring-openbsd/">my previous post</a>) that I have been using for my remote
 needs, so I figured I could run the server on it fairly easily.</p>
-<h2 id="the-hardware" tabindex="-1">The Hardware</h2>
+<h2>The Hardware</h2>
 <p>First, let's meet the lambo I plan to have running this:</p>
 <pre><code># top
 
@@ -55,7 +54,7 @@ Filesystem     Size    Used   Avail Capacity  Mounted on
 </code></pre>
 <p>Oh hell yes. Two cores. Like 8G of RAM. <em>Maybe</em> 8G of disk space. We're gonna make this
 thing work like Atlas.</p>
-<h2 id="the-software" tabindex="-1">The Software</h2>
+<h2>The Software</h2>
 <p>To get a Minecraft server running, all you need is the latest version of the JRE. For most
 machines, this really isn't a problem. Java <em>does</em> run on 3 billion devices<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, after
 all. How bad could it be? Let's go ahead and check <a href="http://ports.su/devel/jdk">ports</a>:</p>
@@ -67,7 +66,7 @@ in line with their philosophy, I mean think about how many damn licenses are sit
 use <a href="https://openports.se/devel/jdk/17">OpenPorts</a>, and not so foolish as to use some weird hacky
 stuff for running a <code>jar</code>, so what's the solution here?</p>
 <p><strong>Isn't it so obvious? Just virtualize a Linux box!</strong></p>
-<h2 id="enter%3A-vmm(4)" tabindex="-1">Enter: <code>vmm(4)</code></h2>
+<h2>Enter: <code>vmm(4)</code></h2>
 <p>I decided to virtualize a lightweight Linux distribution inside of my OpenBSD box to run the latest
 server, then NAT Minecraft clients to it.</p>
 <p>It's easier to virtualize hardware on OpenBSD than you might think. <a href="https://man.openbsd.org/vmm.4"><code>vmm(4)</code></a>
@@ -103,7 +102,7 @@ vmctl: started vm 1 successfully, tty /dev/ttyp1
 might be pushing it for a machine that's rocking the base amount that you'd expect out of a nicer
 Chromebook<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. We'll limit test later, though. Right now, there are more important matters to tend
 to.</p>
-<h2 id="nat" tabindex="-1">NAT</h2>
+<h2>NAT</h2>
 <p>Before we can use our machine to reach the internet, we've got to redirect traffic to it.
 Time for <a href="https://man.openbsd.org/pf"><code>pf(4)</code></a> to go to work. We add a rule to redirect traffic in
 on port 25565, and allow outbound traffic.</p>
@@ -127,7 +126,7 @@ pass in on egress proto udp from any to (egress) \
 net.inet.ip.forwarding=1
 </code></pre>
 <p>Networking is ready for our VM. Let's get to work.</p>
-<h2 id="setup-alpine" tabindex="-1"><code>setup-alpine</code></h2>
+<h2><code>setup-alpine</code></h2>
 <p>Time to get our virtual machine set up. We can hop into the VM's console, login as <code>root</code>, and
 run <a href="https://wiki.alpinelinux.org/wiki/Installation"><code>setup-alpine</code></a> as usual.</p>
 <pre><code># vmctl console minecraft
@@ -149,7 +148,7 @@ OpenJDK 64-Bit Server VM (build 17.0.2+8-alpine-r0, mixed mode, sharing)
 </code></pre>
 <p>Looking good. After downloading the latest Minecraft server <code>jar</code> and prepping our server directory,
 we just add the driver script for our preferred <code>java</code> command as a start script in <code>/etc/local.d/</code>.</p>
-<h2 id="on-boot" tabindex="-1">On-Boot</h2>
+<h2>On-Boot</h2>
 <p>If we want to let this run automatically, we're going to have to set up our VM to start on boot. This
 is accomplished through <a href="https://man.openbsd.org/vm.conf"><code>vm.cfg(5)</code></a>.</p>
 <pre><code>vm &quot;minecraft&quot; {
@@ -161,7 +160,7 @@ is accomplished through <a href="https://man.openbsd.org/vm.conf"><code>vm.cfg(5
 }
 </code></pre>
 <p>Now when we reboot, the machine will run at boot and run under the <code>minecraft</code> user.</p>
-<h2 id="limit-testing" tabindex="-1">Limit Testing</h2>
+<h2>Limit Testing</h2>
 <p>Surprisingly, the entire Alpine + JDK install only comes out to about 345MiB. The size of the minecraft
 server installation on my Windows disk is about 391MB. So what we <em>really</em> require in disk space is about
 3G. If we really wanted to push it, we could go to about 2G.</p>
@@ -173,7 +172,7 @@ about 1.5G.</p>
 </code></pre>
 <p>...okay maybe we can't. I went ahead and upped the memory to around 3G and that seemed to do the trick
 for the stock server command that grants the <code>jar</code> about 1G of RAM.</p>
-<h2 id="performance" tabindex="-1">Performance</h2>
+<h2>Performance</h2>
 <p>And so comes the question: is it fast? Well, not really.</p>
 <p>I tested it out and saw a pretty <em>okay</em> TPS, but it's clear that a Minecraft server wasn't meant to be
 run on a virtual machine with meager resources allocated to it on an already-resource-limited host.
@@ -181,7 +180,7 @@ Notably, the whole server would eat dirt when transitioning between the Overworl
 <p>Once chunks were loaded, performance wasn't an issue on the local network. Player activity was fairly
 snappy. This said, the chunk load time being painful made me uncomfortable taking this Frankenstein
 out of the lab. I just stuck with my own machine.</p>
-<h2 id="conclusions-and-future-considerations" tabindex="-1">Conclusions and Future Considerations</h2>
+<h2>Conclusions and Future Considerations</h2>
 <p>Running a Minecraft server on a virtualized Alpine machine isn't a bad idea if you have the hardware
 for it. I do not.</p>
 <p>In the future, I'd like to upgrade my server hardware and try this again, experimenting with ways of
@@ -220,6 +219,5 @@ can improve performance on the little server that could™.</p>
     <footer>
       Copyright &copy; 2022 Leonid Krashanoff
     </footer>
-
   </body>
 </html>

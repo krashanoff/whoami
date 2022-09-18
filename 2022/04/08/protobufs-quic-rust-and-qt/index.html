@@ -12,7 +12,6 @@
       type="image/png"
     />
     <link rel="stylesheet" type="text/css" href="/index.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
   </head>
   <body>
     
@@ -53,7 +52,7 @@ bindings to other programming languages).</p>
 lingua-franca for the two to communicate with one another on the wire. I
 settled on QUIC-transported protobufs for speed and security. The rest of this entry will be some
 thoughts on how I built this toolchain on Windows and Mac, and the hardships I encountered throughout.</p>
-<h2 id="on-quic" tabindex="-1">On QUIC</h2>
+<h2>On QUIC</h2>
 <p>Choosing QUIC was a good call. QUIC is secure by default and designed with speed in mind. It enforces use of
 TLS, and keeps things speedy by modeling network communications between computers as multiple simultaneous, uni-or-bidirectional
 streams over a UDP &quot;connection&quot;. Since packets don't need to all be delivered in order, multiple streams can
@@ -116,7 +115,7 @@ when I just came back to using Quiche. Here are a few thoughts on each of these,
 </tr>
 </tbody>
 </table>
-<h2 id="on-protobufs" tabindex="-1">On Protobufs</h2>
+<h2>On Protobufs</h2>
 <p>Again, the right call was protobufs. The serialization format is well-defined and easily interoperable
 with other languages like Python and Go. There are also unofficial extensions to allow protobufs to
 operate within Rust.</p>
@@ -127,7 +126,7 @@ whether the linker is building the library multithreaded or not, then override f
 configuration to fix the link issue.</p>
 <p>In my case, protobufs was being built singlethreaded, but my Qt application was not. I wanted to
 statically-link the library, though, so I disabled the multithreaded linking.</p>
-<h2 id="on-async-rust" tabindex="-1">On Async Rust</h2>
+<h2>On Async Rust</h2>
 <p>My initial architecture for the Rust-based server was programmatically intuitive, at expense
 of design complexity. Each time the server received a connection, it spawn
 off a data structure to handle future requests from the client. The structure can send the &quot;conductor&quot;
@@ -155,7 +154,7 @@ a headache.</p>
 <p>In an unexpected turn, I settled on using Amazon's <code>s2n-quic</code> and its massively-parallel approach.
 It was just easier to use, but the problem was that maintaining shared state became expensive for the
 same reasons I encountered in my original approach.</p>
-<h2 id="on-qt" tabindex="-1">On Qt</h2>
+<h2>On Qt</h2>
 <p>Qt is pretty much the only GUI framework that isn't web-based. I like the ideas presented by projects like iced or yew, but they are still, ultimately, web technologies. I don't really wanna deal with a JS interpreter or JIT compiler - give me native widgets, please. Qt's new markup language, QML, is a lot higher level than the widgets bindings, but
 computationally more expensive. Under the hood, it uses OpenGL and what amounts to a stripped-down web engine - the very thing I was trying to avoid from the get-go.</p>
 <p>In keeping with my goal of making the application as lightweight as possible, I opted to use
@@ -168,7 +167,7 @@ the developer do pretty much anything they want to...</p>
 brand new thing <code>QMediaCaptureSession</code>, and they <em>really</em> want you to use their <code>QMediaRecorder</code> class to record
 videos and stuff. The problem is that there's almost <strong>zero</strong> extensibility in the <code>QMediaRecorder</code> class. There's no
 way for the developer to implement their own. I had middling success implementing a <code>QVideoSink</code> and <code>QAudioSink</code> to catch the recording output, but I think I'd just use <code>ffmpeg</code> instead.</p>
-<h2 id="takeaways" tabindex="-1">Takeaways</h2>
+<h2>Takeaways</h2>
 <p>I didn't really do much! I just kinda explored a bunch of different technologies and tried - to varying levels of success - to use them all together. GUI is hard; capturing A/V from C++ is hard; emerging protocols are still getting their footing.</p>
 <p>Writing projects that bridge languages isn't too hard as long as you have a lingua franca for them to speak over the network or interprocess. There's a great read about that somewhere<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. In my case, I used protobufs on QUIC, and it worked pretty well. For future projects, I would likely avoid QUIC as the libraries aren't high-level enough yet that they're ergonomic to use.</p>
 <p>There's also the issue of deployment. Protobufs were difficult to deploy on machines that run Windows, as static linkage issues were pretty common. On OSX/UNIX-like, it was a breeze.</p>
@@ -192,6 +191,5 @@ way for the developer to implement their own. I had middling success implementin
     <footer>
       Copyright &copy; 2022 Leonid Krashanoff
     </footer>
-
   </body>
 </html>
