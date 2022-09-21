@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>krashanoff | NIST in a Nutshell</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  </head>
+  <body>
+    
+<a href="/">krashanoff</a>
+<p><strong>Note: this portion of my website is under heavy construction! However, there's still some useful information here about certain aspects of NIST 800-38 and the high-level overview of FIPS 140-3.</strong></p>
+<hr>
+<h1 id="wip%3A-notes-on-cybersecurity" tabindex="-1">WIP: Notes on Cybersecurity</h1>
+<p><small>Last updated: <date>Sep 19, 2022</date></small></p>
+<p>Howdy! You can imagine my surprise as a fresh grad when I discovered that computer security in industry -- when you get down to it -- is just documentation and the people who read, write, and implement it.</p>
+<p>The big one in the United States for information protection is the <strong>Federal Information Processing Standard (FIPS)</strong>. The 140-X (where X is some number) family of documents set the <s>terribly long-winded</s> necessarily specific bar on cryptography standards for the US and Canadian governments. FIPS, though, is really just a body of lengthier documents published by the <strong>National Institute of Standards and Technology (NIST)</strong> applied as adjustments to an <em>even lengthier</em> <a href="https://www.iso.org/standard/52906.html">ISO specification</a>.</p>
+<p>I'll likely focus on this standard and explaining it in sensible, cliff notes-style language. I'm hardly an expert -- the amount of documentation and person-hours that go into this is insane -- but I have found that learning about it is actually pretty fun.</p>
+<p>If you are interested in a very brief overview of the documents and their purpose, please refer to the <a href="#appendix">appendix</a> of this document.</p>
+<h2 id="disclaimer" tabindex="-1">Disclaimer</h2>
+<p>It should go without saying that <strong>these are not intended to replace or represent the original NIST publications in any way.</strong> Please always refer to the original documents. The use of the name &quot;NIST&quot; in this website is not intended to reflect the opinions or beliefs of the National Institute of Standards and Technology itself in any way, shape, or form. All information assembled in this website pertaining to NIST is collected from the public domain at NIST's website, where all publications are publicly available for download: <a href="https://csrc.nist.gov/publications/sp800">https://csrc.nist.gov/publications/sp800</a>.</p>
+<p>If there is an error in <em>any</em> of the information that I've made available on my website, <strong>please email me immediately at <code>hello@krashanoff.com</code>!</strong> It is not my intent to spread misinformation.</p>
+<p>Now, without further ado...</p>
+<h2 id="special-publications-in-a-nutshell" tabindex="-1">Special Publications in a Nutshell</h2>
+<p>As opposed to the much catchier &quot;NIST in a Nutshell&quot;. Out of an abundance of caution for misrepresenting the NIST in any way, I want to make it clear: the actual name of the series is not <strong>&quot;NIST IN A NUTSHELL&quot;</strong>. It is <strong>NOT</strong> &quot;NIST in a Nutshell&quot;.</p>
+<h3 id="nist-800" tabindex="-1">NIST 800</h3>
+<ul><li>
+    <a href="/cyber/nist/800-38/">NIST 800-38{A,G}</a>
+    <small>Last updated <time>Sep 18, 2022</time></small>
+  </li></ul>
+<h3 id="fips-140" tabindex="-1">FIPS 140</h3>
+<ul><li>
+    <a href="/cyber/fips/140-3/">FIPS 140-3</a>
+    <small>Last updated <time>Nov 8, 2021</time></small>
+  </li></ul>
+<h2 id="miscellaneous-writings" tabindex="-1">Miscellaneous Writings</h2>
+<ul><li>
+    <a href="/cyber/fips/cisa/">CISA Disambiguation and Information</a>
+    <small>Last updated <time>Sep 20, 2021</time></small>
+  </li></ul>
+<h2 id="appendix" tabindex="-1">Appendix</h2>
+<h3 id="nist-800-document-overview" tabindex="-1">NIST 800 Document Overview</h3>
+<p>All documents are in NIST's 800 series of publications.</p>
+<table>
+<thead>
+<tr>
+<th>Doc</th>
+<th style="text-align:left">Purpose and synopsis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>38A</td>
+<td style="text-align:left">Legacy special publication describing cryptographic modes of operation. ECB, CBC, CF, OF, and counter modes. Also contains some recommendations for padding data.</td>
+</tr>
+<tr>
+<td>38G</td>
+<td style="text-align:left">Rather than 38a’s five modes of operation, describes two. FF1 and FF3. Both modes are general-purpose, and utilize a common block cipher.</td>
+</tr>
+<tr>
+<td>56A</td>
+<td style="text-align:left">Key-agreement. Essentially, DH or Noise-like protocols.</td>
+</tr>
+<tr>
+<td>56B</td>
+<td style="text-align:left">Key-establishment. This is a high-level description of Diffie-Hellman with trusted third-party (TTP) assurance. Assurance requirements are described in section 6 of this document.</td>
+</tr>
+<tr>
+<td>56C</td>
+<td style="text-align:left">Key-derivation. Describes how a valid key-derivation function is implemented.</td>
+</tr>
+<tr>
+<td>57</td>
+<td style="text-align:left">Key management. How to store and handle short-term, long-term, permanent, or ephemeral cryptographic keys. Also covers some information on how to handle RBG seeds, passwords, etc.</td>
+</tr>
+<tr>
+<td>90A</td>
+<td style="text-align:left">Random bit generator proper use and entropy management.</td>
+</tr>
+<tr>
+<td>90B</td>
+<td style="text-align:left">Entropy source health tests and validation.</td>
+</tr>
+<tr>
+<td>131A</td>
+<td style="text-align:left">Transitioning the government to use elliptic curve cryptography as standard.</td>
+</tr>
+<tr>
+<td>132</td>
+<td style="text-align:left">How to derive keying material from a password using a Password-Based Key Derivation Function (PBKDF), taking the password, length of the key, and a salt as input.</td>
+</tr>
+<tr>
+<td>133</td>
+<td style="text-align:left">Description of how key pairs should be generated. There are many ways to generate symmetric keys, but only a few to generate asymmetric ones.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+    <footer>
+      Copyright &copy; 2022 Leonid Krashanoff
+    </footer>
+
+  </body>
+</html>

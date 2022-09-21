@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>krashanoff | FIPS 140-3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  </head>
+  <body>
+    
+<a href="/">krashanoff</a>
+<article>
+  <h1>FIPS 140-3</h1>
+  <small><date>Nov 8, 2021</date></small>
+  <ul class="tags">
+    
+    
+    <li><a href="/tag/fips">#fips</a></li>
+    
+    
+  </ul>
+  <blockquote>
+<p><em>The selective application of technological and related procedural safeguards is an important responsibility of every federal organization in providing adequate security in its computer and telecommunication systems.</em></p>
+</blockquote>
+<p>FIPS 140-3 describes the latest version of the Federal Information Processing Standard in relation to ISO 19790:2012, which is generally the international standard for cryptographic modules.</p>
+<p>It also mentions, very briefly, that it shall be applicable to information systems performing duties meeting criteria specified in &quot;<strong>Section 5131 of the Information Technology Management Reform Act of 1996, (Public Law 104-106)</strong> and the <strong>Federal Information Security Management Act of 2002 (Public Law 107-347)</strong>&quot;. I actually bothered reading through these documents, but the only significant takeaway I got was &quot;anything that is used by the government for handling what most people would consider sensitive information&quot;, things like Personal Identifiable Information (PII).</p>
+<p>The interesting part is how FIPS 140-3 describes itself, which is -- in so many words<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> -- the following:</p>
+<p><em>We are going to adhere to ISO 19790:2012(E), but include a few notes that modify who can validate cryptographic modules. Testing of said modules will adhere to ISO/IEC 24759:2017(E). This will also be modified by FIPS policy.</em></p>
+<p>The documents that implement these modifications are none other than the NIST 800-140X series of documents. So, before diving into those, we will get a decent understanding of ISO 19790:2012(E) and ISO/IEC 24759:2017(E). I will have separate notes on these documents, but for the moment, I can provide an overview of the most important part, which is FIPS' four levels of security. Each level builds on the previous, meaning that level four (4) encompasses all concerns of levels one (1) through three (3), but also adds its own concerns.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th style="text-align:left">Modifiable Environment?</th>
+<th style="text-align:left">Physical Security?</th>
+<th style="text-align:left">Mitigation of Non-invasive Attacks?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One (1)</td>
+<td style="text-align:left">Allowed</td>
+<td style="text-align:left">Not Required</td>
+<td style="text-align:left">Not Required</td>
+</tr>
+<tr>
+<td>Two (2)</td>
+<td style="text-align:left">Allowed with ACL</td>
+<td style="text-align:left">Tamper-evident seals should be placed</td>
+<td style="text-align:left">ACLs</td>
+</tr>
+<tr>
+<td>Three (3)</td>
+<td style="text-align:left">Generally, no. Physical constraints too extreme (voltage, temperature changes, etc.).</td>
+<td style="text-align:left">Zeroise hardware on physical risk detection.</td>
+<td style="text-align:left">Should have significant non-invasive cautionary measures.</td>
+</tr>
+<tr>
+<td>Four (4)</td>
+<td style="text-align:left">Complete envelope around module required. Zeroise on detection of any intrusion.</td>
+<td style="text-align:left">Any attempt of physical access should zeroise circuitry. Some sort of biometric or 2FA should be employed.</td>
+<td style="text-align:left">Even more extreme measures than level three (3).</td>
+</tr>
+</tbody>
+</table>
+<p>As physical constraints get too extreme past level two (2), software modules can generally only achieve level two (2) FIPS compliance.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>The exact wording is:</p>
+<blockquote>
+<p>FIPS 140-3 supersedes FIPS140-2. FIPS 140-3 aligns with ISO/IEC 19790:2012(E) and includes modifications of the Annexes that are allowed to CMVP (as a validation authority). The testing for these requirements will be in accordance with ISO/IEC 24759:2017(E), with the modifications, additions or deletions of vendor evidence and testing allowed as a validation authority under paragraph 5.2. Major changes in FIPS 140-3 are limited to the introduction of non-invasive physical requirements.</p>
+</blockquote>
+<p>You can (and, indeed, I encourage you to) read this for yourself online: <a href="https://csrc.nist.gov/publications/detail/fips/140/3/final">https://csrc.nist.gov/publications/detail/fips/140/3/final</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+</article>
+
+
+    <footer>
+      Copyright &copy; 2022 Leonid Krashanoff
+    </footer>
+
+  </body>
+</html>
