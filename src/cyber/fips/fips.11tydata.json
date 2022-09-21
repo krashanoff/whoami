@@ -1,0 +1,5 @@
+{
+  "layout": "layouts/post.njk",
+  "tags": ["fips"],
+  "permalink": "/cyber/fips/{{ page.fileSlug }}/index.html"
+}
