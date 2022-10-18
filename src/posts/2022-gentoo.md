@@ -1,13 +1,16 @@
 ---
 title: Gentoo is a project car
 date: 2022-10-18T00:00:00-07:00
+tags:
+    - thoughts
+    - server
 ---
 
 Gentoo, Gentoo. Ah yes, Gentoo. Gentoo is my favorite Linux "distribution". I've mentioned it before!
 
 > Manually configuring a kernel is often seen as the most difficult procedure a Linux user ever has to perform. Nothing is less true -- after configuring a couple of kernels you don't even remember that it was difficult ;) [^1]
 
-> ...consider Gentoo's behemoth [`portage(5)`](https://wiki.gentoo.org/wiki/Portage).
+> ...consider Gentoo's behemoth [`portage(5)`](https://wiki.gentoo.org/wiki/Portage).[^8]
 
 That last one is a little underhanded. Not for calling `portage` "behemoth" -- I think that anybody who has used Gentoo knows exactly what I'm talking about.
 
@@ -85,8 +88,9 @@ But it's ultimately your project. You don't need to justify why you're doing it.
 >
 > Oh? What's that? The sweet siren's call beckons me once again? What amusements await us this time? Unsatisfied dependencies? Slot conflicts? Perhaps, I daresay, a circular dependency or two? Nothing gives me a jolt like watching portage spew forth a slew of errors in beautiful 256, knowing that my baby needs me. Pop the hood, interlock fingers && flex, and get to work. The satisfaction after resolving blocked updates and seeing the packages that were previously taunting you getting emerged is comparable only to the most worldly and carnal pleasures. When I see that there is a new news item, there's a decent chance that I may literally scream with excitement. I woke up in a hospital after receiving word of the 17.0 -> 17.1 profile upgrade. They had to sedate me because of the blind rage I flew into knowing that my system was unattended, rotting away on the ancient and deprecated 17.0 profile. Nobody knows your system like you, and the bond that I've developed with my distro over the years is irreplaceable. I'll never go back.[^7]
 
-[^1]: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
+[^1]: https://krashanoff.com/2022/06/30/libav-is-complicated/
 [^2]: And I'm **glad** they killed it in RHEL 8! Ding dong the witch is dead. https://access.redhat.com/solutions/4491691
 [^4]: https://www.reddit.com/r/copypasta/comments/gs715n/i_use_linux_as_my_operating_system/
 [^6]: Yes, hours! I let it run most of the day before giving up.
 [^7]: https://www.reddit.com/r/Gentoo/comments/bzyc3f/im_just_going_to_say_it_i_get_excited_when_my/
+[^8]: https://krashanoff.com/2021/09/24/exploring-openbsd/
