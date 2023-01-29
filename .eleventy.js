@@ -2,15 +2,14 @@ const markdownIt = require("markdown-it");
 const math = require("markdown-it-katex");
 const footnotes = require("markdown-it-footnote");
 const rss = require("@11ty/eleventy-plugin-rss");
-const diagrams = require("@kevingimbel/eleventy-plugin-mermaid");
 const anchors = require("markdown-it-anchor");
+const toc = require("markdown-it-table-of-contents");
 
 module.exports = (eleventyConfig) => {
   eleventyConfig.addWatchTarget('styles/**/*.pcss');
 
   // RSS moment
   eleventyConfig.addPlugin(rss);
-  // eleventyConfig.addPlugin(diagrams);
 
   // I need footnotes.
   let options = {
@@ -18,7 +17,9 @@ module.exports = (eleventyConfig) => {
     breaks: false,
     linkify: true
   };
-  let markdown = markdownIt(options).use(footnotes).use(math).use(anchors);
+  let markdown = markdownIt(options).use(footnotes).use(math).use(anchors).use(toc, {
+      includeLevel: [1,2,3,4]
+  });
 
   // I also need markdown and YAML data files.
   eleventyConfig.setLibrary("md", markdown);
@@ -28,7 +29,7 @@ module.exports = (eleventyConfig) => {
     dateStyle: 'medium'
   }));
   eleventyConfig.addFilter("markdown", (value) => markdown.render(value));
-  eleventyConfig.addFilter("timeSinceYear", (value) => 2022 - Number(value));
+  eleventyConfig.addFilter("timeSinceYear", (value) => (new Date().getFullYear()) - Number(value));
 
   eleventyConfig.addCollection("posts", (collection) => {
     let posts = collection.getFilteredByGlob("src/posts/**/*.md");

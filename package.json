@@ -6,10 +6,12 @@
   "devDependencies": {
     "@11ty/eleventy": "^1.0.1",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
+    "@djot/djot": "^0.2.1",
     "@kevingimbel/eleventy-plugin-mermaid": "^2.0.0",
     "markdown-it": "^12.3.2",
     "markdown-it-anchor": "^8.6.5",
     "markdown-it-footnote": "^3.0.3",
-    "markdown-it-katex": "github:418sec/markdown-it-katex"
+    "markdown-it-katex": "github:418sec/markdown-it-katex",
+    "markdown-it-table-of-contents": "^0.6.0"
   }
 }

@@ -7,6 +7,8 @@ permalink: "resume/index.html"
 competencies:
 - name: Software Engineering
   time: 2017
+- name: Fullstack Development
+  time: 2018
 - name: Technical Writing
   time: 2018
 - name: Network Applications
@@ -35,22 +37,28 @@ tech:
   time: 2019
 - name: BSD Unix
   time: 2019
-- name: x86
-  time: 2019
-- name: SQL
+- name: PostgreSQL
   time: 2020
-- name: Java
-  time: 2021
 - name: C#
   time: 2021
+- name: Kubernetes
+  time: 2022
 
 experience:
+- company: Regrello
+  location: Remote
+  positions:
+  - position: Software Engineer
+    from: November 2022
+    to: Present
+    about: |
+      * GraphQL; React; Go; Postgres; Kubernetes
 - company: Booz Allen Hamilton
   location: El Segundo, CA
   positions:
   - position: Engineer
     from: May 2022
-    to: Present
+    to: October 2022
     about: |
       * Engineered cross-platform C++ build pipeline that transparently integrated with C# codebase and toolchain.
       * Integrated C++ machine learning model with C# Azure Function application, enabling semantic search.
@@ -59,9 +67,6 @@ experience:
   - position: Summer Games Intern
     from: June 2021
     to: August 2021
-    about: |
-      * Led development of Python library automating operation of leading aerospace and systems engineering software. <!-- * Modeled Air Force Research Lab mission using SysML. -->
-      * Integrated mission documentation with simulations using a toolchain engineered in house.
 - company: SHHA
   location: San Anselmo, CA
   positions:
@@ -78,8 +83,7 @@ experience:
     from: February 2017
     to: July 2017
     about: |
-      * Helped deploy PostgreSQL database and application WSGI to the internal CentOS server.
-      * Scripted migration of data from the legacy system.
+      * Helped deploy PostgreSQL database and application WSGI to the internal CentOS server.      <!-- * Scripted migration of data from the legacy system. -->
       * Helped develop a Django/React.js survey manager.
 
 extra:
@@ -87,10 +91,10 @@ extra:
   title: Lead Developer, Dev Team Director
   location: Los Angeles, CA
   about: |
+    * Previously developer team director for Teach LA, a club on campus teaching at Title I schools in the Los Angeles Unified School Distict.
     * Led development team for a free code editor for teaching kids to program. Built on React.js frontend, Go backend, using Firebase.
     * Developed web development [training program](https://github.com/uclaacm/learning-lab-crash-course-su20) with co-director currently used at other schools.
   accomplishments:
-    - "Previously **developer team director for Teach LA**, a club on campus teaching at Title I schools in the Los Angeles Unified School Distict."
     - "**Developed [training program](https://github.com/uclaacm/learning-lab-crash-course-su20)** with co-director of Teach LA currently used at other schools."
 # - org: Bruin Language Society
 #   title: Instructor
@@ -170,6 +174,13 @@ accomplishments:
       </tr>
       <tr>
         <td>
+          <h2>Education</h2>
+          <h4>
+            <b><i>B.S., Computer Science</i> - UCLA</b>, 
+            <date datetime="2018-09-01 00:00">September 2018</date> - <date datetime="2022-03-01 00:00">March 2022
+            </date>
+          </h4>
+
           <h2>Experience</h2>
           {% for co in experience %}
           <h3><b>{{ co.company }}</b> - {{ co.location }}</h3>
@@ -178,9 +189,13 @@ accomplishments:
           <h4>
             <i>{{ job.position }}</i>, <date>{{ job.from }}</date> to <date>{{ job.to }}</date>
           </h4>
+          {% endfor %}
+          {% for job in co.positions %}
+          {% if job.about %}
           <p>
             {{ job.about | markdown | safe }}
           </p>
+          {% endif %}
           {% endfor %}
           {% endfor %}
           </p>
@@ -198,14 +213,6 @@ accomplishments:
           {% endfor %}
         </td>
         <td>
-          <h2>Education</h2>
-          <p class="spaced">
-            <b>UCLA</b> - <i>B.S., Computer Science</i>
-            <br />
-            <date datetime="2018-09-01 00:00">September 2018</date> - <date datetime="2022-03-01 00:00">March 2022
-            </date>
-          </p>
-
           <h2>Competencies</h2>
           <ul class="nodot spaced">
             {% for thing in competencies %}
@@ -226,7 +233,7 @@ accomplishments:
             {% endfor %}
           </ul>
 
-          <h2>Extracurriculars</h2>
+          <h2>Projects</h2>
           <ul class="nodot spaced-paras">
           {% for acc in accomplishments %}
           <li>{{ acc | markdown | safe }}</li>
