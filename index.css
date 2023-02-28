@@ -95,6 +95,15 @@ blockquote {
   border-left: 0.5rem solid var(--black);
 }
 
+details {
+  border: 1px solid var(--black);
+  padding: 1rem;
+}
+
+summary {
+  cursor: pointer;
+}
+
 .no-list {
   list-style: none;
   list-style-type: none;
@@ -118,12 +127,5 @@ blockquote {
 @media print {
   body {
     width: 100%;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --black: #f0f0f0;
-    --white: #0f0f0f;
   }
 }
