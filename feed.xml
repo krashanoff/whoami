@@ -4,7 +4,7 @@
   <subtitle>The blog of Leonid Krashanoff.</subtitle>
   <link href="https://krashanoff.com/feed.xml" rel="self"/>
   <link href="https://krashanoff.com/"/>
-  <updated>2023-03-14T06:00:00Z</updated>
+  <updated>2023-03-14T00:00:00Z</updated>
   <id>https://krashanoff.com/</id>
   <author>
     <name>Leonid Krashanoff</name>
@@ -1358,7 +1358,7 @@ DESCRIPTION
   <entry>
     <title>Keyword generics seem intimidating</title>
     <link href="https://krashanoff.com/2023/03/14/keyword-generics-seem-intimidating/"/>
-    <updated>2023-03-14T06:00:00Z</updated>
+    <updated>2023-03-14T00:00:00Z</updated>
     <id>https://krashanoff.com/2023/03/14/keyword-generics-seem-intimidating/</id>
     <content xml:lang="en" type="html">&lt;p&gt;You ever read &lt;a href=&quot;https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/&quot;&gt;&amp;quot;What Color is Your Function&amp;quot;&lt;/a&gt;? A pretty good lot of people have.&lt;/p&gt;
 &lt;p&gt;If you&#39;ve worked with &lt;code&gt;async&lt;/code&gt;, you know how infectious function coloring can be. If you want to write some code that can be called asynchronously, then it definitely can&#39;t be called synchronously. Or, if it can be called synchronously, it has to be done using something that feels kind of jank. Like Python:&lt;/p&gt;
