@@ -1,6 +1,8 @@
 ---
 title: Keyword generics seem intimidating
-date: 2023-03-13T22:00:00-08:00
+
+# decrements by one
+date: 2023-03-14
 ---
 
 You ever read ["What Color is Your Function"](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)? A pretty good lot of people have.
