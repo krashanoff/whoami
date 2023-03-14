@@ -4,7 +4,7 @@
   <subtitle>The blog of Leonid Krashanoff.</subtitle>
   <link href="https://krashanoff.com/feed.xml" rel="self"/>
   <link href="https://krashanoff.com/"/>
-  <updated>2022-10-18T07:00:00Z</updated>
+  <updated>2023-03-14T06:00:00Z</updated>
   <id>https://krashanoff.com/</id>
   <author>
     <name>Leonid Krashanoff</name>
@@ -1353,6 +1353,111 @@ DESCRIPTION
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/section&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Keyword generics seem intimidating</title>
+    <link href="https://krashanoff.com/2023/03/14/keyword-generics-seem-intimidating/"/>
+    <updated>2023-03-14T06:00:00Z</updated>
+    <id>https://krashanoff.com/2023/03/14/keyword-generics-seem-intimidating/</id>
+    <content xml:lang="en" type="html">&lt;p&gt;You ever read &lt;a href=&quot;https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/&quot;&gt;&amp;quot;What Color is Your Function&amp;quot;&lt;/a&gt;? A pretty good lot of people have.&lt;/p&gt;
+&lt;p&gt;If you&#39;ve worked with &lt;code&gt;async&lt;/code&gt;, you know how infectious function coloring can be. If you want to write some code that can be called asynchronously, then it definitely can&#39;t be called synchronously. Or, if it can be called synchronously, it has to be done using something that feels kind of jank. Like Python:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-py&quot;&gt;import asyncio
+
+async def thing():
+  return await some_other_thing()
+
+if __name__ == &#39;__main__&#39;:
+  result = asyncio.run(thing)
+  print(result)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But most of the time, the async behavior propagates up the call stack, until you have an &lt;code&gt;async&lt;/code&gt; main. Or in Rust, where you have to stand up a whole runtime for it:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;fn main() {
+  Runtime::new()
+    .unwrap()
+    .spawn(async {
+      println!(&amp;quot;hi&amp;quot;);
+    });
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Where function coloring is less of a problem is in langauges like Go, or languages where &lt;code&gt;suspend/resume&lt;/code&gt;
+is the way of doing async. In those languages, functions don&#39;t have special keywords to be considered asynchronous,
+which means that any function could be instantiated like it were async.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-go&quot;&gt;func longComputation(resultChan chan&amp;lt;-int) {
+  resultChan &amp;lt;- 2
+}
+
+func main() {
+  resultChan := make(chan int)
+  go longComputation(resultChan) // runs asynchronously
+
+  // we can do stuff then block on the result later
+  fmt.Println(&amp;quot;thing&amp;quot;)
+  output := &amp;lt;-resultChan
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Rust is a modern language with a huge groundswell of support. The steering committee wants what&#39;s best for its users, so it makes sense that they would benefit from solving this problem sooner than later. The Rust project recently announced that they were planning to tackle this problem through the Keyword Generics Initiative, whose announcement you should read &lt;a href=&quot;https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html&quot;&gt;here&lt;/a&gt;. Their plan was:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Rust allows you to be generic over types - it does not allow you to be generic over other things that are usually specified by keywords. For example, whether a function is async, whether a function can fail or not, whether a function is const or not, etc.&lt;/p&gt;
+&lt;p&gt;The post &amp;quot;What color is your function&amp;quot; describes what happens when a language introduces async functions, but with no way to be generic over them...&lt;/p&gt;
+&lt;p&gt;This isn&#39;t just limited to async though, it applies to all modifier keywords - including ones we may define in the future. So we&#39;re looking to fill that gap by exploring something we call &amp;quot;keyword generics&amp;quot;: the ability to be generic over keywords such as const and async.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;-- &amp;quot;Announcing the Keyword Generics Initiative&amp;quot;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The tentatively proposed syntax was:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rs&quot;&gt;async&amp;lt;A&amp;gt; trait Read {
+    async&amp;lt;A&amp;gt; fn read(&amp;amp;mut self, buf: &amp;amp;mut [u8]) -&amp;gt; Result&amp;lt;usize&amp;gt;;
+    async&amp;lt;A&amp;gt; fn read_to_string(&amp;amp;mut self, buf: &amp;amp;mut String) -&amp;gt; Result&amp;lt;usize&amp;gt; { ... }
+}
+
+/// Read from a reader into a string.
+async&amp;lt;A&amp;gt; fn read_to_string(reader: &amp;amp;mut impl Read * A) -&amp;gt; std::io::Result&amp;lt;String&amp;gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;amp;mut string).await?;
+    string
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To me, this seems unwieldy, but at least comprehensible: we&#39;re generalizing the function over the &lt;code&gt;async&lt;/code&gt; keyword itself, and introducing some strange syntax in order to specify whether a type fulfills that optional &lt;code&gt;async/await&lt;/code&gt;-ness. Just another little nugget of Rust syntax to notch onto the belt.&lt;/p&gt;
+&lt;p&gt;But, the working group recently released &lt;a href=&quot;https://blog.rust-lang.org/inside-rust/2023/02/23/keyword-generics-progress-report-feb-2023.html&quot;&gt;a new update on the project&lt;/a&gt;. After nine months, the proposed syntax is a &lt;em&gt;little&lt;/em&gt; different.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rs&quot;&gt;trait ?async Read {
+    ?async fn read(&amp;amp;mut self, buf: &amp;amp;mut [u8]) -&amp;gt; Result&amp;lt;usize&amp;gt;;
+    ?async fn read_to_string(&amp;amp;mut self, buf: &amp;amp;mut String) -&amp;gt; Result&amp;lt;usize&amp;gt; { ... }
+}
+
+/// Read from a reader into a string.
+?async fn read_to_string(reader: &amp;amp;mut impl ?async Read) -&amp;gt; std::io::Result&amp;lt;String&amp;gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;amp;mut string).await?;
+    Ok(string)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I know this is still relatively early in the lifetime of the project, but I can&#39;t say I&#39;m enthused with this. In fact, this syntax kind of makes me anxious.&lt;/p&gt;
+&lt;p&gt;At least in the case of &lt;code&gt;async&amp;lt;A&amp;gt;&lt;/code&gt;, it is pretty apparent that it&#39;s an extension of the generics system in Rust, which is what they were going for in the first place. With this new &lt;code&gt;?async&lt;/code&gt;, though, the feature presents itself syntactically as an extension of the error propoagation system (e.g., &lt;code&gt;result?.do_thing()&lt;/code&gt;) or the trait bound system (e.g., &lt;code&gt;fn_name&amp;lt;T: TraitName + ?Sized&amp;gt;()&lt;/code&gt;). Neither of these lend themselves to keyword &lt;em&gt;generics&lt;/em&gt;. I&#39;d be curious about how this approach would scale to keywords like &lt;code&gt;const&lt;/code&gt;. The Rust userbase is getting larger, too, so I&#39;d be curious about how this approach would get introduced to the stable release. These problems remind me a little bit of a certain postincremented language.&lt;/p&gt;
+&lt;p&gt;And the language is already &lt;em&gt;really&lt;/em&gt; gnarly in its syntax. This snippet would kill a programmer from the 80s, and it&#39;s not even using lifetime bounds to their full extent:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rs&quot;&gt;/// This is a comment that has special meaning.
+#[derive(Debug, Deserialize)]
+#[serde(rename_all(deserialize = &amp;quot;kebab-case&amp;quot;))]
+struct Thing&amp;lt;&#39;a, T&amp;gt; {
+  /// This one, too
+  on_loan: &amp;amp;&#39;a T,
+}
+
+impl&amp;lt;&#39;a, T&amp;gt; Thing&amp;lt;&#39;a, T&amp;gt;
+  where T: Clone + Into&amp;lt;String&amp;gt;
+{
+  pub async fn use_thing(thing_one: &amp;amp;mut Thing&amp;lt;&#39;a, T&amp;gt;) -&amp;gt; String {
+    thing_one.on_loan.clone().into()
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I realize this is an unfair observation. Any language can look gnarly when you&#39;re fishing for an example of how incomprehensible it can be. But, in the case of Rust, it can be pretty easy to find said examples. In any case, I&#39;m not sure where I&#39;m going with this one other than &amp;quot;it seems like learning Rust as a complete beginner is only going to get harder and harder going forward,&amp;quot; and, &amp;quot;I hope Rust doesn&#39;t evolve into the very thing it sought to destroy&amp;quot;.&lt;/p&gt;
+&lt;p&gt;And with that, I&#39;ll leave the reader with some interesting reads on Rust&#39;s function coloring problem that can be readily organized into the &lt;a href=&quot;https://www.washington.edu/counseling/2020/06/08/the-stages-of-grief-accepting-the-unacceptable/&quot;&gt;five stages of grief&lt;/a&gt;, ignoring their dates of publication:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Denial, &amp;quot;Rust&#39;s async isn&#39;t colored!&amp;quot;: &lt;a href=&quot;https://www.hobofan.com/blog/2021-03-10-rust-async-colored/&quot;&gt;https://www.hobofan.com/blog/2021-03-10-rust-async-colored/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Anger, critique of async Rust: &lt;a href=&quot;https://eta.st/2017/08/04/async-rust.html&quot;&gt;https://eta.st/2017/08/04/async-rust.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Bargaining, &amp;quot;Colored functions are good, actually&amp;quot;: &lt;a href=&quot;https://www.thecodedmessage.com/posts/async-colors/&quot;&gt;https://www.thecodedmessage.com/posts/async-colors/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Depression, a follow-up to said critique: &lt;a href=&quot;https://eta.st/2021/03/08/async-rust-2.html&quot;&gt;https://eta.st/2021/03/08/async-rust-2.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Acceptance, &amp;quot;Rust&#39;s async is colored, and that&#39;s okay&amp;quot;: &lt;a href=&quot;https://morestina.net/blog/1686/rust-async-is-colored&quot;&gt;https://morestina.net/blog/1686/rust-async-is-colored&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
 </content>
   </entry>
 </feed>
