@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>krashanoff</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  </head>
+  <body>
+    
+<div>
+    <a href="/">krashanoff</a> / <a href="/reading">reading</a>
+</div>
+<article>
+    <h1>2023-03-15</h1>
+    <p>This will be a soft continuation of the reading series that I maintained on my Gemini blog long ago. It gets me writing more, in an unadulterated, friendlier fashion.</p>
+<h2 id="cat-v-and-negativity" tabindex="-1">cat-v and negativity</h2>
+<p>I spent a little bit of time reading through the harmful section of Cat-V, which I browsed to only after reading through some commentary in response to Dr. Stroustrup's take on the latest announcement from the US Gov. about safe software. The trail I followed went a little something like this:</p>
+<ul>
+<li>Dr. Stroustrup gets upset at Microsoft and the United States Government backing Rust instead of C++. <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2739r0.pdf">https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2739r0.pdf</a>
+<ul>
+<li>And associated commentary <a href="https://developers.slashdot.org/story/23/01/21/0526236/rust-safety-is-not-superior-to-c-bjarne-stroustrup-says">https://developers.slashdot.org/story/23/01/21/0526236/rust-safety-is-not-superior-to-c-bjarne-stroustrup-says</a></li>
+</ul>
+</li>
+<li>Linus hates C++ <a href="http://harmful.cat-v.org/software/c++/linus">http://harmful.cat-v.org/software/c++/linus</a></li>
+<li>Big name in Node abandons the project <a href="https://medium.com/@tjholowaychuk/farewell-node-js-4ba9e7f3e52b">https://medium.com/@tjholowaychuk/farewell-node-js-4ba9e7f3e52b</a></li>
+<li><a href="http://harmful.cat-v.org/software/node.js">http://harmful.cat-v.org/software/node.js</a></li>
+</ul>
+<h2 id="interesting-choices-in-zig" tabindex="-1">Interesting choices in Zig</h2>
+<p><a href="https://ziglang.org/documentation/0.10.1/#Error-Set-Type">https://ziglang.org/documentation/0.10.1/#Error-Set-Type</a></p>
+<p>I think that Zig's management of errors is interesting. They essentially scope errors to the package level, and require each dependency to manage propagation of other underlying errors, such as I/O.</p>
+<p>Since you can't scope down, though, it means that you can't expose some underlying generic error type like &quot;couldn't write file&quot;. I guess this is similar to how Rust does it, though - exposing the error type of an external crate is generally bad practice.</p>
+<p>The other interesting design decision here is that the error type is just a mask over a <code>u16</code>, instead of something more powerful like a proper datatype. Then again, Golang just uses strings, and C just uses <code>int</code>s.</p>
+<h2 id="boost-freaks-out-sometimes" tabindex="-1">Boost freaks out sometimes</h2>
+<p>Boost is a well-regarded library and it's mostly header-only, which is awesome. Why, then, do I have to include arbitrary headers sometimes to make stuff work?</p>
+<p><a href="https://github.com/boostorg/json/issues/485#issuecomment-763775594">https://github.com/boostorg/json/issues/485#issuecomment-763775594</a></p>
+<h2 id="foss-hell" tabindex="-1">FOSS hell</h2>
+<p>GitHub truly has undergone its transformation to become Facebook for software engineers. I open my browser and am bombarded with all these achievements and stars and OpenCollective links and blog posts and kofis and HackerNews links and... it's nauseating. Maybe I will self-host a Git server (again). Been meaning to for a while, but long-eschewed it out of privacy concerns.</p>
+<p>You can imagine my surprise when I stumbled onto this: <a href="https://sfconservancy.org/blog/2022/jun/30/give-up-github-launch/">https://sfconservancy.org/blog/2022/jun/30/give-up-github-launch/</a></p>
+<p>Unrelated, but in the past five years, I've noticed that the general tone of OSS writing and community conduct has shifted towards a sort of popularity contest. These are the things that social media does to us.</p>
+
+</article>
+
+
+    <footer>
+      Copyright &copy; 2023 Leonid Krashanoff
+    </footer>
+
+  </body>
+</html>
