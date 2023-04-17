@@ -4,7 +4,7 @@
     "start": "eleventy --serve"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.1",
+    "@11ty/eleventy": "^2.0.1",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
     "@djot/djot": "^0.2.1",
     "@kevingimbel/eleventy-plugin-mermaid": "^2.0.0",
