@@ -4,7 +4,7 @@
   <subtitle>The blog of Leonid Krashanoff.</subtitle>
   <link href="https://krashanoff.com/feed.xml" rel="self"/>
   <link href="https://krashanoff.com/"/>
-  <updated>2023-03-14T00:00:00Z</updated>
+  <updated>2023-04-29T10:13:00Z</updated>
   <id>https://krashanoff.com/</id>
   <author>
     <name>Leonid Krashanoff</name>
@@ -1458,6 +1458,92 @@ impl&amp;lt;&#39;a, T&amp;gt; Thing&amp;lt;&#39;a, T&amp;gt;
 &lt;li&gt;Depression, a follow-up to said critique: &lt;a href=&quot;https://eta.st/2021/03/08/async-rust-2.html&quot;&gt;https://eta.st/2021/03/08/async-rust-2.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Acceptance, &amp;quot;Rust&#39;s async is colored, and that&#39;s okay&amp;quot;: &lt;a href=&quot;https://morestina.net/blog/1686/rust-async-is-colored&quot;&gt;https://morestina.net/blog/1686/rust-async-is-colored&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Fish rocks</title>
+    <link href="https://krashanoff.com/2023/04/29/fish-rocks/"/>
+    <updated>2023-04-29T10:13:00Z</updated>
+    <id>https://krashanoff.com/2023/04/29/fish-rocks/</id>
+    <content xml:lang="en" type="html">&lt;p&gt;&amp;quot;The command line is a programmer&#39;s home&amp;quot;, or so they say.&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://krashanoff.com/2023/04/29/fish-rocks/#fn1&quot; id=&quot;fnref1&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt; I find much truth in this. In the average work day, I probably spend a solid hour or two in the command line building stuff, troubleshooting stuff, or reorganizing stuff. There&#39;s nice clients for Git, but I think that it&#39;s easier to work with Git through the command line in most cases. I use my VSCode debugger usually, but when I was a student I loved nothing more than GDB. And for a sysadmin, you are &lt;em&gt;always&lt;/em&gt; in the terminal. While I&#39;m not a sysadmin, lately, I&#39;ve been working more and more with Kubernetes. That means I spend &lt;em&gt;even more&lt;/em&gt; time in the terminal.&lt;/p&gt;
+&lt;p&gt;For a long while, I used Zsh, which I didn&#39;t know was short for &amp;quot;Z Shell&amp;quot; until a few years ago. Zsh is good because:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;It is reverse-compatible with Bash&lt;/li&gt;
+&lt;li&gt;It has good scripting extensions to Bash&lt;/li&gt;
+&lt;li&gt;It has a huge community behind it&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Most of the customizations for one&#39;s shell come in the form of community extensions like &lt;code&gt;oh-my-zsh&lt;/code&gt;. These extensions will give you a custom prompt, autocomplete, better history, etc. They all work beautifully, but as you tack on more extensions, the terminal tends to get bogged down. Some of them also require external dependencies, like &lt;code&gt;fzf&lt;/code&gt;. I remember on my old Arch system I&#39;d tack on tons and tons of little extensions to make it look really pretty, but the prompt would take like 250-500ms to draw.&lt;/p&gt;
+&lt;p&gt;External dependencies are taken to the extreme when you start looking at projects like &lt;a href=&quot;https://starship.rs/&quot;&gt;Starship&lt;/a&gt;, which is a wonderful piece of software, but solves the shell customization problem by introducing a full program that&#39;s called every single time you want to render your prompt instead of just a script. There is a clear advantage, though. If you operate across different shells in your day-to-day, then having the exact same prompt in all of them can be handy. Personally, I think Starship is the only livable way to use stock Bash without having an anxiety attack.&lt;/p&gt;
+&lt;p&gt;But this is &lt;em&gt;my&lt;/em&gt; laptop. I don&#39;t have to use Bash.&lt;/p&gt;
+&lt;p&gt;If you&#39;re okay with sacrificing POSIX-compatibility, &lt;a href=&quot;https://fishshell.com/&quot;&gt;Fish&lt;/a&gt; packs more out of the box than most shells provide through their community packages. It has autocomplete that it parses from your manpages, nice syntax highlighting while writing scripts, and a neat system of events and event handlers. And, since it&#39;s all built into the shell itself, there&#39;s no scripting overhead. As cool as my 2016 Zsh was, I think my Fish shell is 25x faster and generally more ergonomic.&lt;/p&gt;
+&lt;p&gt;When I was getting started, I never really used Fish functions for more than just a few tweaks to commands that I always use, like swapping out &lt;code&gt;ls&lt;/code&gt; for &lt;code&gt;exa&lt;/code&gt;, or setting persistent options in other comamnds. I was already happy with the built-in autocomplete and prompts, and didn&#39;t have want for much else. Where things really clicked, though, was when I started using Kubernetes.&lt;/p&gt;
+&lt;p&gt;If you&#39;re unfamiliar with Kubernetes, the driving program behind it all is &lt;code&gt;kubectl&lt;/code&gt;, which is so obtuse and option-rich that there are projects that programmatically generate hundreds and thousands of aliases just for all its features!&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://krashanoff.com/2023/04/29/fish-rocks/#fn2&quot; id=&quot;fnref2&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt; They are supremely useful.&lt;/p&gt;
+&lt;p&gt;While they are generated as aliases in other shells, in Fish they are generated as &lt;em&gt;abbreviations&lt;/em&gt;, which are sort of like aliases with superpowers. When typing out the start of an abbreviation, one can tab-complete to see all the possible paths that could be taken. For example, if I type &#39;k&#39; and then press tab:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;➜ leo@mydevice:whoami git:(==main) k6 run --help
+k                                                       (Abbreviation: kubectl)
+k6                                                               (command link)
+ka                                 (Abbreviation: kubectl apply --recursive -f)
+kadmin                                                                (command)
+kadmin.local                                                          (command)
+kak                                            (Abbreviation: kubectl apply -k)
+kbxutil                                                          (command link)
+kcc                                                                   (command)
+kcditto                                                               (command)
+kd                                             (Abbreviation: kubectl describe)
+kdall                         (Abbreviation: kubectl describe --all-namespaces)
+kdcm                                 (Abbreviation: kubectl describe configmap)
+kdcmall             (Abbreviation: kubectl describe configmap --all-namespaces)
+kdcml                             (Abbreviation: kubectl describe configmap -l)
+kdcmn                    (Abbreviation: kubectl describe configmap --namespace)
+kdcsetup                                                              (command)
+kddep                               (Abbreviation: kubectl describe deployment)
+kddepall           (Abbreviation: kubectl describe deployment --all-namespaces)
+kddepl                           (Abbreviation: kubectl describe deployment -l)
+kddepn                  (Abbreviation: kubectl describe deployment --namespace)
+kdestroy                                                              (command)
+kdf                             (Abbreviation: kubectl describe --recursive -f)
+kding                                  (Abbreviation: kubectl describe ingress)
+kdingall              (Abbreviation: kubectl describe ingress --all-namespaces)
+…and 1265 more rows
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;How handy! I can see all of the different possible expansions that could be achieved from just the letter &lt;code&gt;k&lt;/code&gt; without having to keep a printout on my desk.&lt;/p&gt;
+&lt;p&gt;Another two concepts that pervade most of your regular use are contexts and namespaces. You can think of contexts as a particular set of credentials you&#39;re using or a role you&#39;re assuming, and you can think of a namespace as a collection of objects. Often times, you&#39;ll need to switch between contexts and namespaces on the fly. Say, switching between your production and staging environments. This happens so often that there are two community-backed commands - &lt;code&gt;kubectx&lt;/code&gt; and &lt;code&gt;kubens&lt;/code&gt; - that handle the switching for you respectively.&lt;/p&gt;
+&lt;p&gt;Having a ton of aliases for &lt;code&gt;kubectl&lt;/code&gt; is useful, sure, but what would really save me some keystrokes is if I had my context and namespace information available to me at all times. Enter: events and event handlers.&lt;/p&gt;
+&lt;p&gt;If we know the path to &lt;code&gt;kubectx&lt;/code&gt; and &lt;code&gt;kubens&lt;/code&gt; on our systems (i.e., &lt;code&gt;which kubectx&lt;/code&gt;), we can wrap them with a function that does a little something extra. For example, we can make it emit an event that the function was run:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-fish&quot;&gt;function kubectx
+  /path/to/kubectx $argv
+  emit kube_change
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;...and have that event &lt;em&gt;handled&lt;/em&gt; by another function to update a file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-fish&quot;&gt;function handle_kube_change --on-event kube_change
+  echo (kubectx -c) &amp;gt; $HOME/.kube_currentctx
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This happens asynchronously in the current terminal process, meaning that we can put the contents of the file into our prompt without fear of a strange halt every time after we run a command while we wait for the next prompt to get populated:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;echo -ns &amp;quot;Current context: (cat $HOME/.kube_currentctx)&amp;quot;
+echo -ns &amp;quot;Current namespace: (cat $HOME/.kube_currentns)&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But that lack of POSIX-compatibility is a real zinger. Most people lean on it quite a bit. From regular use, I&#39;ve only really had issue with it in two common cases:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Wildcard expansion&lt;/li&gt;
+&lt;li&gt;Version managers&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The rest of the cases I&#39;ve seen are solved by just keeping &lt;code&gt;bash&lt;/code&gt; installed on my system. Unless the script needs to export variables, I&#39;m usually pretty set.&lt;/p&gt;
+&lt;p&gt;These two cases are pretty easy to dodge, though. For wildcard expansion, you just have to remember that if you want to literally pass a &lt;code&gt;*&lt;/code&gt;, the argument should be quoted somehow. And for version managers, you really don&#39;t need a POSIX-compliant one. &lt;code&gt;nvm&lt;/code&gt; and &lt;code&gt;gvm&lt;/code&gt; are great, sure, but I have been using &lt;a href=&quot;https://asdf-vm.com/&quot;&gt;&lt;code&gt;asdf&lt;/code&gt;&lt;/a&gt; without any issue. Environment files can be kind of annoying since the syntax is varied, but there are some one-liners you can use to dodge problems there, too.&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://krashanoff.com/2023/04/29/fish-rocks/#fn3&quot; id=&quot;fnref3&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt; Keeping things home-grown and in my pocket has afforded me a life free of &lt;a href=&quot;https://github.com/edc/bass&quot;&gt;&lt;code&gt;bass&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;POSIX-irreverant shells are on the up-and-up. &lt;a href=&quot;https://github.com/PowerShell/PowerShell&quot;&gt;PowerShell&lt;/a&gt; sees use in build systems and powerful scripts, &lt;a href=&quot;https://www.nushell.sh/&quot;&gt;Nushell&lt;/a&gt; provides a fancy new way of working with tabular data in the shell, and &lt;a href=&quot;http://www.oilshell.org/blog/2020/01/simplest-explanation.html&quot;&gt;Oil&lt;/a&gt; seems to be bridging the gap.&lt;/p&gt;
+&lt;p&gt;Anyways, Bash and Zsh will always have a special place in my heart and their hands in a strangle hold around my neck, but Fish is pretty cool.&lt;/p&gt;
+&lt;hr class=&quot;footnotes-sep&quot; /&gt;
+&lt;section class=&quot;footnotes&quot;&gt;
+&lt;ol class=&quot;footnotes-list&quot;&gt;
+&lt;li id=&quot;fn1&quot; class=&quot;footnote-item&quot;&gt;&lt;p&gt;No one says this. &lt;a href=&quot;https://krashanoff.com/2023/04/29/fish-rocks/#fnref1&quot; class=&quot;footnote-backref&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn2&quot; class=&quot;footnote-item&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/ahmetb/kubectl-aliases&quot;&gt;https://github.com/ahmetb/kubectl-aliases&lt;/a&gt; &lt;a href=&quot;https://krashanoff.com/2023/04/29/fish-rocks/#fnref2&quot; class=&quot;footnote-backref&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn3&quot; class=&quot;footnote-item&quot;&gt;&lt;p&gt;I&#39;ve used this function to much success with a little tweaking: &lt;a href=&quot;https://gist.github.com/nikoheikkila/dd4357a178c8679411566ba2ca280fcc&quot;&gt;https://gist.github.com/nikoheikkila/dd4357a178c8679411566ba2ca280fcc&lt;/a&gt; &lt;a href=&quot;https://krashanoff.com/2023/04/29/fish-rocks/#fnref3&quot; class=&quot;footnote-backref&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
 </content>
   </entry>
 </feed>
