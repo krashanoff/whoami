@@ -20,7 +20,7 @@ If you're okay with sacrificing POSIX-compatibility, [Fish](https://fishshell.co
 
 When I was getting started, I never really used Fish functions for more than just a few tweaks to commands that I always use, like swapping out `ls` for `exa`, or setting persistent options in other comamnds. I was already happy with the built-in autocomplete and prompts, and didn't have want for much else. Where things really clicked, though, was when I started using Kubernetes.
 
-If you're unfamiliar with Kubernetes, the driving program behind it all is `kubectl`, which is so obtuse and option-rich that there are projects that programmatically generate hundreds and thousands of aliases just for all its features![^kubealias] They are supremely useful.
+If you're unfamiliar with Kubernetes, the driving program behind it all is `kubectl`, which is so obtuse and option-rich that there are projects that programmatically generate hundreds of aliases just for all its features![^kubealias] They are supremely useful.
 
 While they are generated as aliases in other shells, in Fish they are generated as _abbreviations_, which are sort of like aliases with superpowers. When typing out the start of an abbreviation, one can tab-complete to see all the possible paths that could be taken. For example, if I type 'k' and then press tab:
 
