@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>krashanoff | Release Your &quot;Open&quot; &quot;Source&quot;</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  </head>
+  <body>
+    
+<a href="/">krashanoff</a>
+<article>
+  <h1>Release Your &quot;Open&quot; &quot;Source&quot;</h1>
+  <small><date>Jun 20, 2023</date></small>
+  <ul class="tags">
+    
+    
+    
+    
+    <li><a href="/tag/rant">#rant</a></li>
+    
+    
+  </ul>
+  <p>I've seen a few repos lately on GitHub that function as no more than an advertisement for a closed-source project that's still in heavy development. What's up with that?</p>
+<p>I was originally writing a post talking about this one project, <a href="https://www.warp.dev/">Warp</a>, which is supposed to be a terminal editor. It was one of those &quot;solution looking for a problem&quot; situations. It was just another terminal emulator, but with Internet connectivity, telemetry, and AI for some reason. They tried to justify it with this other bit where you could track shell commands and output as blocks, but they didn't integrate the terminal tightly enough with the shell to capture output perfectly. This system design-level problem kept biting them in the ass, and they had to shell out to a wrapper they placed around Bash to make sure their tracking worked through SSH.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>Ignoring this, it's a good idea on paper. I wouldn't be talking about it so vehemently if the project didn't <em>release an empty GitHub repository with some vague promises of open-sourcing parts of the app later.</em> Oh, but don't worry! We have a discussion thread in the empty repo where we will openly posit about the best way of making money.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>There's another project that went and did the same thing recently: a programming language, <a href="https://www.modular.com/mojo">Mojo</a>. They're looking to provide a new programming language for bridging low-level performance and Python's ubiquity in data science. Oh, and it's again supposedly faster than C.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>Again - pretty good idea on paper - but please... Just open source the project or release a beta product, don't give me this &quot;empty repo&quot; business just so people can use incomplete closed-source software, and publicize <a href="https://github.com/modularml/mojo/issues/27">all</a> <a href="https://github.com/modularml/mojo/issues/232">the</a> <a href="https://github.com/modularml/mojo/issues/12">bug</a> <a href="https://github.com/modularml/mojo/issues/15">reports</a>.</p>
+<p>I think part of it is also a popularity contest. I feel like ragging on <a href="https://xeiaso.net/blog/series/v">&quot;The V Incident&quot;</a> today is just beating a dead horse, but it does have some merit as a case study in how unfinished novel ideas will try to draw attention to drive their project across the finish line.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>I look at these projects, then I look at something like Aseprite, or Bitwarden. Aseprite did it right, in that their source is open, but end-users can purchase a pre-built copy. For Bitwarden, they paywall some extra features. This model doesn't really work for developer tooling and programming languages, since your target market is able to build it from source.</p>
+<p>I am skeptical that people will genuinely pay per-head-per-month licensing fees for something as fundamental and system-critical as a terminal emulator (with telemetry) or a programming language's engine, though.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> It seems too great an organizational risk -- what if the startup with the keys to the castle goes bust? Then again, MATLAB exists. Anyways, please stop this trend of publishing an empty GitHub repo as an advertisement for an unfinished product.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://docs.warp.dev/help/known-issues#ssh">https://docs.warp.dev/help/known-issues#ssh</a> 💀 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://github.com/warpdotdev/Warp/discussions/400">https://github.com/warpdotdev/Warp/discussions/400</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>This one really gets me fired up. Every new programming language I see is faster than C because &quot;we use LLVM and this particular test case worked really well&quot;. It's practically a free claim. In any case, the claim is on their docs landing: <a href="https://docs.modular.com/mojo/">https://docs.modular.com/mojo/</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>There is actual work being done on the project, and it ended up growing a little bit more into its claims. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Eh, maybe I'm wrong though. <a href="https://github.com/warpdotdev/Warp/discussions/400#discussioncomment-1938429">https://github.com/warpdotdev/Warp/discussions/400#discussioncomment-1938429</a> <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+</article>
+
+
+    <footer>
+      Copyright &copy; 2023 Leonid Krashanoff
+    </footer>
+
+  </body>
+</html>
