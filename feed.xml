@@ -1562,7 +1562,7 @@ echo -ns &amp;quot;Current namespace: (cat $HOME/.kube_currentns)&amp;quot;
 &lt;hr class=&quot;footnotes-sep&quot; /&gt;
 &lt;section class=&quot;footnotes&quot;&gt;
 &lt;ol class=&quot;footnotes-list&quot;&gt;
-&lt;li id=&quot;fn1&quot; class=&quot;footnote-item&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://docs.warp.dev/help/known-issues#ssh&quot;&gt;https://docs.warp.dev/help/known-issues#ssh&lt;/a&gt; 💀 &lt;a href=&quot;https://krashanoff.com/2023/06/20/release-your-open-source/#fnref1&quot; class=&quot;footnote-backref&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+&lt;li id=&quot;fn1&quot; class=&quot;footnote-item&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://docs.warp.dev/help/known-issues#ssh&quot;&gt;https://docs.warp.dev/help/known-issues#ssh&lt;/a&gt; &lt;a href=&quot;https://krashanoff.com/2023/06/20/release-your-open-source/#fnref1&quot; class=&quot;footnote-backref&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id=&quot;fn2&quot; class=&quot;footnote-item&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/warpdotdev/Warp/discussions/400&quot;&gt;https://github.com/warpdotdev/Warp/discussions/400&lt;/a&gt; &lt;a href=&quot;https://krashanoff.com/2023/06/20/release-your-open-source/#fnref2&quot; class=&quot;footnote-backref&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
