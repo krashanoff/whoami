@@ -1,5 +1,6 @@
 :root {
   --black: #040404;
+  --grey: #444444;
   --white: #fefefe;
   --link: #4f55d1;
 }
@@ -32,6 +33,10 @@ h5::before {
 }
 h6::before {
   content: '###### ';
+}
+
+#title::before {
+  content: '';
 }
 
 ul li, ol li {
@@ -108,6 +113,14 @@ summary {
   list-style: none;
   list-style-type: none;
   padding-left: 0;
+}
+
+.no-list > li {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row nowrap;
+  margin: 0.25rem 0 0.25rem 0;
 }
 
 .tags {

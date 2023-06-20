@@ -4,9 +4,14 @@ const footnotes = require("markdown-it-footnote");
 const rss = require("@11ty/eleventy-plugin-rss");
 const anchors = require("markdown-it-anchor");
 const toc = require("markdown-it-table-of-contents");
+const readingTime = require("@photogabble/eleventy-plugin-word-stats")
 
 module.exports = (eleventyConfig) => {
   eleventyConfig.addWatchTarget('styles/**/*.pcss');
+
+  readingTime(eleventyConfig, {
+    output: (stats) => `${stats.words} words`,
+  });
 
   // RSS moment
   eleventyConfig.addPlugin(rss);
