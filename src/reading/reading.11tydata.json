@@ -1,0 +1,5 @@
+{
+  "layout": "layouts/reading.njk",
+  "tags": ["reading"],
+  "permalink": "/reading/{{ page.fileSlug }}/index.html"
+}

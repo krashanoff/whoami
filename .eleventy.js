@@ -53,6 +53,11 @@ module.exports = (eleventyConfig) => {
     let docs = collection.getFilteredByGlob("src/cyber/etc/**/*.md");
     return docs;
   });
+  eleventyConfig.addCollection("reading", (collection) => {
+    let docs = collection.getFilteredByGlob("src/reading/**.md");
+    docs.reverse();
+    return docs;
+  })
 
   // CNAME
   const static = ["static", "CNAME", "robots.txt", "index.css", "resume.css"];

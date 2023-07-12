@@ -79,3 +79,5 @@ Prove: Given an arbitrary array of numbers $A$, the algorithm $B$ produces an ar
 3. Take some iteration $i$. Assume $R_i$ to be the first $i$ sorted elements of $A$, and $A_i$, the value of $A$ at iteration $i$, to be equal to $A \setminus R_i$.
 	1. The innermost loop finds the minimum element of $A_i$, and removes it from $A_i$ to produce $A_{i+1}$.
 	2. $R_{i+1}$ is now equal to the sorted version of the first $i+1$ sorted elements of $A$.
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
