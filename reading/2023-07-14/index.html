@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>krashanoff</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The website of Leo Krashanoff">
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+      type="image/png"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+  </head>
+  <body>
+    
+<div>
+    <a href="/">krashanoff</a> / <a href="/reading">reading</a>
+</div>
+<article>
+    <h1>2023-07-14</h1>
+    
+    <p>Welcome to my unorganized reading list where I capture a few of the highlights of things I read or discover in an indeterminate period of time. I could probably make this into a mailing list in the future.</p>
+<h2 id="archaeology" tabindex="-1">archaeology</h2>
+<p>Been reading the 2nd edition of &quot;The C Programming Language&quot;. It's interesting to see how such a simple language has
+persisted through the years relatively unchanged compared to the insane additions bolted onto C++.</p>
+<h2 id="the-emperor-has-no-source-control" tabindex="-1">the emperor has no source control</h2>
+<p>Postfix has no source control and it is the definitive mail server. <a href="https://groups.google.com/g/mailing.postfix.users/c/6Kkel3J_nv4">https://groups.google.com/g/mailing.postfix.users/c/6Kkel3J_nv4</a></p>
+<p>This isn't a bad thing. It's cool to see such a successful project maintained without use of Git.</p>
+<p>It also has wonderful documentation <a href="https://www.postfix.org/documentation.html">https://www.postfix.org/documentation.html</a>.</p>
+<h2 id="gn" tabindex="-1">gn</h2>
+<p>I've been studying some of the WebRTC source. The build system they use is the same as Chromium, which I hadn't used before. <code>gn</code> is a very clever tool.</p>
+<p><a href="https://gn.googlesource.com/gn/+/main/docs/reference.md">https://gn.googlesource.com/gn/+/main/docs/reference.md</a></p>
+<h2 id="popularity-contest" tabindex="-1">popularity contest</h2>
+<p>I don't like the direction GitHub and &quot;mainstream&quot; open source is heading. Stars are starting to feel like Instagram likes to me.</p>
+<p>I feel like if you're going to publish open source software, you should just put it out there and let it live. We could all stand to learn from <a href="https://bellard.org/">Fabrice</a>. See: <a href="https://smartbear.com/blog/2011/fabrice-bellard-portrait-of-a-super-productive-pro/?lang=de-de">Fabrice Bellard: Portrait of a Super-Productive Programmer</a>.</p>
+<h2 id="rust-in-usgov" tabindex="-1">rust in usgov</h2>
+<ul>
+<li>Dr. Stroustrup gets upset at Microsoft and the United States Government backing Rust instead of C++. <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2739r0.pdf">https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2739r0.pdf</a>
+<ul>
+<li>And associated commentary <a href="https://developers.slashdot.org/story/23/01/21/0526236/rust-safety-is-not-superior-to-c-bjarne-stroustrup-says">https://developers.slashdot.org/story/23/01/21/0526236/rust-safety-is-not-superior-to-c-bjarne-stroustrup-says</a></li>
+</ul>
+</li>
+<li>Linus hates C++ <a href="https://lwn.net/Articles/249460/">https://lwn.net/Articles/249460/</a></li>
+</ul>
+<p>Disclosure: I do not have any strong opinion about C++. It is an excellent compromise between modern language features and C-like aphorisms. I do believe that it is a complicated language, however. See also: <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern</a></p>
+<h2 id="sourcehut-exploration" tabindex="-1">sourcehut exploration</h2>
+<p>Stumbled onto this cool project Muon, which is a C99 implementation of Meson, which is normally implemented in
+Python.</p>
+<p><a href="https://sr.ht/~lattis/muon/">https://sr.ht/~lattis/muon/</a></p>
+<p>The person who wrote it, Stone, also wrote a ray tracer in Meson's build language, then used that to compare
+the performance of their build system to Meson's reference.</p>
+<p><a href="https://mochiro.moe/posts/09-meson-raytracer/">https://mochiro.moe/posts/09-meson-raytracer/</a></p>
+<p>The project has its docs generated using another cool tool, scdoc:</p>
+<p><a href="https://sr.ht/~sircmpwn/scdoc/">https://sr.ht/~sircmpwn/scdoc/</a></p>
+<p>It's a bit niche. There are more general-purpose tools like pandoc and <code>groff</code> that could get the job done.</p>
+<p>Hilariously, there's another implementation of the Meson build system in C11 on the same source tracker.</p>
+<p><a href="https://sr.ht/~bl4ckb0ne/boson/">https://sr.ht/~bl4ckb0ne/boson/</a></p>
+<h2 id="twitter-is-in-a-weird-spot%3B-activitypub" tabindex="-1">twitter is in a weird spot; activitypub</h2>
+<p>Reading a decent amount about ActivityPub and its issues since Twitter is currently destroying (or at least losing) its userbase.</p>
+<ul>
+<li><a href="https://lucumr.pocoo.org/2022/11/14/scaling-mastodon/">https://lucumr.pocoo.org/2022/11/14/scaling-mastodon/</a></li>
+<li><a href="https://nolanlawson.com/2018/08/31/mastodon-and-the-challenges-of-abuse-in-a-federated-system/">https://nolanlawson.com/2018/08/31/mastodon-and-the-challenges-of-abuse-in-a-federated-system/</a></li>
+<li><a href="https://wilwheaton.net/2018/08/the-world-is-a-terrible-place-right-now-and-thats-largely-because-it-is-what-we-make-it/">https://wilwheaton.net/2018/08/the-world-is-a-terrible-place-right-now-and-thats-largely-because-it-is-what-we-make-it/</a></li>
+</ul>
+<h2 id="assorted" tabindex="-1">assorted</h2>
+<p>Read a few other posts from Armin Ronacher:</p>
+<ul>
+<li><a href="https://lucumr.pocoo.org/2023/3/20/lessons-from-a-pessimist">https://lucumr.pocoo.org/2023/3/20/lessons-from-a-pessimist</a></li>
+<li><a href="https://lucumr.pocoo.org/2022/1/30/unsafe-rust/">https://lucumr.pocoo.org/2022/1/30/unsafe-rust/</a></li>
+</ul>
+
+</article>
+
+
+    <footer>
+      Copyright &copy; 2023 Leonid Krashanoff
+    </footer>
+
+  </body>
+</html>
