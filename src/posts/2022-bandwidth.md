@@ -3,6 +3,7 @@ title: Bandwidth vs. Quality of Life
 date: 2022-05-24T21:00:00-08:00
 tags:
   - thoughts
+toc: false
 ---
 
 I have been terminally online since my sophomore year of high school. COVID didn't help much when I had to move back home. I don't exactly live in "the sticks", but I live far enough away from a major data center that ISPs are comfortable being predatory with us. Ever since high school I've had a hard cap of about a terabyte on monthly data usage. This was not only for me, but for the whole household, which made things difficult.

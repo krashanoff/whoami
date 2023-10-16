@@ -3,6 +3,7 @@ title: "CS101: Time Complexity"
 tags:
   - cs101
 date: 2022-09-15T00:00:00-08:00
+toc: false
 ---
 
 *This post was originally written and posted to a Discord server shared by my friends and I on September 1st, 2022. I made minor edits between then and the current post.*
@@ -12,6 +13,7 @@ date: 2022-09-15T00:00:00-08:00
 Time complexity is the fundamental metric in computer science used to describe the runtime of an algorithm. If an algorithm for a given task has a lower time complexity than another for the same task, then it is provably faster for all possible inputs. The basis for time complexity lay in the growth rate of the function describing the exact runtime of the algorithm in question.
 
 Given:
+
 * An array of numbers, $A$. For example, $A = [ 1, 3, 2 ]$.
 * An empty array, $R$.
 
@@ -38,17 +40,17 @@ In the absolute worst case scenario, the array $A$ is in reverse order. In this 
 
 Intuitively, this might not make sense. "Well couldn't you just say $O(n)$ is $n$ times a billion?" Yes, you could, but if your algorithm takes $n^2$ steps in the worst case scenario, then **for some value of $n$, it will pass "$n$ times a billion"**:
 
-![the function n squared is much lower than n times a billion initially]( {{ '/static/img/cs101/time-complexity/aha.png' | url }})
+![the function n squared is much lower than n times a billion initially](src/static/img/cs101/time-complexity/aha.png)
 
 "Aha! I got you. See, $n$ times a billion is higher than your $n^2$!" Not so fast. What if we scale to, say, $10^{18}$?"
 
-![the function n squared passes n times a billion]( {{ '/static/img/cs101/time-complexity/gotcha.png' | url }} )
+![the function n squared passes n times a billion](src/static/img/cs101/time-complexity/gotcha.png)
 
 Since the function $n^2$ *grows* faster than $n$, there is a point where the algorithm could hypothetically take longer than "a billion times $n$ steps". Since the upper bound is all that really matters here, programmers use this to denote the __upper bound of an algorithm's runtime. We call this "time complexity".__
 
 ***
 
-## Appendix
+# Appendix
 
 ## Unverified Python
 
@@ -67,10 +69,11 @@ while A:
 ```
 
 Some considerations:
+
 * There is already a more efficient sorting algorithm implemented in Python, callable with `sort()`.
 * This removes elements from the list `A`. If you wish to retain elements, a copy would need to be made.
 
-### Loosey-Goosey Proof of Correctness
+## Loosey-Goosey Proof of Correctness
 
 Prove: Given an arbitrary array of numbers $A$, the algorithm $B$ produces an array $R$ of numbers meeting the partial order $\leq$.
 

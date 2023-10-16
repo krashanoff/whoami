@@ -1,4 +1,4 @@
-name: Build Eleventy
+name: Build site
 on:
   push:
     branches:
@@ -6,19 +6,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [17.x]
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies & build
+      - name: Dependencies
         run: |
-          npm ci
-          npm run build
+          sudo apt update
+          sudo apt install -y curl python3 python3-pip
+          curl -LSso pandoc-amd64.deb https://github.com/jgm/pandoc/releases/download/3.1.9/pandoc-3.1.9-1-amd64.deb
+          sudo dpkg -i pandoc-amd64.deb
+          sudo npm install -g mermaid-filter
+      - name: Build
+        run: |
+          python3-pip install pyyaml
+          MODE=build python3 w.py
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

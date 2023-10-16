@@ -18,7 +18,7 @@ for a way to play without running the server locally on my machine. I have an Op
 [my previous post]({{ '/2021/09/24/exploring-openbsd/' | url }})) that I have been using for my remote
 needs, so I figured I could run the server on it fairly easily.
 
-## The Hardware
+# The Hardware
 
 First, let's meet the lambo I plan to have running this:
 
@@ -41,13 +41,13 @@ Filesystem     Size    Used   Avail Capacity  Mounted on
 Oh hell yes. Two cores. Like 8G of RAM. *Maybe* 8G of disk space. We're gonna make this
 thing work like Atlas.
 
-## The Software
+# The Software
 
 To get a Minecraft server running, all you need is the latest version of the JRE. For most
 machines, this really isn't a problem. Java *does* run on 3 billion devices[^2], after
 all. How bad could it be? Let's go ahead and check [ports](http://ports.su/devel/jdk):
 
-![jdk 1.8 in openbsd ports]({{ '/static/img/mcbsd/jdkports.png' | url }})
+![jdk 1.8 in openbsd ports](src/static/img/mcbsd/jdkports.png)
 
 3 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
 OpenBSD doesn't really have much in the way of modern luxury when it comes to Java. This is
@@ -59,7 +59,7 @@ stuff for running a `jar`, so what's the solution here?
 
 **Isn't it so obvious? Just virtualize a Linux box!**
 
-## Enter: `vmm(4)`
+# Enter: `vmm(4)`
 
 I decided to virtualize a lightweight Linux distribution inside of my OpenBSD box to run the latest
 server, then NAT Minecraft clients to it.
@@ -109,7 +109,7 @@ might be pushing it for a machine that's rocking the base amount that you'd expe
 Chromebook[^3]. We'll limit test later, though. Right now, there are more important matters to tend
 to.
 
-## NAT
+# NAT
 
 Before we can use our machine to reach the internet, we've got to redirect traffic to it.
 Time for [`pf(4)`](https://man.openbsd.org/pf) to go to work. We add a rule to redirect traffic in
@@ -142,7 +142,7 @@ net.inet.ip.forwarding=1
 
 Networking is ready for our VM. Let's get to work.
 
-## `setup-alpine`
+# `setup-alpine`
 
 Time to get our virtual machine set up. We can hop into the VM's console, login as `root`, and
 run [`setup-alpine`](https://wiki.alpinelinux.org/wiki/Installation) as usual.
@@ -177,7 +177,7 @@ OpenJDK 64-Bit Server VM (build 17.0.2+8-alpine-r0, mixed mode, sharing)
 Looking good. After downloading the latest Minecraft server `jar` and prepping our server directory,
 we just add the driver script for our preferred `java` command as a start script in `/etc/local.d/`.
 
-## On-Boot
+# On-Boot
 
 If we want to let this run automatically, we're going to have to set up our VM to start on boot. This
 is accomplished through [`vm.cfg(5)`](https://man.openbsd.org/vm.conf).
@@ -194,7 +194,7 @@ vm "minecraft" {
 
 Now when we reboot, the machine will run at boot and run under the `minecraft` user.
 
-## Limit Testing
+# Limit Testing
 
 Surprisingly, the entire Alpine + JDK install only comes out to about 345MiB. The size of the minecraft
 server installation on my Windows disk is about 391MB. So what we *really* require in disk space is about
@@ -212,7 +212,7 @@ athome# vmctl show minecraft
 ...okay maybe we can't. I went ahead and upped the memory to around 3G and that seemed to do the trick
 for the stock server command that grants the `jar` about 1G of RAM.
 
-## Performance
+# Performance
 
 And so comes the question: is it fast? Well, not really.
 
@@ -224,7 +224,7 @@ Once chunks were loaded, performance wasn't an issue on the local network. Playe
 snappy. This said, the chunk load time being painful made me uncomfortable taking this Frankenstein
 out of the lab. I just stuck with my own machine.
 
-## Conclusions and Future Considerations
+# Conclusions and Future Considerations
 
 Running a Minecraft server on a virtualized Alpine machine isn't a bad idea if you have the hardware
 for it. I do not.

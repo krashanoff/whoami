@@ -3,6 +3,7 @@ title: Release Your "Open" "Source"
 date: 2023-06-19T21:19:00-08:00
 tags:
   - rant
+toc: false
 ---
 
 I've seen a few repos lately on GitHub that function as no more than an advertisement for a closed-source project that's still in heavy development. What's up with that?
