@@ -20,7 +20,7 @@ jobs:
           python3.9 -m venv venv
           source venv/bin/activate
           pip install pyyaml
-          MODE=build python w.py
+          MODE=build PANDOC_PATH="$(which pandoc)" python w.py
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
