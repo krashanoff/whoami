@@ -11,14 +11,14 @@ jobs:
       - name: Dependencies
         run: |
           sudo apt update
-          sudo apt install -y curl python3 python3-pip
+          sudo apt install -y curl python3.9 python3-pip
           curl -LSso pandoc-amd64.deb https://github.com/jgm/pandoc/releases/download/3.1.9/pandoc-3.1.9-1-amd64.deb
           sudo dpkg -i pandoc-amd64.deb
           sudo npm install -g mermaid-filter
       - name: Build
         run: |
           pip3 install pyyaml
-          MODE=build python3 w.py
+          MODE=build python3.9 w.py
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
