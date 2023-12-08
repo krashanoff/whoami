@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -15,6 +14,149 @@
     rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/resume.css" />
   <script src="https://kit.fontawesome.com/7f416a4c75.js" crossorigin="anonymous"></script>
+
+  <style>
+    @import url('https://unpkg.com/modern-css-reset/dist/reset.min.css');
+
+    a,
+    a:visited,
+    a:active,
+    a:link,
+    a:hover {
+      color: #0505ee;
+    }
+
+    body {
+      margin: .6in auto;
+      max-width: 1000px;
+      word-wrap: break-word;
+      line-height: 1.5;
+    }
+
+    table {
+      width: 100%;
+      border-spacing: 0 1.5rem 0 0;
+    }
+
+    td {
+      vertical-align: text-top;
+    }
+
+    td.ignore-align {
+      vertical-align: middle;
+    }
+
+    ul {
+      margin: .2em;
+      padding-left: 9pt;
+    }
+
+    ul.nodot {
+      list-style: none;
+      padding: 0;
+    }
+
+    .spaced {
+      line-height: 2;
+    }
+
+    .spaced-paras {
+      line-height: 1.5;
+    }
+
+    .spaced-paras p {
+      margin-bottom: 0.5rem;
+    }
+
+    .spaced-paras:first-child {
+      margin-top: 0.5rem;
+    }
+
+    .spaced-paras:last-child {
+      margin-bottom: 0;
+    }
+
+    h1,
+    p,
+    li {
+      font-family: 'Merriweather', Georgia, 'Times New Roman', Times, serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: #3e79a3;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 36pt;
+      color: black;
+    }
+
+    h4 {
+      color: black;
+    }
+
+    img {
+      height: 38pt;
+      width: 38pt;
+      margin-right: 1rem;
+    }
+
+    p,
+    li {
+      font-size: 9pt;
+    }
+
+    h3 {
+      color: black;
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2,
+    h3 {
+      font-size: 11pt;
+    }
+
+    h4 {
+      color: #0f0f0f;
+      font-size: 0.75em;
+      margin: .1em;
+    }
+
+    @media print {
+      body {
+        margin: 0.1in 0.3in;
+        max-width: 100vw;
+      }
+
+      td {
+        width: 4.75in;
+      }
+
+      a,
+      a:visited,
+      a:active,
+      a:link,
+      a:hover {
+        color: black;
+        text-decoration: none;
+      }
+
+      .noprint {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -30,10 +172,8 @@
     <tbody>
       <tr>
         <td class="ignore-align"
-          style="display: flex; flex-flow: row nowrap; justify-content: flex-start; align-items: center;"
-        >
-          <img
-            class="noprint"
+          style="display: flex; flex-flow: row nowrap; justify-content: flex-start; align-items: center;">
+          <img class="noprint"
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
             alt="blue square" />
           <h1>Leo Krashanoff</h1>
@@ -50,237 +190,247 @@
         <td>
           <h2>Education</h2>
           <h4>
-            <b><i>B.S., Computer Science</i> - UCLA</b>, 
+            <b><i>B.S., Computer Science</i> - UCLA</b>,
             <date datetime="2018-09-01 00:00">September 2018</date> - <date datetime="2022-03-01 00:00">March 2022
             </date>
           </h4>
 
           <h2>Experience</h2>
-          
+
           <h3><b>Regrello</b> - Remote</h3>
 
-          
+
           <h4>
             <i>Software Engineer</i>, <date>November 2022</date> to <date>Present</date>
           </h4>
-          
-          
-          
+
+
+
           <p>
-            <ul>
-<li>GraphQL; React; Go; Postgres; Kubernetes</li>
-</ul>
+          <ul>
+            <li>GraphQL; React; Go; Postgres; Kubernetes</li>
+          </ul>
 
           </p>
-          
-          
-          
+
+
+
           <h3><b>Booz Allen Hamilton</b> - El Segundo, CA</h3>
 
-          
+
           <h4>
             <i>Engineer</i>, <date>May 2022</date> to <date>October 2022</date>
           </h4>
-          
+
           <h4>
             <i>Summer Games Intern</i>, <date>June 2021</date> to <date>August 2021</date>
           </h4>
-          
-          
-          
+
+
+
           <p>
-            <ul>
-<li>Engineered cross-platform C++ build pipeline that transparently integrated with C# codebase and toolchain.</li>
-<li>Integrated C++ machine learning model with C# Azure Function application, enabling semantic search.</li>
-<li>Created parallel web search aggregator in Rust using Lua modules.</li>
-<li>Created software suite to automate the production and validation of cybersecurity documentation.</li>
-</ul>
+          <ul>
+            <li>Engineered cross-platform C++ build pipeline that transparently integrated with C# codebase and
+              toolchain.</li>
+            <li>Integrated C++ machine learning model with C# Azure Function application, enabling semantic search.</li>
+            <li>Created parallel web search aggregator in Rust using Lua modules.</li>
+            <li>Created software suite to automate the production and validation of cybersecurity documentation.</li>
+          </ul>
 
           </p>
-          
-          
-          
-          
-          
+
+
+
+
+
           <h3><b>SHHA</b> - San Anselmo, CA</h3>
 
-          
+
           <h4>
             <i>Fullstack Developer</i>, <date>June 2019</date> to <date>September 2019</date>
           </h4>
-          
-          
-          
+
+
+
           <p>
-            <ul>
-<li>Modernized check-in system for community center wrapping a legacy SQL-like database.</li>
-<li>Frontend was built with React.js, backend was a Flask microservice.</li>
-</ul>
+          <ul>
+            <li>Modernized check-in system for community center wrapping a legacy SQL-like database.</li>
+            <li>Frontend was built with React.js, backend was a Flask microservice.</li>
+          </ul>
 
           </p>
-          
-          
-          
+
+
+
           <h3><b>The Croner Company</b> - Kentfield, CA</h3>
 
-          
+
           <h4>
             <i>Fullstack Intern</i>, <date>February 2017</date> to <date>July 2017</date>
           </h4>
-          
-          
-          
+
+
+
           <p>
-            <ul>
-<li>Helped deploy PostgreSQL database and application WSGI to the internal CentOS server.      <!-- * Scripted migration of data from the legacy system. --></li>
-<li>Helped develop a Django/React.js survey manager.</li>
-</ul>
+          <ul>
+            <li>Helped deploy PostgreSQL database and application WSGI to the internal CentOS server.
+              <!-- * Scripted migration of data from the legacy system. --></li>
+            <li>Helped develop a Django/React.js survey manager.</li>
+          </ul>
 
           </p>
-          
-          
-          
+
+
+
           </p>
 
           <h2>Organizations</h2>
-          
+
           <h3><b>ACM@UCLA Teach LA</b> - Los Angeles, CA</h3>
-          <div><ul>
-<li>Previously developer team director for Teach LA, a club on campus teaching at Title I schools in the Los Angeles Unified School Distict.</li>
-<li>Led development team for a free code editor for teaching kids to program. Built on React.js frontend, Go backend, using Firebase.</li>
-<li>Developed web development <a href="https://github.com/uclaacm/learning-lab-crash-course-su20">training program</a> with co-director currently used at other schools.</li>
-</ul>
-</div>
-          
+          <div>
+            <ul>
+              <li>Previously developer team director for Teach LA, a club on campus teaching at Title I schools in the
+                Los Angeles Unified School Distict.</li>
+              <li>Led development team for a free code editor for teaching kids to program. Built on React.js frontend,
+                Go backend, using Firebase.</li>
+              <li>Developed web development <a href="https://github.com/uclaacm/learning-lab-crash-course-su20">training
+                  program</a> with co-director currently used at other schools.</li>
+            </ul>
+          </div>
+
 
           <h2>Projects</h2>
-          
+
           <h3><b>Gradebetter</b> - Grading Server</h3>
-          <div><ul>
-<li>Helped lead team of five (5) developers in creation of university capstone.</li>
-<li>Designed and implemented highly-parallel code runner backend in Go.</li>
-<li>Designed real-time results view in TypeScript using React.js and WebSockets.</li>
-</ul>
-</div>
-          
+          <div>
+            <ul>
+              <li>Helped lead team of five (5) developers in creation of university capstone.</li>
+              <li>Designed and implemented highly-parallel code runner backend in Go.</li>
+              <li>Designed real-time results view in TypeScript using React.js and WebSockets.</li>
+            </ul>
+          </div>
+
           <h3><b>Ribbit</b> - Chat Application</h3>
-          <div><ul>
-<li>Created an asynchronous Rust server providing message-passing for Qt frontend in C++.</li>
-<li>Network communications were carried out using Protobufs over QUIC.</li>
-</ul>
-</div>
-          
+          <div>
+            <ul>
+              <li>Created an asynchronous Rust server providing message-passing for Qt frontend in C++.</li>
+              <li>Network communications were carried out using Protobufs over QUIC.</li>
+            </ul>
+          </div>
+
         </td>
         <td>
           <h2>Competencies</h2>
           <ul class="nodot spaced">
-            
+
             <li>
               Software Engineering
               <i>(6 yrs)</i>
             </li>
-            
+
             <li>
               Fullstack Development
               <i>(5 yrs)</i>
             </li>
-            
+
             <li>
               Technical Writing
               <i>(5 yrs)</i>
             </li>
-            
+
             <li>
               Network Applications
               <i>(4 yrs)</i>
             </li>
-            
+
             <li>
               Software Security
               <i>(3 yrs)</i>
             </li>
-            
+
           </ul>
 
           <h2>Technologies</h2>
           <ul class="nodot spaced">
-            
+
             <li>
               Linux
               <i>(7 yrs)</i>
             </li>
-            
+
             <li>
               C/C++
               <i>(6 yrs)</i>
             </li>
-            
+
             <li>
               Python
               <i>(6 yrs)</i>
             </li>
-            
+
             <li>
               Shell Scripting
               <i>(6 yrs)</i>
             </li>
-            
+
             <li>
               TCP/IP Stack
               <i>(6 yrs)</i>
             </li>
-            
+
             <li>
               React.js
               <i>(6 yrs)</i>
             </li>
-            
+
             <li>
               Rust
               <i>(5 yrs)</i>
             </li>
-            
+
             <li>
               Go
               <i>(5 yrs)</i>
             </li>
-            
+
             <li>
               NoSQL Databases
               <i>(4 yrs)</i>
             </li>
-            
+
             <li>
               BSD Unix
               <i>(4 yrs)</i>
             </li>
-            
+
             <li>
               PostgreSQL
               <i>(3 yrs)</i>
             </li>
-            
+
             <li>
               C#
               <i>(2 yrs)</i>
             </li>
-            
+
             <li>
               Kubernetes
               <i>(1 yrs)</i>
             </li>
-            
+
           </ul>
 
           <h2>Projects</h2>
           <ul class="nodot spaced-paras">
-          
-          <li><p>Taught a beginner's Japanese course in 2019 under the largest language-learning club on campus.</p>
-</li>
-          
-          <li><p>Best Use of Marin County Open Data in Marin County’s &quot;Hack4Health&quot; 2017 hackathon.</p>
-</li>
-          
+
+            <li>
+              <p>Taught a beginner's Japanese course in 2019 under the largest language-learning club on campus.</p>
+            </li>
+
+            <li>
+              <p>Best Use of Marin County Open Data in Marin County’s &quot;Hack4Health&quot; 2017 hackathon.</p>
+            </li>
+
           </ul>
         </td>
       </tr>

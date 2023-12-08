@@ -1,123 +1,454 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Idiomatic Semantics in Golang</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Idiomatic Semantics in Golang</h1>
-  <small><date>Nov 8, 2021</date> | <span class="wordcount">946 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/software">#software</a></li>
-    
-    
-    
-    <li><a href="/tag/thoughts">#thoughts</a></li>
-    
-    
-  </ul>
-  <p>I have a complicated relationship with Go as a programming language. There’s a lot at its disposal , but only at expense of throwing oneself at the mercy of the language designers. What I want to talk about is a very particular part of Go that they like to stress as a coding methodology adopted into the language itself: idiomatic semantics.</p>
-<p>A while back, when I was starting to learn Go, I stumbled onto this answer on StackOverflow referencing the Golang FAQ<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
-<blockquote>
-<p>The reason [the ternary operator] is absent from Go is that the language's designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct.</p>
-</blockquote>
-<p>Let me emphasize a particular point here that I think really stands out to me:</p>
-<blockquote>
-<p>...the if-else form, although longer, is unquestionably clearer...</p>
-</blockquote>
-<p>I think that’s the big selling point of Go as a programming language. The syntax strives to be idiomatic and easy-to-read, and the official toolchain isn’t afraid to enforce the shit out of this principle even if it means inflating your LOC and making your code a little more verbose than it needs to be. Terseness is secondary: good code in Go's eyes is code that you read once, write once, and can immediately grasp.</p>
-<pre><code class="language-go">// From: github.com/uclaacm/teach-la-go-backend
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2021-11-08" />
+  <title>Idiomatic Semantics in Golang</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
-// RequestBodyTo reads the request body and marshals it into
-// the interface described by i.
-func RequestBodyTo(r *http.Request, i interface{}) error {
-	if err := json.NewDecoder(r.Body).Decode(i); err == io.EOF {
-		return nil
-	} else {
-		return err
-	}
-}
-</code></pre>
-<p>This is one of those things that -- while I was learning Go -- I had wished the language didn’t take so strongly to. Now that I’ve spent more time with the language, though, and worked on some larger projects, I’ve come to a point where I feel comfortable talking about these design decisions and how they reflect on everything else. You see...</p>
-<h2 id="go-wants-to-force-you-to-write-code-the-designers-like." tabindex="-1">Go wants to force you to write code the designers like.</h2>
-<p>I think that this is the paradigm that makes everyone so uneasy. We aren’t presented with the amount of rigidity introduced to Go in any programming language that I know of, except for maybe Scratch, but that’s hardly a use case.</p>
-<p>So what was going through the designers’ heads? And where the hell is my ternary? Look to the language designers’ presentations at SPLASH 2012 for some more context -- specifically, slide 10<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>:</p>
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Idiomatic Semantics in Golang</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>08 November 2021</date>
+</p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/software">software</a>
+    <a href="/tags/thoughts">thoughts</a>
+  </p>
+</div>
+
+</header>
+<p>I have a complicated relationship with Go as a programming language.
+There&#x2019;s a lot at its disposal , but only at expense of throwing oneself at the
+mercy of the language designers. What I want to talk about is a very
+particular part of Go that they like to stress as a coding methodology adopted
+into the language itself: idiomatic semantics.</p>
+<p>A while back, when I was starting to learn Go, I stumbled onto this answer
+on StackOverflow referencing the Golang FAQ<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <blockquote>
-<p>“My favorite feature isn’t in Go! Go Sucks!”</p>
+<p>The reason [the ternary operator] is absent from Go is that the language&#x2019;s
+designers had seen the operation used too often to create impenetrably complex
+expressions. The if-else form, although longer, is unquestionably clearer. A
+language needs only one conditional control flow construct.</p>
+</blockquote>
+<p>Let me emphasize a particular point here that I think really stands out to
+me:</p>
+<blockquote>
+<p>&#x2026;the if-else form, although longer, is unquestionably clearer&#x2026;</p>
+</blockquote>
+<p>I think that&#x2019;s the big selling point of Go as a programming language. The
+syntax strives to be idiomatic and easy-to-read, and the official toolchain
+isn&#x2019;t afraid to enforce the shit out of this principle even if it means
+inflating your LOC and making your code a little more verbose than it needs to
+be. Terseness is secondary: good code in Go&#x2019;s eyes is code that you read once,
+write once, and can immediately grasp.</p>
+<div class="sourceCode" id="cb1" class="codeblock"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// From: github.com/uclaacm/teach-la-go-backend</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">// RequestBodyTo reads the request body and marshals it into</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// the interface described by i.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> RequestBodyTo<span class="op">(</span>r <span class="op">*</span>http<span class="op">.</span>Request<span class="op">,</span> i <span class="kw">interface</span><span class="op">{})</span> <span class="dt">error</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> err <span class="op">:=</span> json<span class="op">.</span>NewDecoder<span class="op">(</span>r<span class="op">.</span>Body<span class="op">).</span>Decode<span class="op">(</span>i<span class="op">);</span> err <span class="op">==</span> io<span class="op">.</span>EOF <span class="op">{</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ot">nil</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> err</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is one of those things that &#x2013; while I was learning Go &#x2013; I had wished
+the language didn&#x2019;t take so strongly to. Now that I&#x2019;ve spent more time with
+the language, though, and worked on some larger projects, I&#x2019;ve come to a point
+where I feel comfortable talking about these design decisions and how they
+reflect on everything else. You see&#x2026;</p>
+<section id="go-wants-to-force-you-to-write-code-the-designers-like."
+class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Go wants to
+force you to write code the designers like.</h1>
+<p>I think that this is the paradigm that makes everyone so uneasy. We aren&#x2019;t
+presented with the amount of rigidity introduced to Go in any programming
+language that I know of, except for maybe Scratch, but that&#x2019;s hardly a use
+case.</p>
+<p>So what was going through the designers&#x2019; heads? And where the hell is my
+ternary? Look to the language designers&#x2019; presentations at SPLASH 2012 for some
+more context &#x2013; specifically, slide 10<a href="#fn2" class="footnote-ref"
+id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<blockquote>
+<p>&#x201C;My favorite feature isn&#x2019;t in Go! Go Sucks!&#x201D;</p>
 <p>This misses the point.</p>
 </blockquote>
-<p>A project with similar ideals can be found in <a href="https://prettier.io/docs/en/why-prettier.html">Prettier</a>:</p>
+<p>A project with similar ideals can be found in <a
+href="https://prettier.io/docs/en/why-prettier.html" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Prettier</a>:</p>
 <blockquote>
-<p>“By far the biggest reason for adopting Prettier is to stop all the on-going debates over styles.”</p>
+<p>&#x201C;By far the biggest reason for adopting Prettier is to stop all the
+on-going debates over styles.&#x201D;</p>
 </blockquote>
-<p>This is analogous to what Go does at a language level. Its language design -- and its appropriately unforgiving linter -- solve problems of maintainability at the source. Rather than concern oneself with what good code looks like, one writes code that will meet some bare minimum threshold of quality enforced by the axioms of the language itself. As with any language, it’s still possible to write unmaintainable spaghetti:</p>
-<pre><code class="language-go">type MyDB = map[string]map[string]map[string]string
-
-func getValue(db *MyDB, username string) string {
-  if db == nil {
-    return &quot;&quot;
-  } else if db[&quot;users&quot;] == nil {
-    return &quot;&quot;
-  } else if {
-    // ...
-  }
-  return db[&quot;users&quot;][&quot;names&quot;][username]
-}
-</code></pre>
-<p>...Go just tries to make that as painful a process as possible.</p>
-<h2 id="where-is-my-ternary%3F" tabindex="-1">Where is my ternary?</h2>
-<p>Well, it isn't there. It's gone forever in Go. They threw it out because it was deemed unclear or confusing. Let’s go through a few features that <strong>C and C++ have, but Go doesn’t.</strong> I want you to glance through them and think about which features you absolutely loved having.</p>
+<p>This is analogous to what Go does at a language level. Its language design
+&#x2013; and its appropriately unforgiving linter &#x2013; solve problems of maintainability
+at the source. Rather than concern oneself with what good code looks like, one
+writes code that will meet some bare minimum threshold of quality enforced by
+the axioms of the language itself. As with any language, it&#x2019;s still possible
+to write unmaintainable spaghetti:</p>
+<div class="sourceCode" id="cb2" class="codeblock"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> MyDB <span class="op">=</span> <span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="dt">string</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> getValue<span class="op">(</span>db <span class="op">*</span>MyDB<span class="op">,</span> username <span class="dt">string</span><span class="op">)</span> <span class="dt">string</span> <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> db <span class="op">==</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> db<span class="op">[</span><span class="st">&quot;users&quot;</span><span class="op">]</span> <span class="op">==</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">{</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> db<span class="op">[</span><span class="st">&quot;users&quot;</span><span class="op">][</span><span class="st">&quot;names&quot;</span><span class="op">][</span>username<span class="op">]</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>&#x2026;Go just tries to make that as painful a process as possible.</p>
+</section>
+<section id="where-is-my-ternary" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Where is my
+ternary?</h1>
+<p>Well, it isn&#x2019;t there. It&#x2019;s gone forever in Go. They threw it out because it
+was deemed unclear or confusing. Let&#x2019;s go through a few features that
+<strong>C and C++ have, but Go doesn&#x2019;t.</strong> I want you to glance through
+them and think about which features you absolutely loved having.</p>
 <ul>
 <li>Ternary operator</li>
-<li>“”””Macros””””</li>
-<li><code>NULL</code>, <code>nullptr</code>, and <code>MY_LIBRARY_NULL</code></li>
+<li>&#x201C;&#x201D;&#x201D;&#x201D;Macros&#x201D;&#x201D;&#x201D;&#x201D;</li>
+<li><code>NULL</code>, <code>nullptr</code>, and
+<code>MY_LIBRARY_NULL</code></li>
 <li><code>typedef __something something;</code></li>
 <li><code>template&lt;typedef T&gt;</code></li>
-<li><code>retType MyClass::fnName()</code>, and generic class member functions.</li>
-<li><code>std::thread</code><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> vs. <code>std::async</code><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> vs. <code>boost</code><sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></li>
+<li><code>retType MyClass::fnName()</code>, and generic class member
+functions.</li>
+<li><code>std::thread</code><a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a> vs.&#xA0;<code>std::async</code><a href="#fn4"
+class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>
+vs.&#xA0;<code>boost</code><a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a></li>
 </ul>
-<p>The two features that I personally noticed learning Go were the lack of a ternary operator and the lack of generics. However, the more Go I wrote, the less I found myself falling back on them. In place of ternary, one can use <code>if/else</code>. Sure, it's at least five lines after <code>gofmt</code>, but it reads idiomatically. In place of generics, we can use interfaces, which are implicitly implemented -- a far more flexible compromise than static assertions for polymorphic &quot;&quot;type bounds&quot;&quot;.</p>
-<p>This wasn't just in code I was writing while learning. Suddenly, contributions to Go projects were easier to read, even if they were authored by someone who started learning Go last week. Suddenly, errors were being managed and useless variables were being pruned not necessarily because programmers are keeping an eye out for them, but because <em>the program won't even compile without addressing them</em>. Mix this with Go's emphasis on test-driven development, and source is enforcably safer.</p>
-<p>The Go programming language was designed by Google engineers who expect to write and maintain codebases with SLOC in the tens of thousands to drive complex systems in the highest-demand environments.</p>
+<p>The two features that I personally noticed learning Go were the lack of a
+ternary operator and the lack of generics. However, the more Go I wrote, the
+less I found myself falling back on them. In place of ternary, one can use
+<code>if/else</code>. Sure, it&#x2019;s at least five lines after <code>gofmt</code>,
+but it reads idiomatically. In place of generics, we can use interfaces, which
+are implicitly implemented &#x2013; a far more flexible compromise than static
+assertions for polymorphic &#x201C;&#x201C;type bounds&#x201D;&#x201C;.</p>
+<p>This wasn&#x2019;t just in code I was writing while learning. Suddenly,
+contributions to Go projects were easier to read, even if they were authored
+by someone who started learning Go last week. Suddenly, errors were being
+managed and useless variables were being pruned not necessarily because
+programmers are keeping an eye out for them, but because <em>the program won&#x2019;t
+even compile without addressing them</em>. Mix this with Go&#x2019;s emphasis on
+test-driven development, and source is enforcably safer.</p>
+<p>The Go programming language was designed by Google engineers who expect to
+write and maintain codebases with SLOC in the tens of thousands to drive
+complex systems in the highest-demand environments.</p>
 <p>Writing code the designers like might not be so bad after all.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://stackoverflow.com/a/60561838">https://stackoverflow.com/a/60561838</a> referencing <a href="https://golang.org/doc/faq#Does_Go_have_a_ternary_form">https://golang.org/doc/faq#Does_Go_have_a_ternary_form</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Rob Pike. Go at Google. <a href="https://talks.golang.org/2012/splash.slide#10">https://talks.golang.org/2012/splash.slide#10</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>C++'s <code>std::thread</code>. <a href="https://en.cppreference.com/w/cpp/thread/thread">https://en.cppreference.com/w/cpp/thread/thread</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>C++'s <code>std::async</code>. <a href="https://en.cppreference.com/w/cpp/thread/async">https://en.cppreference.com/w/cpp/thread/async</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Boost's async ecosystem. <a href="https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html">https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html</a> <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
 </section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>https://stackoverflow.com/a/60561838 referencing
+https://golang.org/doc/faq#Does_Go_have_a_ternary_form<a href="#fnref1"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn2"><p>Rob Pike. Go at Google.
+https://talks.golang.org/2012/splash.slide#10<a href="#fnref2"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn3"><p>C++&#x2019;s <code>std::thread</code>.
+https://en.cppreference.com/w/cpp/thread/thread<a href="#fnref3"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn4"><p>C++&#x2019;s <code>std::async</code>.
+https://en.cppreference.com/w/cpp/thread/async<a href="#fnref4"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn5"><p>Boost&#x2019;s async ecosystem.
+https://www.boost.org/doc/libs/1_35_0/doc/html/boost_asio/design/async.html<a
+href="#fnref5" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+</ol>
+</aside>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>

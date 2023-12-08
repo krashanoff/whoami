@@ -1,49 +1,272 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Bandwidth vs. Quality of Life</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Bandwidth vs. Quality of Life</h1>
-  <small><date>May 25, 2022</date> | <span class="wordcount">372 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/thoughts">#thoughts</a></li>
-    
-    
-  </ul>
-  <p>I have been terminally online since my sophomore year of high school. COVID didn't help much when I had to move back home. I don't exactly live in &quot;the sticks&quot;, but I live far enough away from a major data center that ISPs are comfortable being predatory with us. Ever since high school I've had a hard cap of about a terabyte on monthly data usage. This was not only for me, but for the whole household, which made things difficult.</p>
-<p>Every month, I would get an email when we were approaching that data cap. That email had been a staple of every single month.</p>
-<p>Things changed pretty drastically in the past month or so, though. For one, I graduated college in March. I moved back home without my desktop, and don't really have a place to be online all day.</p>
-<p>I also started full-time work. I have much less time to program for fun. I also had less time to watch anime, or watch Internet videos, or really whatever my hobbies might entail.</p>
-<p>You can imagine my surprise when, for the first time in a long time, I didn't get an email from our ISP telling me that we were close to exceeding our monthly data plan.</p>
-<p>My browsing habits had changed. Though I had lost my desktop, I had begun using my server more for high-bandwidth jobs that I could offload. I checked this computer far less often, and when I did, it was over SSH.</p>
-<p>It makes me wonder about the advantages of a lower bandwidth life. There's less to spread your focus thin and encourages you to use the resources at your disposal. Instead of Googling something, I can just use the manpages or local doc server. Instead of watching the first episode of every seasonal anime, I can just watch a couple episodes of one that already aired, and just chip away at it.</p>
-<p>It's attractive enough that I'm contemplating some more drastic changes. I could start taking notes on pen-and-paper again, or journal or something. Maybe I'll revive the old Nokia cell phone we've got sitting around and, with an older MP3 player, and get rid of my smartphone.</p>
-<p>Hell, maybe I'll even <em>read a book</em>.</p>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2022-05-25" />
+  <title>Bandwidth vs.&#xA0;Quality of Life</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
 
-</article>
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Bandwidth vs.&#xA0;Quality of Life</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>25 May 2022</date>
+</p>
 
 
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/thoughts">thoughts</a>
+  </p>
+</div>
 
-  </body>
+</header>
+<p>I have been terminally online since my sophomore year of high school. COVID
+didn&#x2019;t help much when I had to move back home. I don&#x2019;t exactly live in &#x201C;the
+sticks&#x201D;, but I live far enough away from a major data center that ISPs are
+comfortable being predatory with us. Ever since high school I&#x2019;ve had a hard
+cap of about a terabyte on monthly data usage. This was not only for me, but
+for the whole household, which made things difficult.</p>
+<p>Every month, I would get an email when we were approaching that data cap.
+That email had been a staple of every single month.</p>
+<p>Things changed pretty drastically in the past month or so, though. For one,
+I graduated college in March. I moved back home without my desktop, and don&#x2019;t
+really have a place to be online all day.</p>
+<p>I also started full-time work. I have much less time to program for fun. I
+also had less time to watch anime, or watch Internet videos, or really
+whatever my hobbies might entail.</p>
+<p>You can imagine my surprise when, for the first time in a long time, I
+didn&#x2019;t get an email from our ISP telling me that we were close to exceeding
+our monthly data plan.</p>
+<p>My browsing habits had changed. Though I had lost my desktop, I had begun
+using my server more for high-bandwidth jobs that I could offload. I checked
+this computer far less often, and when I did, it was over SSH.</p>
+<p>It makes me wonder about the advantages of a lower bandwidth life. There&#x2019;s
+less to spread your focus thin and encourages you to use the resources at your
+disposal. Instead of Googling something, I can just use the manpages or local
+doc server. Instead of watching the first episode of every seasonal anime, I
+can just watch a couple episodes of one that already aired, and just chip away
+at it.</p>
+<p>It&#x2019;s attractive enough that I&#x2019;m contemplating some more drastic changes. I
+could start taking notes on pen-and-paper again, or journal or something.
+Maybe I&#x2019;ll revive the old Nokia cell phone we&#x2019;ve got sitting around and, with
+an older MP3 player, and get rid of my smartphone.</p>
+<p>Hell, maybe I&#x2019;ll even <em>read a book</em>.</p>
+
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
+
+</body>
 </html>

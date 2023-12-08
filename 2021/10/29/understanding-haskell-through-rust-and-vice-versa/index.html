@@ -1,241 +1,563 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Understanding Haskell Through Rust (and vice versa)</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Understanding Haskell Through Rust (and vice versa)</h1>
-  <small><date>Oct 29, 2021</date> | <span class="wordcount">1309 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/software">#software</a></li>
-    
-    
-    
-    <li><a href="/tag/thoughts">#thoughts</a></li>
-    
-    
-  </ul>
-  <p>Haskell is a very strange programming language. I have never had a particular reason to
-learn the language in the same way I needed Go for my clubs projects or Rust for understanding
-a few open-source projects. I'm not writing any math-heavy research papers, and even then I
-can't say that I'd jump to using Haskell. I had always found it a curiosity, and not much more.</p>
-<p>Every time I have a bunch of exams queued up, though, I come around to trying to learn it, and
-then give up when I get to parts about monads and all this other category theory stuff.</p>
-<p>This October, I took another dive into it after getting burnt out writing a <em>lot</em> of
-Rust. For whatever reason, this time, it made a lot more sense to me.</p>
-<h2 id="learning-struggles" tabindex="-1">Learning Struggles</h2>
-<p>I think the thing that it boiled down to for me while struggling to learn is the syntax of the
-language. Yeah, it's functional, so it's pretty unfamiliar, but even if you're coming from
-something like OCaml, as I was in my second year of college, it's still just <em>weird</em>.</p>
-<p>There's a lot of different ways of doing the same thing at a fundamental level.</p>
-<p>Which of these looks more syntactically sane to you? Or, even better, which of these
-immediately demonstrates exactly what it's going to do?</p>
-<pre><code class="language-haskell">prefix = &quot;hi there &quot;
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2021-10-29" />
+  <title>Understanding Haskell Through Rust (and vice versa)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
-sayHi name = putStrLn (prefix ++ name)    -- (1)
-sayHi name = putStrLn $ prefix ++ name    -- (2)
-sayHi = putStrLn . (prefix ++)            -- (3)
-</code></pre>
-<p>All of these functions typecheck. All of them do the same thing: they apply some prefix to
-a string, then print it.</p>
-<pre><code>Prelude&gt; sayHi &quot;reader&quot;
-hi there reader
-</code></pre>
-<p>Some of the examples use currying (<code>3</code>), some don't. Some use an entire
-operator for simply applying parameters to a function (<code>2</code>), another composes functions (<code>3</code>).</p>
-<p>Like natural language, there's always more than one way to say the same thing when programming.
-In Haskell, there's even more. It gives the programmer a lot more creative freedom about how they
-want to express their ideas without sacrificing functionality.</p>
-<p>This is good: focused use of Haskell's syntax leads to concise code and builds a relationship
-between the author and their reader.</p>
-<p>This is bad: brandishing its syntax can cause confusion. This is what gave me a lot of trouble while
-familiarizing myself with its grammar. Once you get over the initial hump, though, writing software
-becomes even more creative.</p>
-<p>Here's another example, where we increment an optional value.</p>
-<pre><code class="language-haskell">-- Using a case statement:
-possiblyIncrement a = case a of
-  Just x -&gt; Just (x + 1)
-  Nothing -&gt; Nothing
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
 
--- Using a lambda case statement:
--- You have to turn this on with '{-# LANGUAGE LambdaCase #-}'.
-possiblyIncrement = \case
-  Just x -&gt; Just (x + 1)
-  Nothing -&gt; Nothing
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
 
--- Or, using pattern matching:
-possiblyIncrement (Just x) = Just (x + 1)
-possiblyIncrement Nothing = Nothing
+    figcaption {
+      margin-top: 1rem;
+    }
 
--- Or, using monads:
-possiblyIncrement a = a &gt;&gt;= (\x -&gt; Just (x + 1))
+    footer {
+      font-size: 0.75rem;
+    }
 
--- Or, with currying:
-possiblyIncrement = (=&lt;&lt;) $ Just . (+ 1)
-</code></pre>
-<p>We are able to describe the action of <em>potentially</em> modifying a value under an abstraction with
-Haskell's <code>bind</code> (<code>&gt;&gt;=</code>) operator. There are a plethora of ways of approaching it, even in this
-simple example. Depending on which way one approaches it, the immediate meaning might change.</p>
-<p>In nontrivial codebases, the voice of the author determines its maintainability -- how terse it
-will be. For more complicated Haskell programs, functions can reach tens of lines. Doesn't sound
-like much, except each line comes with this same exceptional information density.</p>
-<h2 id="rust-parallels" tabindex="-1">Rust Parallels</h2>
-<p>Looking over these functions after writing a ton of Rust, though, I realized these semantics reminded me
-of a fundamental example.</p>
-<pre><code class="language-rs">fn potentially_increment(u: Option&lt;u32&gt;) -&gt; Option&lt;u32&gt; {
-  u.map(|i| i + 1)
-}
-</code></pre>
-<p>In Rust, an <code>Option&lt;T&gt;</code> type can have its underlying value <em>potentially</em> modified with a call to
-<code>Option&lt;T&gt;::map</code>. This may sound similar to the <code>bind</code> operator.</p>
-<p>It was when I came to this parallel that I noticed how many things in Rust are near-direct analogs to
-Haskell. A <code>Tree</code> in Haskell, for example, might look like this:</p>
-<pre><code class="language-haskell">data Tree a = Node (Tree a) (Tree a) | Leaf a
-  deriving (Show)
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
 
-valAt (Leaf v) = Just v
-valAt _ = Nothing
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
 
-instance Eq a =&gt; Eq (Tree a) where
-  (==) a b = valAt a == valAt b
-</code></pre>
-<p>Compare this to a Rust data structure that I've coerced to appear as similar as possible:</p>
-<pre><code class="language-rs">#[derive(Debug)]
-struct Tree&lt;T: Eq&gt; {
-  left: Option&lt;Tree&lt;T&gt;&gt;,
-  right: Option&lt;Tree&lt;T&gt;&gt;,
-  value: Option&lt;T&gt;,
-}
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
 
-impl std::cmp::PartialEq for Tree {
-  type Rhs = Tree;
+<a href="/">Back to home</a>
 
-  fn eq(&amp;self, other: &amp;Rhs) -&gt; bool {
-    todo!()
-  }
-  fn ne(&amp;self, other: &amp;Rhs) -&gt; bool {
-    todo!()
-  }
-}
-</code></pre>
-<p>The Haskell version is the same structure expressed tersely, in exchange for a
-less-intuitive grammar.</p>
-<p>When I realized the parallel between these two, things gradually started to click.
-Rust paradigms are generally Haskell paradigms expressed in a more imperative way.
-That is, Rust is a scaffold between the safety of the functional world and the
-familiarity of the imperative, at expense of verbosity.</p>
-<p>Others have written about the more direct similarities between Haskell and Rust<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>,
-but I'd like to quickly talk about two trade-offs Rust has made to inherit some of their
-ideas beyond syntax.</p>
-<h2 id="currying-and-fluency" tabindex="-1">Currying and Fluency</h2>
-<p>Haskell is built around currying. Applying a parameter to a function produces a new
-function that simply takes one less parameter:</p>
-<pre><code>Prelude&gt; :t (+)
+<header id="title-block-header">
+<h1 class="title">Understanding Haskell Through Rust (and vice versa)</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>29 October 2021</date>
+</p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/software">software</a>
+    <a href="/tags/thoughts">thoughts</a>
+  </p>
+</div>
+
+</header>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">Table of Contents</h2>
+<ul>
+<li><a href="#introduction" id="toc-introduction"><span
+class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#learning-struggles" id="toc-learning-struggles"><span
+class="toc-section-number">2</span> Learning Struggles</a></li>
+<li><a href="#rust-parallels" id="toc-rust-parallels"><span
+class="toc-section-number">3</span> Rust Parallels</a></li>
+<li><a href="#currying-and-fluency" id="toc-currying-and-fluency"><span
+class="toc-section-number">4</span> Currying and Fluency</a></li>
+<li><a href="#monads-vs.-results-options"
+id="toc-monads-vs.-results-options"><span class="toc-section-number">5</span>
+Monads vs.&#xA0;Results + Options</a></li>
+</ul>
+</nav>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span>
+Introduction</h1>
+<p>Haskell is a very strange programming language. I have never had a
+particular reason to learn the language in the same way I needed Go for my
+clubs projects or Rust for understanding a few open-source projects. I&#x2019;m not
+writing any math-heavy research papers, and even then I can&#x2019;t say that I&#x2019;d
+jump to using Haskell. I had always found it a curiosity, and not much
+more.</p>
+<p>Every time I have a bunch of exams queued up, though, I come around to
+trying to learn it, and then give up when I get to parts about monads and all
+this other category theory stuff.</p>
+<p>This October, I took another dive into it after getting burnt out writing a
+<em>lot</em> of Rust. For whatever reason, this time, it made a lot more sense
+to me.</p>
+</section>
+<section id="learning-struggles" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Learning
+Struggles</h1>
+<p>I think the thing that it boiled down to for me while struggling to learn
+is the syntax of the language. Yeah, it&#x2019;s functional, so it&#x2019;s pretty
+unfamiliar, but even if you&#x2019;re coming from something like OCaml, as I was in
+my second year of college, it&#x2019;s still just <em>weird</em>.</p>
+<p>There&#x2019;s a lot of different ways of doing the same thing at a fundamental
+level.</p>
+<p>Which of these looks more syntactically sane to you? Or, even better, which
+of these immediately demonstrates exactly what it&#x2019;s going to do?</p>
+<div class="sourceCode" id="cb1" class="codeblock"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>prefix <span class="ot">=</span> <span class="st">&quot;hi there &quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sayHi name <span class="ot">=</span> <span class="fu">putStrLn</span> (prefix <span class="op">++</span> name)    <span class="co">-- (1)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sayHi name <span class="ot">=</span> <span class="fu">putStrLn</span> <span class="op">$</span> prefix <span class="op">++</span> name    <span class="co">-- (2)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sayHi <span class="ot">=</span> <span class="fu">putStrLn</span> <span class="op">.</span> (prefix <span class="op">++</span>)            <span class="co">-- (3)</span></span></code></pre></div>
+<p>All of these functions typecheck. All of them do the same thing: they apply
+some prefix to a string, then print it.</p>
+<pre class="codeblock"><code>Prelude&gt; sayHi &quot;reader&quot;
+hi there reader</code></pre>
+<p>Some of the examples use currying (<code>3</code>), some don&#x2019;t. Some use an
+entire operator for simply applying parameters to a function (<code>2</code>),
+another composes functions (<code>3</code>).</p>
+<p>Like natural language, there&#x2019;s always more than one way to say the same
+thing when programming. In Haskell, there&#x2019;s even more. It gives the programmer
+a lot more creative freedom about how they want to express their ideas without
+sacrificing functionality.</p>
+<p>This is good: focused use of Haskell&#x2019;s syntax leads to concise code and
+builds a relationship between the author and their reader.</p>
+<p>This is bad: brandishing its syntax can cause confusion. This is what gave
+me a lot of trouble while familiarizing myself with its grammar. Once you get
+over the initial hump, though, writing software becomes even more
+creative.</p>
+<p>Here&#x2019;s another example, where we increment an optional value.</p>
+<div class="sourceCode" id="cb3" class="codeblock"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Using a case statement:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>possiblyIncrement a <span class="ot">=</span> <span class="kw">case</span> a <span class="kw">of</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Just</span> x <span class="ot">-&gt;</span> <span class="dt">Just</span> (x <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> <span class="dt">Nothing</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- Using a lambda case statement:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- You have to turn this on with &#39;{-# LANGUAGE LambdaCase #-}&#39;.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>possiblyIncrement <span class="ot">=</span> \<span class="kw">case</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Just</span> x <span class="ot">-&gt;</span> <span class="dt">Just</span> (x <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> <span class="dt">Nothing</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">-- Or, using pattern matching:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>possiblyIncrement (<span class="dt">Just</span> x) <span class="ot">=</span> <span class="dt">Just</span> (x <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>possiblyIncrement <span class="dt">Nothing</span> <span class="ot">=</span> <span class="dt">Nothing</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">-- Or, using monads:</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>possiblyIncrement a <span class="ot">=</span> a <span class="op">&gt;&gt;=</span> (\x <span class="ot">-&gt;</span> <span class="dt">Just</span> (x <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">-- Or, with currying:</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>possiblyIncrement <span class="ot">=</span> (<span class="op">=&lt;&lt;</span>) <span class="op">$</span> <span class="dt">Just</span> <span class="op">.</span> (<span class="op">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>We are able to describe the action of <em>potentially</em> modifying a
+value under an abstraction with Haskell&#x2019;s <code>bind</code>
+(<code>&gt;&gt;=</code>) operator. There are a plethora of ways of approaching
+it, even in this simple example. Depending on which way one approaches it, the
+immediate meaning might change.</p>
+<p>In nontrivial codebases, the voice of the author determines its
+maintainability &#x2013; how terse it will be. For more complicated Haskell programs,
+functions can reach tens of lines. Doesn&#x2019;t sound like much, except each line
+comes with this same exceptional information density.</p>
+</section>
+<section id="rust-parallels" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Rust
+Parallels</h1>
+<p>Looking over these functions after writing a ton of Rust, though, I
+realized these semantics reminded me of a fundamental example.</p>
+<div class="sourceCode" id="cb4" class="codeblock"><pre
+class="sourceCode rs"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> potentially_increment(u<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;</span><span class="dt">u32</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="dt">Option</span><span class="op">&lt;</span><span class="dt">u32</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  u<span class="op">.</span>map(<span class="op">|</span>i<span class="op">|</span> i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>In Rust, an <code>Option&lt;T&gt;</code> type can have its underlying value
+<em>potentially</em> modified with a call to
+<code>Option&lt;T&gt;::map</code>. This may sound similar to the
+<code>bind</code> operator.</p>
+<p>It was when I came to this parallel that I noticed how many things in Rust
+are near-direct analogs to Haskell. A <code>Tree</code> in Haskell, for
+example, might look like this:</p>
+<div class="sourceCode" id="cb5" class="codeblock"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">Tree</span> a <span class="ot">=</span> <span class="dt">Node</span> (<span class="dt">Tree</span> a) (<span class="dt">Tree</span> a) <span class="op">|</span> <span class="dt">Leaf</span> a</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">deriving</span> (<span class="dt">Show</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>valAt (<span class="dt">Leaf</span> v) <span class="ot">=</span> <span class="dt">Just</span> v</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>valAt _ <span class="ot">=</span> <span class="dt">Nothing</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">Eq</span> a <span class="ot">=&gt;</span> <span class="dt">Eq</span> (<span class="dt">Tree</span> a) <span class="kw">where</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  (<span class="op">==</span>) a b <span class="ot">=</span> valAt a <span class="op">==</span> valAt b</span></code></pre></div>
+<p>Compare this to a Rust data structure that I&#x2019;ve coerced to appear as
+similar as possible:</p>
+<div class="sourceCode" id="cb6" class="codeblock"><pre
+class="sourceCode rs"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Debug</span><span class="at">)]</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Tree<span class="op">&lt;</span>T<span class="op">:</span> <span class="bu">Eq</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  left<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;</span>Tree<span class="op">&lt;</span>T<span class="op">&gt;&gt;,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  right<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;</span>Tree<span class="op">&lt;</span>T<span class="op">&gt;&gt;,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  value<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;</span>T<span class="op">&gt;,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> <span class="pp">std::cmp::</span><span class="bu">PartialEq</span> <span class="cf">for</span> Tree <span class="op">{</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> Rhs <span class="op">=</span> Tree<span class="op">;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fn</span> eq(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> other<span class="op">:</span> <span class="op">&amp;</span>Rhs) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="pp">todo!</span>()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fn</span> ne(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> other<span class="op">:</span> <span class="op">&amp;</span>Rhs) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="pp">todo!</span>()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The Haskell version is the same structure expressed tersely, in exchange
+for a less-intuitive grammar.</p>
+<p>When I realized the parallel between these two, things gradually started to
+click. Rust paradigms are generally Haskell paradigms expressed in a more
+imperative way. That is, Rust is a scaffold between the safety of the
+functional world and the familiarity of the imperative, at expense of
+verbosity.</p>
+<p>Others have written about the more direct similarities between Haskell and
+Rust<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>, but I&#x2019;d like to quickly talk about two
+trade-offs Rust has made to inherit some of their ideas beyond syntax.</p>
+</section>
+<section id="currying-and-fluency" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Currying and
+Fluency</h1>
+<p>Haskell is built around currying. Applying a parameter to a function
+produces a new function that simply takes one less parameter:</p>
+<pre class="codeblock"><code>Prelude&gt; :t (+)
 (+) :: Num a =&gt; a -&gt; a -&gt; a
 Prelude&gt; :t (+ 2)
-(+ 2) :: Num a =&gt; a -&gt; a
-</code></pre>
-<p>This has a number of useful applications, though my most common exposure to it was
-through function declarations that are simply chains of others:</p>
-<pre><code>Prelude&gt; :t (=&lt;&lt;)
+(+ 2) :: Num a =&gt; a -&gt; a</code></pre>
+<p>This has a number of useful applications, though my most common exposure to
+it was through function declarations that are simply chains of others:</p>
+<pre class="codeblock"><code>Prelude&gt; :t (=&lt;&lt;)
 (=&lt;&lt;) :: Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b
 
 Prelude&gt; potentiallyIncrement = (=&lt;&lt;) $ Just . (+ 1)
 Prelude&gt; :t potentiallyIncrement 
-potentiallyIncrement :: Num b =&gt; Maybe b -&gt; Maybe b
-</code></pre>
-<p>I'd argue this drives the &quot;flow&quot; of the code.</p>
-<p>While Rust does not have out of the box support for currying<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>,
-it has its own sort of &quot;flow mechanic&quot;: functional fluency. Rather than partial application of
-functions generating new functions, we can partially apply attributes onto a struct
-through functions, generating new partial data structures.</p>
-<pre><code class="language-rs">let myfile = OpenOptions::new()
-                        .read(true)
-                        .write(false);
-                        .open(&quot;filename.txt&quot;)
-                        .unwrap();
-</code></pre>
+potentiallyIncrement :: Num b =&gt; Maybe b -&gt; Maybe b</code></pre>
+<p>I&#x2019;d argue this drives the &#x201C;flow&#x201D; of the code.</p>
+<p>While Rust does not have out of the box support for currying<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, it has
+its own sort of &#x201C;flow mechanic&#x201D;: functional fluency. Rather than partial
+application of functions generating new functions, we can partially apply
+attributes onto a struct through functions, generating new partial data
+structures.</p>
+<div class="sourceCode" id="cb10" class="codeblock"><pre
+class="sourceCode rs"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> myfile <span class="op">=</span> <span class="pp">OpenOptions::</span>new()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span>read(<span class="cn">true</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span>write(<span class="cn">false</span>)<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span>open(<span class="st">&quot;filename.txt&quot;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span>unwrap()<span class="op">;</span></span></code></pre></div>
 <p>This adopts a functional approach to object-oriented operations.</p>
-<h2 id="monads-vs.-results-%2B-options" tabindex="-1">Monads vs. Results + Options</h2>
-<p>I pinned down monads as a container type in the same vein as <code>Option&lt;T&gt;</code>. Let's compare
-<code>Option&lt;T&gt;</code> to <code>Maybe</code>:</p>
+</section>
+<section id="monads-vs.-results-options" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Monads
+vs.&#xA0;Results + Options</h1>
+<p>I pinned down monads as a container type in the same vein as
+<code>Option&lt;T&gt;</code>. Let&#x2019;s compare <code>Option&lt;T&gt;</code> to
+<code>Maybe</code>:</p>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
 <thead>
-<tr>
-<th style="text-align:left">Operation</th>
+<tr class="header">
+<th style="text-align: left;">Operation</th>
 <th>Rust</th>
 <th>Haskell</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left">Wrap in container</td>
+<tr class="odd">
+<td style="text-align: left;">Wrap in container</td>
 <td><code>Some(x)</code></td>
 <td><code>Just (x)</code></td>
 </tr>
-<tr>
-<td style="text-align:left">Modify underlying value</td>
+<tr class="even">
+<td style="text-align: left;">Modify underlying value</td>
 <td><code>.map()</code></td>
 <td><code>&gt;&gt;=</code></td>
 </tr>
-<tr>
-<td style="text-align:left">Get first underlying value</td>
+<tr class="odd">
+<td style="text-align: left;">Get first underlying value</td>
 <td><code>.iter().find()</code></td>
 <td><code>msum</code></td>
 </tr>
-<tr>
-<td style="text-align:left">Map each underlying value in an iterator</td>
-<td>`.iter().map(</td>
-<td>x</td>
+<tr class="even">
+<td style="text-align: left;">Map each underlying value in an iterator</td>
+<td><code>.iter().map(|x| x.map())</code></td>
+<td><code>mapM</code></td>
 </tr>
 </tbody>
 </table>
-<p>Where the two differ is that monads are also their own <code>Result&lt;T, E&gt;</code>. The ubiquitous <code>IO</code> monad
-is an example of this<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>.</p>
-<p>Rather than keeping two separate types with uniform interfaces, Haskell instead has a single
-type with a single, more polymorphically powerful interface.</p>
-<p>In the same way that I came to appreciate Rust after an initial hurdle,
-I'm starting to understand why Haskell is well-liked by its developers. It just took
-a small change in perspective.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Others have written about more direct similarities between Rust and Haskell:</p>
-<ul>
-<li><a href="http://xion.io/post/programming/rust-into-haskell.html">http://xion.io/post/programming/rust-into-haskell.html</a></li>
-<li><a href="https://www.fpcomplete.com/blog/2018/11/haskell-and-rust/">https://www.fpcomplete.com/blog/2018/11/haskell-and-rust/</a></li>
-</ul>
- <a href="#fnref1" class="footnote-backref">↩︎</a></li>
-<li id="fn2" class="footnote-item"><p>There is a crate for currying functions in Rust. <a href="https://peppe.rs/posts/auto-currying_rust_functions/">https://peppe.rs/posts/auto-currying_rust_functions/</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p><a href="https://hackage.haskell.org/package/base-4.9.1.0/docs/System-IO.html">https://hackage.haskell.org/package/base-4.9.1.0/docs/System-IO.html</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
+<p>Where the two differ is that monads are also their own
+<code>Result&lt;T, E&gt;</code>. The ubiquitous <code>IO</code> monad is an
+example of this<a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a>.</p>
+<p>Rather than keeping two separate types with uniform interfaces, Haskell
+instead has a single type with a single, more polymorphically powerful
+interface.</p>
+<p>In the same way that I came to appreciate Rust after an initial hurdle, I&#x2019;m
+starting to understand why Haskell is well-liked by its developers. It just
+took a small change in perspective.</p>
 </section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Others have written about more direct similarities between
+Rust and Haskell:</p>
+<pre class="codeblock"><code>  * http://xion.io/post/programming/rust-into-haskell.html
+  * https://www.fpcomplete.com/blog/2018/11/haskell-and-rust/</code></pre>
+<a href="#fnref1" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></li>
+<li id="fn2"><p>There is a crate for currying functions in Rust.
+https://peppe.rs/posts/auto-currying_rust_functions/<a href="#fnref2"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li
+id="fn3"><p>https://hackage.haskell.org/package/base-4.9.1.0/docs/System-IO.html<a
+href="#fnref3" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+</ol>
+</aside>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>

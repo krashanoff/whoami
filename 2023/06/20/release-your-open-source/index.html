@@ -1,63 +1,329 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Release Your &quot;Open&quot; &quot;Source&quot;</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Release Your &quot;Open&quot; &quot;Source&quot;</h1>
-  <small><date>Jun 20, 2023</date> | <span class="wordcount">606 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/rant">#rant</a></li>
-    
-    
-  </ul>
-  <p>I've seen a few repos lately on GitHub that function as no more than an advertisement for a closed-source project that's still in heavy development. What's up with that?</p>
-<p>I was originally writing a post talking about this one project, <a href="https://www.warp.dev/">Warp</a>, which is supposed to be a terminal editor. It was one of those &quot;solution looking for a problem&quot; situations. It was just another terminal emulator, but with Internet connectivity, telemetry, and AI for some reason. They tried to justify it with this other bit where you could track shell commands and output as blocks, but they didn't integrate the terminal tightly enough with the shell to capture output perfectly. This system design-level problem kept biting them in the ass, and they had to shell out to a wrapper they placed around Bash to make sure their tracking worked through SSH.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>Ignoring this, it's a good idea on paper. I wouldn't be talking about it so vehemently if the project didn't <em>release an empty GitHub repository with some vague promises of open-sourcing parts of the app later.</em> Oh, but don't worry! We have a discussion thread in the empty repo where we will openly posit about the best way of making money.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>There's another project that went and did the same thing recently: a programming language, <a href="https://www.modular.com/mojo">Mojo</a>. They're looking to provide a new programming language for bridging low-level performance and Python's ubiquity in data science. Oh, and it's again supposedly faster than C.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<p>Again - pretty good idea on paper - but please... Just open source the project or release a beta product, don't give me this &quot;empty repo&quot; business just so people can use incomplete closed-source software, and publicize <a href="https://github.com/modularml/mojo/issues/27">all</a> <a href="https://github.com/modularml/mojo/issues/232">the</a> <a href="https://github.com/modularml/mojo/issues/12">bug</a> <a href="https://github.com/modularml/mojo/issues/15">reports</a>.</p>
-<p>I think part of it is also a popularity contest. I feel like ragging on <a href="https://xeiaso.net/blog/series/v">&quot;The V Incident&quot;</a> today is just beating a dead horse, but it does have some merit as a case study in how unfinished novel ideas will try to draw attention to drive their project across the finish line.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>I look at these projects, then I look at something like Aseprite, or Bitwarden. Aseprite did it right, in that their source is open, but end-users can purchase a pre-built copy. For Bitwarden, they paywall some extra features. This model doesn't really work for developer tooling and programming languages, since your target market is able to build it from source.</p>
-<p>I am skeptical that people will genuinely pay per-head-per-month licensing fees for something as fundamental and system-critical as a terminal emulator (with telemetry) or a programming language's engine, though.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> It seems too great an organizational risk -- what if the startup with the keys to the castle goes bust? Then again, MATLAB exists. Anyways, please stop this trend of publishing an empty GitHub repo as an advertisement for an unfinished product.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://docs.warp.dev/help/known-issues#ssh">https://docs.warp.dev/help/known-issues#ssh</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a href="https://github.com/warpdotdev/Warp/discussions/400">https://github.com/warpdotdev/Warp/discussions/400</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>This one really gets me fired up. Every new programming language I see is faster than C because &quot;we use LLVM and this particular test case worked really well&quot;. It's practically a free claim. In any case, the claim is on their docs landing: <a href="https://docs.modular.com/mojo/">https://docs.modular.com/mojo/</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>There is actual work being done on the project, and it ended up growing a little bit more into its claims. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Eh, maybe I'm wrong though. <a href="https://github.com/warpdotdev/Warp/discussions/400#discussioncomment-1938429">https://github.com/warpdotdev/Warp/discussions/400#discussioncomment-1938429</a> <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2023-06-20" />
+  <title>Release Your &#x201C;Open&#x201D; &#x201C;Source&#x201D;</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Release Your &#x201C;Open&#x201D; &#x201C;Source&#x201D;</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>20 June 2023</date>
+</p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/rant">rant</a>
+  </p>
+</div>
+
+</header>
+<p>I&#x2019;ve seen a few repos lately on GitHub that function as no more than an
+advertisement for a closed-source project that&#x2019;s still in heavy development.
+What&#x2019;s up with that?</p>
+<p>I was originally writing a post talking about this one project, <a
+href="https://www.warp.dev/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Warp</a>, which is supposed to be a terminal
+editor. It was one of those &#x201C;solution looking for a problem&#x201D; situations. It
+was just another terminal emulator, but with Internet connectivity, telemetry,
+and AI for some reason. They tried to justify it with this other bit where you
+could track shell commands and output as blocks, but they didn&#x2019;t integrate the
+terminal tightly enough with the shell to capture output perfectly. This
+system design-level problem kept biting them in the ass, and they had to shell
+out to a wrapper they placed around Bash to make sure their tracking worked
+through SSH.<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></p>
+<p>Ignoring this, it&#x2019;s a good idea on paper. I wouldn&#x2019;t be talking about it so
+vehemently if the project didn&#x2019;t <em>release an empty GitHub repository with
+some vague promises of open-sourcing parts of the app later.</em> Oh, but
+don&#x2019;t worry! We have a discussion thread in the empty repo where we will
+openly posit about the best way of making money.<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>There&#x2019;s another project that went and did the same thing recently: a
+programming language, <a href="https://www.modular.com/mojo"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Mojo</a>. They&#x2019;re
+looking to provide a new programming language for bridging low-level
+performance and Python&#x2019;s ubiquity in data science. Oh, and it&#x2019;s again
+supposedly faster than C.<a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a></p>
+<p>Again - pretty good idea on paper - but please&#x2026; Just open source the
+project or release a beta product, don&#x2019;t give me this &#x201C;empty repo&#x201D; business
+just so people can use incomplete closed-source software, and publicize <a
+href="https://github.com/modularml/mojo/issues/27" rel="noopener noreferrer"
+referrerpolicy="no-referrer">all</a> <a
+href="https://github.com/modularml/mojo/issues/232" rel="noopener noreferrer"
+referrerpolicy="no-referrer">the</a> <a
+href="https://github.com/modularml/mojo/issues/12" rel="noopener noreferrer"
+referrerpolicy="no-referrer">bug</a> <a
+href="https://github.com/modularml/mojo/issues/15" rel="noopener noreferrer"
+referrerpolicy="no-referrer">reports</a>.</p>
+<p>I think part of it is also a popularity contest. I feel like ragging on <a
+href="https://xeiaso.net/blog/series/v" rel="noopener noreferrer"
+referrerpolicy="no-referrer">&#x201C;The V Incident&#x201D;</a> today is just beating a dead
+horse, but it does have some merit as a case study in how unfinished novel
+ideas will try to draw attention to drive their project across the finish
+line.<a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></p>
+<p>I look at these projects, then I look at something like Aseprite, or
+Bitwarden. Aseprite did it right, in that their source is open, but end-users
+can purchase a pre-built copy. For Bitwarden, they paywall some extra
+features. This model doesn&#x2019;t really work for developer tooling and programming
+languages, since your target market is able to build it from source.</p>
+<p>I am skeptical that people will genuinely pay per-head-per-month licensing
+fees for something as fundamental and system-critical as a terminal emulator
+(with telemetry) or a programming language&#x2019;s engine, though.<a href="#fn5"
+class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> It seems
+too great an organizational risk &#x2013; what if the startup with the keys to the
+castle goes bust? Then again, MATLAB exists. Anyways, please stop this trend
+of publishing an empty GitHub repo as an advertisement for an unfinished
+product.</p>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://docs.warp.dev/help/known-issues#ssh"
+class="uri" rel="noopener noreferrer"
+referrerpolicy="no-referrer">https://docs.warp.dev/help/known-issues#ssh</a><a
+href="#fnref1" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn2"><p><a href="https://github.com/warpdotdev/Warp/discussions/400"
+class="uri" rel="noopener noreferrer"
+referrerpolicy="no-referrer">https://github.com/warpdotdev/Warp/discussions/400</a><a
+href="#fnref2" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn3"><p>This one really gets me fired up. Every new programming
+language I see is faster than C because &#x201C;we use LLVM and this particular test
+case worked really well&#x201D;. It&#x2019;s practically a free claim. In any case, the
+claim is on their docs landing: <a href="https://docs.modular.com/mojo/"
+class="uri" rel="noopener noreferrer"
+referrerpolicy="no-referrer">https://docs.modular.com/mojo/</a><a
+href="#fnref3" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn4"><p>There is actual work being done on the project, and it ended
+up growing a little bit more into its claims.<a href="#fnref4"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn5"><p>Eh, maybe I&#x2019;m wrong though. <a
+href="https://github.com/warpdotdev/Warp/discussions/400#discussioncomment-1938429"
+class="uri" rel="noopener noreferrer"
+referrerpolicy="no-referrer">https://github.com/warpdotdev/Warp/discussions/400#discussioncomment-1938429</a><a
+href="#fnref5" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
 </ol>
-</section>
+</aside>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>

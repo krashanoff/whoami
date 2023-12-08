@@ -1,120 +1,401 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Alternative Protocols for the WWW</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Alternative Protocols for the WWW</h1>
-  <small><date>Feb 12, 2022</date> | <span class="wordcount">1572 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/thoughts">#thoughts</a></li>
-    
-    
-  </ul>
-  <p>I saw a strange link on a GitHub repo the other day that was prefixed with <code>gemini://</code>.
-I was confused and tried looking up &quot;gemini protocol&quot; online, but to no avail. I brushed
-it off as a weird startup alternative to HTTP and went on with my day.</p>
-<p>That was, until my friend Waylon<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> shot me a message a week or two later:</p>
-<pre><code>waylon — 02/09/2022
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2022-02-12" />
+  <title>Alternative Protocols for the WWW</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Alternative Protocols for the WWW</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>12 February 2022</date>
+</p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/thoughts">thoughts</a>
+  </p>
+</div>
+
+</header>
+<p>I saw a strange link on a GitHub repo the other day that was prefixed with
+<code>gemini://</code>. I was confused and tried looking up &#x201C;gemini protocol&#x201D;
+online, but to no avail. I brushed it off as a weird startup alternative to
+HTTP and went on with my day.</p>
+<p>That was, until my friend Waylon<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a> shot me a message a week or
+two later:</p>
+<pre class="codeblock"><code>waylon &#x2014; 02/09/2022
 have you seen this https://gemini.circumlunar.space/
 
-leo — 02/09/2022
-I've heard about Gemini
-Hmmmm haven't seen a lot
+leo &#x2014; 02/09/2022
+I&#39;ve heard about Gemini
+Hmmmm haven&#39;t seen a lot
 Lemme read
-So better HTTP?
-</code></pre>
+So better HTTP?</code></pre>
 <blockquote>
 <p>So better HTTP?</p>
 </blockquote>
-<p>Ehhhh, no. With some closer investigation, it's an alternative protocol for the web. It's still
-focused on delivering content, but just in a more privacy-motivated, cozy way. You can write a
-server or client for it <em>very</em> simply in only a handful of lines in almost any language. You can
-write a fully-fleshed out client in maybe 100 or 200 SLOC<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
-<p>Here's an <code>inetd</code>-compatible &quot;&quot;server&quot;&quot; in POSIX-compliant shell I wrote in a minute or two:</p>
-<pre><code class="language-sh">#!/bin/sh
-chdir $1
-shift
-
-if [ $# -ne 1 ]; then
-  echo -n &quot;50 Ill-formatted request&quot;
-  exit 0
-fi
-
-uri=$(printf '%b\n' &quot;$@&quot; | sed -n 's/^gemini:\/\/.*\/\(.*\)$/\1/p')
-
-if ! [ -r $uri ]; then
-  echo -n &quot;40 Page does not exist\r\n&quot;
-  exit 0
-fi
-
-MIME=&quot;$(file -b --mime-type $uri)&quot;
-if echo &quot;$uri&quot; | grep -q &quot;.*\.gmi&quot;; then
-  MIME=&quot;text/gemini&quot;
-fi
-
-echo -n &quot;20 $MIME;\r\n&quot;
-cat $uri
-</code></pre>
-<p>To use this you would just add a line to your <code>/etc/inetd.conf</code>:</p>
-<pre><code>127.0.0.1:1965  stream  nowait  gemini  /path/to/gemini.sh gemini.sh /path/to/chdir
-</code></pre>
-<p>This would produce some request-response behavior like this (<code>\r\n</code> included for
-legibility):</p>
-<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;REQUEST
+<p>Ehhhh, no. With some closer investigation, it&#x2019;s an alternative protocol for
+the web. It&#x2019;s still focused on delivering content, but just in a more
+privacy-motivated, cozy way. You can write a server or client for it
+<em>very</em> simply in only a handful of lines in almost any language. You
+can write a fully-fleshed out client in maybe 100 or 200 SLOC<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>Here&#x2019;s an <code>inetd</code>-compatible &#x201C;&#x201C;server&#x201D;&#x201D; in POSIX-compliant shell
+I wrote in a minute or two:</p>
+<div class="sourceCode" id="cb2" class="codeblock"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">chdir</span> <span class="va">$1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">shift</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="at">-n</span> <span class="st">&quot;50 Ill-formatted request&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 0</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="va">uri</span><span class="op">=</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&#39;%b\n&#39;</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-n</span> <span class="st">&#39;s/^gemini:\/\/.*\/\(.*\)$/\1/p&#39;</span><span class="va">)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="bu">[</span> <span class="ot">-r</span> <span class="va">$uri</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="at">-n</span> <span class="st">&quot;40 Page does not exist\r\n&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 0</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="va">MIME</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="fu">file</span> <span class="at">-b</span> <span class="at">--mime-type</span> <span class="va">$uri)</span><span class="st">&quot;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$uri</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-q</span> <span class="st">&quot;.*\.gmi&quot;</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="va">MIME</span><span class="op">=</span><span class="st">&quot;text/gemini&quot;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">&quot;20 </span><span class="va">$MIME</span><span class="st">;\r\n&quot;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="va">$uri</span></span></code></pre></div>
+<p>To use this you would just add a line to your
+<code>/etc/inetd.conf</code>:</p>
+<pre class="codeblock"><code>127.0.0.1:1965  stream  nowait  gemini  /path/to/gemini.sh gemini.sh /path/to/chdir</code></pre>
+<p>This would produce some request-response behavior like this
+(<code>\r\n</code> included for legibility):</p>
+<pre class="codeblock"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;REQUEST
 /index.gmi\r\n
 
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;RESPONSE
 20 text/gemini;\r\n
-hi there
-</code></pre>
-<p>I say &quot;&quot;server&quot;&quot; though because it only really just serves the file at a given URI with pretty
-minimal URI validation. There's no meaningful logging. Also, you would need a relay for TLS
-(so you'd probably want to remap your server port to something else). If you're using <code>inetd</code>,
-though, you probably have one of those. It isn't the prettiest solution on Earth, but it <em>could</em>
-get the job done.</p>
-<p>For my purposes, I happened to be looking for a more personal way of blogging without making it
-HTTP-scrapable. Gemini provides its own integrated markdown-esque markup language for text content,
-so things clicked. There's all kinds of different protocols for this stuff, though. IPFS is
-an alternative I considered. Adjacent to Gemini specifically, Gopher comes to mind.</p>
-<h2 id="gemini-%2B-gopher" tabindex="-1">Gemini + Gopher</h2>
-<p>You don't always need a dozen headers or a packed format with a binary BNF grammar to describe
-a text file to a requester. I think that's kind of the point of these new alternative protocols
--- levering modern technologies to make &quot;the web&quot; more accessible and a little less centralized.</p>
-<p>Gemini is, in my eyes, one of the most straightforward protocols around when it comes to this.
-It doesn't bother trying to be anything it isn't.</p>
-<p>No JS means there's no interactivity, really, but that's not an issue if your
-content is static. No CSS means there's no definitive style, but that's also not
-an issue if your content is static -- the user's client can determine how it should look.</p>
-<p>At a technical level, there's already so much abstraction afforded in TCP sockets and TLS
-alone, so why bother with adding all of this extra stuff when the ultimate goal of the
-protocol is to serve largely text-based content?</p>
-<p>How far out can we push this line of power-to-weight<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>, though? Things get weird when
-you start looking at Gopher.</p>
-<p>Gopher was designed a sort of alternative to HTTP. They were both around in the same
-era, and both got a reasonable amount of publicity. I'm too young to ever know &quot;The
-Gopher Protocol&quot; was a serious contender for the web, but it was.</p>
-<p>Its markup is stripped down compared to HTML, and it revolves around the notion of menu-based
-browsing. There's this packed, but semi-legible construct that it uses in responses to
-describe menus (pulled from <a href="https://en.wikipedia.org/wiki/Gopher_(protocol)">Wikipedia</a>).</p>
-<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;REQUEST
+hi there</code></pre>
+<p>I say &#x201C;&#x201C;server&#x201D;&#x201D; though because it only really just serves the file at a
+given URI with pretty minimal URI validation. There&#x2019;s no meaningful logging.
+Also, you would need a relay for TLS (so you&#x2019;d probably want to remap your
+server port to something else). If you&#x2019;re using <code>inetd</code>, though,
+you probably have one of those. It isn&#x2019;t the prettiest solution on Earth, but
+it <em>could</em> get the job done.</p>
+<p>For my purposes, I happened to be looking for a more personal way of
+blogging without making it HTTP-scrapable. Gemini provides its own integrated
+markdown-esque markup language for text content, so things clicked. There&#x2019;s
+all kinds of different protocols for this stuff, though. IPFS is an
+alternative I considered. Adjacent to Gemini specifically, Gopher comes to
+mind.</p>
+<section id="gemini-gopher" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Gemini +
+Gopher</h1>
+<p>You don&#x2019;t always need a dozen headers or a packed format with a binary BNF
+grammar to describe a text file to a requester. I think that&#x2019;s kind of the
+point of these new alternative protocols &#x2013; levering modern technologies to
+make &#x201C;the web&#x201D; more accessible and a little less centralized.</p>
+<p>Gemini is, in my eyes, one of the most straightforward protocols around
+when it comes to this. It doesn&#x2019;t bother trying to be anything it isn&#x2019;t.</p>
+<p>No JS means there&#x2019;s no interactivity, really, but that&#x2019;s not an issue if
+your content is static. No CSS means there&#x2019;s no definitive style, but that&#x2019;s
+also not an issue if your content is static &#x2013; the user&#x2019;s client can determine
+how it should look.</p>
+<p>At a technical level, there&#x2019;s already so much abstraction afforded in TCP
+sockets and TLS alone, so why bother with adding all of this extra stuff when
+the ultimate goal of the protocol is to serve largely text-based content?</p>
+<p>How far out can we push this line of power-to-weight<a href="#fn3"
+class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, though?
+Things get weird when you start looking at Gopher.</p>
+<p>Gopher was designed a sort of alternative to HTTP. They were both around in
+the same era, and both got a reasonable amount of publicity. I&#x2019;m too young to
+ever know &#x201C;The Gopher Protocol&#x201D; was a serious contender for the web, but it
+was.</p>
+<p>Its markup is stripped down compared to HTML, and it revolves around the
+notion of menu-based browsing. There&#x2019;s this packed, but semi-legible construct
+that it uses in responses to describe menus (pulled from <a
+href="https://en.wikipedia.org/wiki/Gopher_(protocol)"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Wikipedia</a>).</p>
+<pre class="codeblock"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;REQUEST
 /Reference
 
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;RESPONSE
@@ -128,93 +409,112 @@ icities, counties, and geographical areas.  It has      fake    (NULL)  0
 ilatitude/longitude, population, land and water area,   fake    (NULL)  0
 iand ZIP codes. fake    (NULL)  0
 i       fake    (NULL)  0
-iTo search for a city, enter the city's name.  To search        fake    (NULL) 0
+iTo search for a city, enter the city&#39;s name.  To search        fake    (NULL) 0
 ifor a county, use the name plus County -- for instance,        fake    (NULL) 0
-iDallas County. fake    (NULL)  0
-</code></pre>
-<p>Don't look at it too long. It's easy to understand why it lost out against HTTP.</p>
-<p>The formatting of Gophertext is reminiscent of <code>troff</code>'s syntax. The user requests the <code>Reference</code>
-menu, in plaintext then the server replies with different resources (their types indicated by the
-prefixed number), menus, and submenus (<code>i</code>). To an untrained eye, there's these strange keywords
-&quot;fake&quot; and &quot;(NULL)&quot; popping up all over, references to proxy servers. It's just... strange.</p>
-<p>There isn't really much in the way of security for the protocol, and there are unofficial,
-somewhat-community-accepted extensions to it for things like media files and binaries.
-Overall, it feels like a somewhat reasonable protocol that lost its focus as new things
-needed to be incorporated into it.</p>
-<p>Its markup is restrained, but wanted to compete with HTML. It wanted to incorporate new media
-types, but to do that, it had to incorporate new prefix codes. And once the protocol itself
-changes at a fundamental level like that, it's pretty difficult to propagate that change across
-the web. Meanwhile in HTTP or Gemini, you simply change the MIME type field. Overall, it's a cool idea, but
-with all of these dangling bits it may be a bit of an anachronism and a case study in protocol
-design.</p>
-<p>These ideas of alternative protocols still catch my eye, though. They're reminiscent of
-a web that didn't have a notion of CSS, or JS, or really any moving parts.</p>
-<p>It makes you wonder. How different would the Internet be if these protocols had
-won out? How would we handle the features that are ubiquitous in the WWW today like CSS
-for styling and JS for interactivity?</p>
-<h2 id="the-real-web3" tabindex="-1">The <em>Real</em> Web3</h2>
-<p>After Waylon and I chatted for a bit about the Gemini specification, a fun thought experiment
-began.</p>
-<p>What if we abandoned what we have today to completely redesign the web? No HTTP. No HTML.
-No CSS. No JavaScript. Completely from scratch, but with our lessons-learned from the
-present.</p>
-<p>Well for one, we wouldn't be throwing out IP. Maybe if we were ambitious we'd redesign it
-such that all computers use IPv6, but a flag day is impossible now.</p>
-<p>More realistically, I think application-level protocols would be a lot more modular with a
-security-first design -- kind of like QUIC. Hosts can stream data between each other on a lighter
-protocol that is designed to handle congestion control.</p>
-<p>The deep point of discussion, though, is how websites could be rendered without HTML. The one that
-seemed to hold our attention best was:</p>
-<pre><code>waylon — 02/09/2022
+iDallas County. fake    (NULL)  0</code></pre>
+<p>Don&#x2019;t look at it too long. It&#x2019;s easy to understand why it lost out against
+HTTP.</p>
+<p>The formatting of Gophertext is reminiscent of <code>troff</code>&#x2019;s syntax.
+The user requests the <code>Reference</code> menu, in plaintext then the
+server replies with different resources (their types indicated by the prefixed
+number), menus, and submenus (<code>i</code>). To an untrained eye, there&#x2019;s
+these strange keywords &#x201C;fake&#x201D; and &#x201C;(NULL)&#x201D; popping up all over, references to
+proxy servers. It&#x2019;s just&#x2026; strange.</p>
+<p>There isn&#x2019;t really much in the way of security for the protocol, and there
+are unofficial, somewhat-community-accepted extensions to it for things like
+media files and binaries. Overall, it feels like a somewhat reasonable
+protocol that lost its focus as new things needed to be incorporated into
+it.</p>
+<p>Its markup is restrained, but wanted to compete with HTML. It wanted to
+incorporate new media types, but to do that, it had to incorporate new prefix
+codes. And once the protocol itself changes at a fundamental level like that,
+it&#x2019;s pretty difficult to propagate that change across the web. Meanwhile in
+HTTP or Gemini, you simply change the MIME type field. Overall, it&#x2019;s a cool
+idea, but with all of these dangling bits it may be a bit of an anachronism
+and a case study in protocol design.</p>
+<p>These ideas of alternative protocols still catch my eye, though. They&#x2019;re
+reminiscent of a web that didn&#x2019;t have a notion of CSS, or JS, or really any
+moving parts.</p>
+<p>It makes you wonder. How different would the Internet be if these protocols
+had won out? How would we handle the features that are ubiquitous in the WWW
+today like CSS for styling and JS for interactivity?</p>
+</section>
+<section id="the-real-web3" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The
+<em>Real</em> Web3</h1>
+<p>After Waylon and I chatted for a bit about the Gemini specification, a fun
+thought experiment began.</p>
+<p>What if we abandoned what we have today to completely redesign the web? No
+HTTP. No HTML. No CSS. No JavaScript. Completely from scratch, but with our
+lessons-learned from the present.</p>
+<p>Well for one, we wouldn&#x2019;t be throwing out IP. Maybe if we were ambitious
+we&#x2019;d redesign it such that all computers use IPv6, but a flag day is
+impossible now.</p>
+<p>More realistically, I think application-level protocols would be a lot more
+modular with a security-first design &#x2013; kind of like QUIC. Hosts can stream
+data between each other on a lighter protocol that is designed to handle
+congestion control.</p>
+<p>The deep point of discussion, though, is how websites could be rendered
+without HTML. The one that seemed to hold our attention best was:</p>
+<pre class="codeblock"><code>waylon &#x2014; 02/09/2022
 what if you had something like this
 (except not with HTML primitives)
 and instead of serving HTML
 web servers served this
 and browsers executed it to build a website
-I mean that's basically react
+I mean that&#39;s basically react
 
-I guess what we're doing is just React but cutting out the
-js part and pretending HTML doesn't exist 🤔
-</code></pre>
-<p>So basically what <a href="https://github.com/DioxusLabs/dioxus">dioxus</a> is doing: compile down your
-dynamically-rendered JSX-like statically-typed markup into some WebAssembly. Dodge the JS runtime
-bullet and roll your own from scratch.</p>
-<p>This would open up a few interesting discussions about website performance as more ambitious devs
-try to roll their own WebAssembly, but I don't think it'd be any different than devs who
-roll their own HTTP servers these days.</p>
-<p>I encounter problems thinking about this in the same way that I encounter problems trying to
-think in more than 3 dimensions. HTML is all I know. React is all I know. For the current web,
-it's the same deal. WebAssembly is a step in the right direction of speeding up
-and broadening the spectrum of dynamic content on the web, but it's still served as a complement
-to JavaScript<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>.</p>
-<p>I am skeptical that we'll see a serious transition to a brand new protocol
-like QUIC or an exodus from the de jure languages of the web for a long time. To do so would be like
-switching the web to IPv6, which - like I said - I'm fairly certain won't be happening anytime soon...
-Maybe ever.</p>
-<p>These new protocols are around the block, and they won't be replacing anything that's already
-around, but it's a lot of fun exploring that big <em>&quot;what if&quot;</em>.</p>
-<hr>
+I guess what we&#39;re doing is just React but cutting out the
+js part and pretending HTML doesn&#39;t exist &#x1F914;</code></pre>
+<p>So basically what <a href="https://github.com/DioxusLabs/dioxus"
+rel="noopener noreferrer" referrerpolicy="no-referrer">dioxus</a> is doing:
+compile down your dynamically-rendered JSX-like statically-typed markup into
+some WebAssembly. Dodge the JS runtime bullet and roll your own from
+scratch.</p>
+<p>This would open up a few interesting discussions about website performance
+as more ambitious devs try to roll their own WebAssembly, but I don&#x2019;t think
+it&#x2019;d be any different than devs who roll their own HTTP servers these
+days.</p>
+<p>I encounter problems thinking about this in the same way that I encounter
+problems trying to think in more than 3 dimensions. HTML is all I know. React
+is all I know. For the current web, it&#x2019;s the same deal. WebAssembly is a step
+in the right direction of speeding up and broadening the spectrum of dynamic
+content on the web, but it&#x2019;s still served as a complement to JavaScript<a
+href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a>.</p>
+<p>I am skeptical that we&#x2019;ll see a serious transition to a brand new protocol
+like QUIC or an exodus from the de jure languages of the web for a long time.
+To do so would be like switching the web to IPv6, which - like I said - I&#x2019;m
+fairly certain won&#x2019;t be happening anytime soon&#x2026; Maybe ever.</p>
+<p>These new protocols are around the block, and they won&#x2019;t be replacing
+anything that&#x2019;s already around, but it&#x2019;s a lot of fun exploring that big
+<em>&#x201C;what if&#x201D;</em>.</p>
+<hr />
 <p>I might update this article later on.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Waylon is one of the smartest people I know. <a href="https://www.waylonpeng.com/">https://www.waylonpeng.com/</a>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a href="https://gemini.circumlunar.space/">https://gemini.circumlunar.space/</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>The Gemini docs describe it as &quot;a new internet protocol which ... strives for maximum power to weight ratio&quot; <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>MDN describes it as complementary to JavaScript. <a href="https://developer.mozilla.org/en-US/docs/WebAssembly">https://developer.mozilla.org/en-US/docs/WebAssembly</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
 </section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Waylon is one of the smartest people I know.
+https://www.waylonpeng.com/.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn2"><p>https://gemini.circumlunar.space/<a href="#fnref2"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn3"><p>The Gemini docs describe it as &#x201C;a new internet protocol which
+&#x2026; strives for maximum power to weight ratio&#x201D;<a href="#fnref3"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn4"><p>MDN describes it as complementary to JavaScript.
+https://developer.mozilla.org/en-US/docs/WebAssembly<a href="#fnref4"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+</ol>
+</aside>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>

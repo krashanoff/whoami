@@ -1,152 +1,444 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Exploring OpenBSD</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Exploring OpenBSD</h1>
-  <small><date>Sep 24, 2021</date> | <span class="wordcount">1164 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/server">#server</a></li>
-    
-    
-  </ul>
-  <p>I'm an operating systems enthusiast, and love <a href="https://www.linux.org/">Linux</a>.</p>
-<p>This said, there's plenty of other operating systems out there to explore, and
-a significant fraction of those alternatives are labelled &quot;BSD&quot;, referring to
-the <a href="https://en.wikipedia.org/wiki/Berkeley_Software_Distribution">Berkeley Software Distribution</a>
-derivatives of the <a href="https://en.wikipedia.org/wiki/Unix">Unix</a> operating system that
-emerged shortly after <a href="https://en.wikipedia.org/wiki/Bell_Labs">Bell Labs</a> dissolved.</p>
-<p>What's nice about BSD Unix is that most of them try to stay relatively
-true to the original Unix philosophy, and remain as free as they possibly
-can without sacrificing quality. Why not start, then, by dipping our toes into the
-water with the OS that claims to be <a href="https://www.openbsd.org/faq/faq1.html">&quot;all free&quot;</a>?</p>
-<h2 id="openbsd" tabindex="-1">OpenBSD</h2>
-<p>...or maybe it was a leap.</p>
-<p>I set out on my OpenBSD expedition to build a router for my roommate and I while
-we were waiting on another, who had a router/wireless AP. Faced with a cable
-modem from our local ISP, we had no choice but to pursue making a router of our
-internet-facing machine.</p>
-<p>I browsed on over to the <a href="https://www.openbsd.org/">OpenBSD website</a>, likely
-bouncing off a few <code>(Free|Open)</code>BSD servers before hitting the OpenBSD box
-hosting the site.</p>
-<p>On the Internet, these BSD-derivatives are ubiquitous for critical systems. At least
-in the case of OpenBSD, this is for good reason: the
-operating system <a href="https://www.openbsd.org/faq/upgrade63.html">relinks the kernel on boot</a>,
-introduced <a href="https://en.wikipedia.org/wiki/W%5EX">W^X</a>, and opportunistically integrates cryptography
-throughout. The team isn't afraid to tote this around -- they even have a page
-basically <a href="https://www.openbsd.org/crypto.html">flipping off a few governments</a>.</p>
-<h2 id="ux" tabindex="-1">UX</h2>
-<p>Post-download, I imaged a flash drive, spun up the years-old hardware destined
-to become our temporary router, and dove right in.</p>
-<p>The OpenBSD experience is classic. It's still using <a href="https://www.freebsd.org/cgi/man.cgi?query=ffs&amp;sektion=7"><code>ffs(7)</code></a>, has an
-exceedingly stable kernel with a <a href="https://en.wikipedia.org/wiki/Giant_lock">sizable lock</a>,
-and isn't very quick to adopt
-the latest technologies (Intel's <a href="https://www.intel.com/content/www/us/en/architecture-and-technology/advanced-encryption-standard-aes/data-protection-aes-general-technology.html">AES-NI</a> comes to mind). If you do happen
-to have a few terabytes onboard your OpenBSD computer, it might take a couple
-hours to run <a href="https://man.openbsd.org/fsck"><code>fsck(8)</code></a> if shit hits the fan.</p>
-<p>These aren't necessarily bad things. My little server
-does not need more than a few gigabytes of storage and two cores for what it's
-doing, and all I really demand of an operating system for its purposes is stability.</p>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2021-09-24" />
+  <title>Exploring OpenBSD</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Exploring OpenBSD</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>24 September 2021</date>
+</p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/server">server</a>
+  </p>
+</div>
+
+</header>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">Table of Contents</h2>
+<ul>
+<li><a href="#openbsd" id="toc-openbsd"><span
+class="toc-section-number">1</span> OpenBSD</a></li>
+<li><a href="#ux" id="toc-ux"><span class="toc-section-number">2</span>
+UX</a></li>
+<li><a href="#community" id="toc-community"><span
+class="toc-section-number">3</span> Community</a></li>
+<li><a href="#freedom-and-software" id="toc-freedom-and-software"><span
+class="toc-section-number">4</span> Freedom and Software</a></li>
+<li><a href="#purpose-built-proper-abstractions"
+id="toc-purpose-built-proper-abstractions"><span
+class="toc-section-number">5</span> Purpose Built; Proper
+Abstractions</a></li>
+</ul>
+</nav>
+<p>I&#x2019;m an operating systems enthusiast, and love <a
+href="https://www.linux.org/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Linux</a>.</p>
+<p>This said, there&#x2019;s plenty of other operating systems out there to explore,
+and a significant fraction of those alternatives are labelled &#x201C;BSD&#x201D;, referring
+to the <a href="https://en.wikipedia.org/wiki/Berkeley_Software_Distribution"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Berkeley Software
+Distribution</a> derivatives of the <a
+href="https://en.wikipedia.org/wiki/Unix" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Unix</a> operating system that emerged shortly
+after <a href="https://en.wikipedia.org/wiki/Bell_Labs"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Bell Labs</a>
+dissolved.</p>
+<p>What&#x2019;s nice about BSD Unix is that most of them try to stay relatively true
+to the original Unix philosophy, and remain as free as they possibly can
+without sacrificing quality. Why not start, then, by dipping our toes into the
+water with the OS that claims to be <a
+href="https://www.openbsd.org/faq/faq1.html" rel="noopener noreferrer"
+referrerpolicy="no-referrer">&#x201C;all free&#x201D;</a>?</p>
+<section id="openbsd" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> OpenBSD</h1>
+<p>&#x2026;or maybe it was a leap.</p>
+<p>I set out on my OpenBSD expedition to build a router for my roommate and I
+while we were waiting on another, who had a router/wireless AP. Faced with a
+cable modem from our local ISP, we had no choice but to pursue making a router
+of our internet-facing machine.</p>
+<p>I browsed on over to the <a href="https://www.openbsd.org/"
+rel="noopener noreferrer" referrerpolicy="no-referrer">OpenBSD website</a>,
+likely bouncing off a few <code>(Free|Open)</code>BSD servers before hitting
+the OpenBSD box hosting the site.</p>
+<p>On the Internet, these BSD-derivatives are ubiquitous for critical systems.
+At least in the case of OpenBSD, this is for good reason: the operating system
+<a href="https://www.openbsd.org/faq/upgrade63.html" rel="noopener noreferrer"
+referrerpolicy="no-referrer">relinks the kernel on boot</a>, introduced <a
+href="https://en.wikipedia.org/wiki/W%5EX" rel="noopener noreferrer"
+referrerpolicy="no-referrer">W^X</a>, and opportunistically integrates
+cryptography throughout. The team isn&#x2019;t afraid to tote this around &#x2013; they even
+have a page basically <a href="https://www.openbsd.org/crypto.html"
+rel="noopener noreferrer" referrerpolicy="no-referrer">flipping off a few
+governments</a>.</p>
+</section>
+<section id="ux" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> UX</h1>
+<p>Post-download, I imaged a flash drive, spun up the years-old hardware
+destined to become our temporary router, and dove right in.</p>
+<p>The OpenBSD experience is classic. It&#x2019;s still using <a
+href="https://www.freebsd.org/cgi/man.cgi?query=ffs&amp;sektion=7"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>ffs(7)</code></a>, has an exceedingly
+stable kernel with a <a href="https://en.wikipedia.org/wiki/Giant_lock"
+rel="noopener noreferrer" referrerpolicy="no-referrer">sizable lock</a>, and
+isn&#x2019;t very quick to adopt the latest technologies (Intel&#x2019;s <a
+href="https://www.intel.com/content/www/us/en/architecture-and-technology/advanced-encryption-standard-aes/data-protection-aes-general-technology.html"
+rel="noopener noreferrer" referrerpolicy="no-referrer">AES-NI</a> comes to
+mind). If you do happen to have a few terabytes onboard your OpenBSD computer,
+it might take a couple hours to run <a href="https://man.openbsd.org/fsck"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>fsck(8)</code></a> if shit hits the
+fan.</p>
+<p>These aren&#x2019;t necessarily bad things. My little server does not need more
+than a few gigabytes of storage and two cores for what it&#x2019;s doing, and all I
+really demand of an operating system for its purposes is stability.</p>
 <p>Luckily, the setup process is far from classic. The install is very, very
-smooth. Compared to something like <a href="https://wiki.gentoo.org/">Gentoo</a>, it's a breeze with just a few
-prompts mirroring what you'd see in your average Debian installation wizard.</p>
-<p>Once inside, OpenBSD is a well-documented, well-polished system with very few &quot;huh?&quot;
-situations. By that, I mean situations where I found myself face-to-face with a
-bug the manpages didn't give me explicit instruction against -- it does a great
-job of easing the user into the operating system so that info dumps are more
-sparse, and the learning curve is gradual.</p>
-<p>You will learn to use <a href="https://man.openbsd.org/man.1"><code>man(1)</code></a>.
-You will learn what your <a href="https://man.openbsd.org/hier"><code>/etc</code></a> directory is for.
-These are all good things.</p>
-<p>I set up a router, firewall, and FTP server for our apartment with ease, and
-was even comfortable enough to set up a few network tunnels (see: <a href="https://man.openbsd.org/tun.4"><code>tun(4)</code></a>)
-for certain applications.</p>
-<p>The only &quot;mystery bug&quot; that I encountered was that every now and again, our packet
-filter would drop a few packets for maybe a half-second, even using the default
-configuration. Time to resolve this problem: we put down our manpages. We turn
-to Google.</p>
-<h2 id="community" tabindex="-1">Community</h2>
-<p>Googling around for a fix for that little half-second packet drop issue took
-me almost two days of inconclusive results, but I was <em>not</em> about to hop on
-the mailing lists or forums and ask a question so broad.</p>
-<p>The community for OpenBSD is <a href="https://distrowatch.com/table.php?distribution=freebsd">dwarfed</a> compared to <a href="https://www.freebsd.org/">FreeBSD</a> or any Linux flavor.
-I'd compare it in size to something like <a href="https://www.bunsenlabs.org/">BunsenLabs Linux</a>.
-Unlike BunsenLabs, though, OpenBSD's community has a reputation of being <em>exceedingly</em> unyielding. A
-large part of this could be attributed to the personality of its
-leader, who, by Linus' account, is <a href="https://www.forbes.com/2005/06/16/linux-bsd-unix-cz_dl_0616theo.html">&quot;difficult&quot;</a>.</p>
+smooth. Compared to something like <a href="https://wiki.gentoo.org/"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Gentoo</a>, it&#x2019;s a
+breeze with just a few prompts mirroring what you&#x2019;d see in your average Debian
+installation wizard.</p>
+<p>Once inside, OpenBSD is a well-documented, well-polished system with very
+few &#x201C;huh?&#x201D; situations. By that, I mean situations where I found myself
+face-to-face with a bug the manpages didn&#x2019;t give me explicit instruction
+against &#x2013; it does a great job of easing the user into the operating system so
+that info dumps are more sparse, and the learning curve is gradual.</p>
+<p>You will learn to use <a href="https://man.openbsd.org/man.1"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>man(1)</code></a>. You will learn what your
+<a href="https://man.openbsd.org/hier" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>/etc</code></a> directory is for. These are
+all good things.</p>
+<p>I set up a router, firewall, and FTP server for our apartment with ease,
+and was even comfortable enough to set up a few network tunnels (see: <a
+href="https://man.openbsd.org/tun.4" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>tun(4)</code></a>) for certain
+applications.</p>
+<p>The only &#x201C;mystery bug&#x201D; that I encountered was that every now and again, our
+packet filter would drop a few packets for maybe a half-second, even using the
+default configuration. Time to resolve this problem: we put down our manpages.
+We turn to Google.</p>
+</section>
+<section id="community" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span>
+Community</h1>
+<p>Googling around for a fix for that little half-second packet drop issue
+took me almost two days of inconclusive results, but I was <em>not</em> about
+to hop on the mailing lists or forums and ask a question so broad.</p>
+<p>The community for OpenBSD is <a
+href="https://distrowatch.com/table.php?distribution=freebsd"
+rel="noopener noreferrer" referrerpolicy="no-referrer">dwarfed</a> compared to
+<a href="https://www.freebsd.org/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">FreeBSD</a> or any Linux flavor. I&#x2019;d compare it
+in size to something like <a href="https://www.bunsenlabs.org/"
+rel="noopener noreferrer" referrerpolicy="no-referrer">BunsenLabs Linux</a>.
+Unlike BunsenLabs, though, OpenBSD&#x2019;s community has a reputation of being
+<em>exceedingly</em> unyielding. A large part of this could be attributed to
+the personality of its leader, who, by Linus&#x2019; account, is <a
+href="https://www.forbes.com/2005/06/16/linux-bsd-unix-cz_dl_0616theo.html"
+rel="noopener noreferrer" referrerpolicy="no-referrer">&#x201C;difficult&#x201D;</a>.</p>
 <p>This is the argument that most people will give you, but, in my opinion,
-there's a much easier, less personal take.</p>
+there&#x2019;s a much easier, less personal take.</p>
 <p>One of the downsides of having extensive documentation is that developers
-and users may grow frustrated reading questions answered in the docs
-they just updated over and over again. For the new user, unfamiliar with
-mailing lists, past answers may not be as readily available. Mix these two
-together and you have a situation akin to the Linux mailing lists, but with
-less margin for discussion.</p>
-<h2 id="freedom-and-software" tabindex="-1">Freedom and Software</h2>
-<p>If I had to pick a straw that might break the camel's back for an OpenBSD
-novice like me, it's probably OpenBSD's lack of software.</p>
+and users may grow frustrated reading questions answered in the docs they just
+updated over and over again. For the new user, unfamiliar with mailing lists,
+past answers may not be as readily available. Mix these two together and you
+have a situation akin to the Linux mailing lists, but with less margin for
+discussion.</p>
+</section>
+<section id="freedom-and-software" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Freedom and
+Software</h1>
+<p>If I had to pick a straw that might break the camel&#x2019;s back for an OpenBSD
+novice like me, it&#x2019;s probably OpenBSD&#x2019;s lack of software.</p>
 <p>I was trying to port my little file sharing server to the operating system
-earlier today. The problem is that it's written in Rust. I definitely
-could have written the program in another language like C or Go or something,
-but I felt like writing it in Rust.</p>
-<p>Unfortunately, <a href="https://rustup.rs/"><code>rustup</code></a> isn't available on <a href="https://openports.se/">OpenBSD ports</a>,
-and OpenBSD itself is a <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-3">tier 3 platform</a>
-for Rust compilation. This means that compiling Rust natively is painful, and
+earlier today. The problem is that it&#x2019;s written in Rust. I definitely could
+have written the program in another language like C or Go or something, but I
+felt like writing it in Rust.</p>
+<p>Unfortunately, <a href="https://rustup.rs/" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>rustup</code></a> isn&#x2019;t available on <a
+href="https://openports.se/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">OpenBSD ports</a>, and OpenBSD itself is a <a
+href="https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-3"
+rel="noopener noreferrer" referrerpolicy="no-referrer">tier 3 platform</a> for
+Rust compilation. This means that compiling Rust natively is painful, and
 cross-compiling Rust is next to impossible.</p>
 <p>This is when the cracks in the facade start to show for OpenBSD. Compared
-to FreeBSD, which has a huge number of packages available for download and
-<a href="https://docs.freebsd.org/en/books/handbook/linuxemu/">binary compatibility with Linux</a>,
-OpenBSD keeps their software repositories pretty tight
-to maintain their openness and keep their interoperability with older systems.
+to FreeBSD, which has a huge number of packages available for download and <a
+href="https://docs.freebsd.org/en/books/handbook/linuxemu/"
+rel="noopener noreferrer" referrerpolicy="no-referrer">binary compatibility
+with Linux</a>, OpenBSD keeps their software repositories pretty tight to
+maintain their openness and keep their interoperability with older systems.
 They also discourage use of proprietary drivers.</p>
-<p>That is, OpenBSD seems to place its focus in expanding the freedom of software,
-sometimes at expense of the user's freedom of choice.</p>
-<h2 id="purpose-built%3B-proper-abstractions" tabindex="-1">Purpose Built; Proper Abstractions</h2>
-<p>OpenBSD is an operating system that is built to run on hardware,
-<a href="https://www.virtualbox.org/ticket/639">not virtualized</a>.
-It is built for security, software freedom, and stability. It is
-easy to understand and secure by default. The issues I encountered in my experience
-with it were pretty tame compared to those I ran into on any Linux derivative.</p>
-<p>Thinking back to something as elementary as rebooting my computer after my first
-Linux installation, I remember <a href="https://unix.stackexchange.com/q/249654">getting softlocked at shutdown</a>.</p>
-<p>Reflecting on more recent experiences with Manjaro, I recall my configuration files
-for system-critical processes being scattered everywhere, and having too much power
-granted to me with too little knowledge. Garbage was left behind by packages without
-my knowledge, and without any clear way to locate it all.</p>
-<p>A lot of these issues can be chalked up to Linux distributions getting filled with bloatware
-and one-off abstractions that fail to empower their users in efforts of being
-&quot;the best OS&quot;. Consider Ubuntu's redundancies: <a href="https://manpages.ubuntu.com/manpages/precise/en/man8/iptables.8.html"><code>iptables(8)</code></a>, <a href="https://manpages.ubuntu.com/manpages/bionic/man8/ufw.8.html"><code>ufw(8)</code></a>, <a href="https://manpages.ubuntu.com/manpages/xenial/man8/apt.8.html"><code>apt(8)</code></a>, <a href="https://manpages.ubuntu.com/manpages/impish/en/man8/snap.8.html"><code>snap(8)</code></a>. Consider Gentoo's behemoth <a href="https://wiki.gentoo.org/wiki/Portage"><code>portage(5)</code></a>.</p>
-<p>OpenBSD's objectives, on the other hand, are precise, and it is a damn good
+<p>That is, OpenBSD seems to place its focus in expanding the freedom of
+software, sometimes at expense of the user&#x2019;s freedom of choice.</p>
+</section>
+<section id="purpose-built-proper-abstractions" class="level1"
+data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Purpose
+Built; Proper Abstractions</h1>
+<p>OpenBSD is an operating system that is built to run on hardware, <a
+href="https://www.virtualbox.org/ticket/639" rel="noopener noreferrer"
+referrerpolicy="no-referrer">not virtualized</a>. It is built for security,
+software freedom, and stability. It is easy to understand and secure by
+default. The issues I encountered in my experience with it were pretty tame
+compared to those I ran into on any Linux derivative.</p>
+<p>Thinking back to something as elementary as rebooting my computer after my
+first Linux installation, I remember <a
+href="https://unix.stackexchange.com/q/249654" rel="noopener noreferrer"
+referrerpolicy="no-referrer">getting softlocked at shutdown</a>.</p>
+<p>Reflecting on more recent experiences with Manjaro, I recall my
+configuration files for system-critical processes being scattered everywhere,
+and having too much power granted to me with too little knowledge. Garbage was
+left behind by packages without my knowledge, and without any clear way to
+locate it all.</p>
+<p>A lot of these issues can be chalked up to Linux distributions getting
+filled with bloatware and one-off abstractions that fail to empower their
+users in efforts of being &#x201C;the best OS&#x201D;. Consider Ubuntu&#x2019;s redundancies: <a
+href="https://manpages.ubuntu.com/manpages/precise/en/man8/iptables.8.html"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>iptables(8)</code></a>, <a
+href="https://manpages.ubuntu.com/manpages/bionic/man8/ufw.8.html"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>ufw(8)</code></a>, <a
+href="https://manpages.ubuntu.com/manpages/xenial/man8/apt.8.html"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>apt(8)</code></a>, <a
+href="https://manpages.ubuntu.com/manpages/impish/en/man8/snap.8.html"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>snap(8)</code></a>. Consider Gentoo&#x2019;s
+behemoth <a href="https://wiki.gentoo.org/wiki/Portage"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>portage(5)</code></a>.</p>
+<p>OpenBSD&#x2019;s objectives, on the other hand, are precise, and it is a damn good
 solution to them.</p>
 <blockquote>
 <p>So does all of this mean that BSD is superior to Linux?</p>
 </blockquote>
 <p>eh.</p>
+</section>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>

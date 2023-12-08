@@ -1,109 +1,441 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Libav is complicated</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Libav is complicated</h1>
-  <small><date>Jun 30, 2022</date> | <span class="wordcount">899 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/software">#software</a></li>
-    
-    
-  </ul>
-  <p>Libav is the crustiest library I have ever used. In a cruel paradox, it is also the state of the art in multimedia processing. Nothing comes close in performance and capability. I have been trying to write a program using it and have since gained an understanding of how to use it (kind of). With use, I feel my appreciation swelling for it, but it is still quite the complicated beast.</p>
-<p>First, let's discuss the chaos that is &quot;libav&quot;. The library behind FFMPEG is called &quot;libav&quot;. Most of the library components follow the same pattern: &quot;libavdevice, libavutil&quot;, etc. Long ago, when FFMPEG was getting some traction, some folks forked the library component of it and tried to make it easier to use, or something... This mysterious spinoff was -- as in the infinite wisdom of the universe -- <em>also</em> named &quot;libav&quot;.</p>
-<p>libav (the forked one) is no longer under development, as far as I can tell. The last release was in 2018. The last commit to <code>master</code> was in 2019. My brain is still stuck in the 2010s, so I have to remind myself that's <strong>three years without a commit</strong>. That seems pretty abandoned to me.</p>
-<p>Normally, when a fork of a major project ceases development, it's no big deal, but it poses a challenge for developers; particularly when they need help. Google something about &quot;libav&quot; and look for a StackOverflow answer. It's a russian roulette of whether the answer you're going to get is about &quot;libav&quot; or <em>&quot;libav&quot;</em>.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>Another complicated part: the eager developer might run into is that the documentation of the actual libav is terse. It is so distilled, so crystallized, that it takes a lot of careful inference and/or luck to get the hang of. There's also quite a few structure-specific quirks. For example, <code>AVChannelLayout</code> is a member of a few different data structures, and is initialized with some predefined initializers. Unlike structures in libav initialized with predefined constants, though, it must be copied with a specific function, and uninitialized with another.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p><img src="/static/img/libav/avchannel.png" alt="documentation for avchannel"></p>
-<p>There are also a few missing features from the library. For one, <a href="https://trac.ffmpeg.org/wiki/DirectShow#Howtoprogrammaticallyenumeratedevices">there is no way to programmatically enumerate devices</a>. Instead, the programmer could either shell out to <code>ffmpeg</code>, defeating the purpose of using libav in most cases, or install a log capture handler via <a href="https://ffmpeg.org/doxygen/trunk/group__lavu__log.html#ga14034761faf581a8b9ed6ef19b313708"><code>log_set_callback()</code></a>.</p>
-<p>The final barrier to entry is building the library into software. Engineering complex software in C/C++ is pretty hard to get right, but baking it all together in the right ways on every platform is especially difficult. This is why almost all modern programming languages have their own toolchain that manages the compilation and linking for you. libav is designed to build on a whole lot of platforms, though, and not many programming languages short of Go can make claims to C's throne of portability.</p>
-<p>Building <code>ffmpeg</code> is actually incredibly easy if you have the dependencies on your system; just <code>./configure &amp;&amp; make</code> like any other. Even if you don't have all the dependencies, you can avoid their use by just disabling them in your call to <code>configure</code>. To build it into another piece of software using something like CMake, the developer is kind of on their own with linking in all the required dependencies of the libraries. I ended up using <code>pkg-config</code>. To point <code>pkg-config</code> in the right direction in CMake, though, one has to set the <code>PKG_CONFIG_PATH</code>. My current approach is this in the root <code>CMakeLists.txt</code>:</p>
-<pre><code class="language-cmake">set($ENV{PKG_CONFIG_PATH} &quot;${FFMPEG_DIR}/pkgconfig&quot;)
-find_package(PkgConfig REQUIRED)
-if(NOT ${PKG_CONFIG_FOUND})
-  message(FATAL_ERROR &quot;Missing pkg-config!&quot;)
-endif()
-pkg_check_modules(CODEC REQUIRED IMPORTED_TARGET libavcodec)
-pkg_check_modules(DEVICE REQUIRED IMPORTED_TARGET libavdevice)
-pkg_check_modules(FILTER REQUIRED IMPORTED_TARGET libavfilter)
-pkg_check_modules(FORMAT REQUIRED IMPORTED_TARGET libavformat)
-pkg_check_modules(UTIL REQUIRED IMPORTED_TARGET libavutil)
-pkg_check_modules(POSTPROC REQUIRED IMPORTED_TARGET libpostproc)
-pkg_check_modules(SWRESAMPLE REQUIRED IMPORTED_TARGET libswresample)
-pkg_check_modules(SWSCALE REQUIRED IMPORTED_TARGET libswscale)
-</code></pre>
-<p>Then, for the executables that need it, they can include the libraries in their subdirectories:</p>
-<pre><code class="language-cmake">target_link_libraries(myExecutable PRIVATE
-  PkgConfig::UTIL
-  PkgConfig::SWSCALE
-)
-</code></pre>
-<p>In the face of all this complexity, I have been able to get my software building and learn quite a bit in the process. Greatly simplifying, the basic setup of a program using libav boils down to:</p>
-<ol>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2022-06-30" />
+  <title>Libav is complicated</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Libav is complicated</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>30 June 2022</date>
+</p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/software">software</a>
+  </p>
+</div>
+
+</header>
+<p>Libav is the crustiest library I have ever used. In a cruel paradox, it is
+also the state of the art in multimedia processing. Nothing comes close in
+performance and capability. I have been trying to write a program using it and
+have since gained an understanding of how to use it (kind of). With use, I
+feel my appreciation swelling for it, but it is still quite the complicated
+beast.</p>
+<p>First, let&#x2019;s discuss the chaos that is &#x201C;libav&#x201D;. The library behind FFMPEG
+is called &#x201C;libav&#x201D;. Most of the library components follow the same pattern:
+&#x201C;libavdevice, libavutil&#x201D;, etc. Long ago, when FFMPEG was getting some
+traction, some folks forked the library component of it and tried to make it
+easier to use, or something&#x2026; This mysterious spinoff was &#x2013; as in the infinite
+wisdom of the universe &#x2013; <em>also</em> named &#x201C;libav&#x201D;.</p>
+<p>libav (the forked one) is no longer under development, as far as I can
+tell. The last release was in 2018. The last commit to <code>master</code> was
+in 2019. My brain is still stuck in the 2010s, so I have to remind myself
+that&#x2019;s <strong>three years without a commit</strong>. That seems pretty
+abandoned to me.</p>
+<p>Normally, when a fork of a major project ceases development, it&#x2019;s no big
+deal, but it poses a challenge for developers; particularly when they need
+help. Google something about &#x201C;libav&#x201D; and look for a StackOverflow answer. It&#x2019;s
+a russian roulette of whether the answer you&#x2019;re going to get is about &#x201C;libav&#x201D;
+or <em>&#x201C;libav&#x201D;</em>.<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></p>
+<p>Another complicated part: the eager developer might run into is that the
+documentation of the actual libav is terse. It is so distilled, so
+crystallized, that it takes a lot of careful inference and/or luck to get the
+hang of. There&#x2019;s also quite a few structure-specific quirks. For example,
+<code>AVChannelLayout</code> is a member of a few different data structures,
+and is initialized with some predefined initializers. Unlike structures in
+libav initialized with predefined constants, though, it must be copied with a
+specific function, and uninitialized with another.<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<figure>
+<img src="/static/img/libav/avchannel.png" loading="lazy"
+alt="documentation for avchannel" />
+<figcaption aria-hidden="true">documentation for avchannel</figcaption>
+</figure>
+<p>There are also a few missing features from the library. For one, <a
+href="https://trac.ffmpeg.org/wiki/DirectShow#Howtoprogrammaticallyenumeratedevices"
+rel="noopener noreferrer" referrerpolicy="no-referrer">there is no way to
+programmatically enumerate devices</a>. Instead, the programmer could either
+shell out to <code>ffmpeg</code>, defeating the purpose of using libav in most
+cases, or install a log capture handler via <a
+href="https://ffmpeg.org/doxygen/trunk/group__lavu__log.html#ga14034761faf581a8b9ed6ef19b313708"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>log_set_callback()</code></a>.</p>
+<p>The final barrier to entry is building the library into software.
+Engineering complex software in C/C++ is pretty hard to get right, but baking
+it all together in the right ways on every platform is especially difficult.
+This is why almost all modern programming languages have their own toolchain
+that manages the compilation and linking for you. libav is designed to build
+on a whole lot of platforms, though, and not many programming languages short
+of Go can make claims to C&#x2019;s throne of portability.</p>
+<p>Building <code>ffmpeg</code> is actually incredibly easy if you have the
+dependencies on your system; just <code>./configure &amp;&amp; make</code>
+like any other. Even if you don&#x2019;t have all the dependencies, you can avoid
+their use by just disabling them in your call to <code>configure</code>. To
+build it into another piece of software using something like CMake, the
+developer is kind of on their own with linking in all the required
+dependencies of the libraries. I ended up using <code>pkg-config</code>. To
+point <code>pkg-config</code> in the right direction in CMake, though, one has
+to set the <code>PKG_CONFIG_PATH</code>. My current approach is this in the
+root <code>CMakeLists.txt</code>:</p>
+<div class="sourceCode" id="cb1" class="codeblock"><pre
+class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span>(<span class="fl">$ENV{PKG_CONFIG_PATH}</span> <span class="st">&quot;</span><span class="dv">${FFMPEG_DIR}</span><span class="st">/pkgconfig&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">find_package</span>(<span class="im">PkgConfig</span> <span class="ot">REQUIRED</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="ot">NOT</span> <span class="dv">${PKG_CONFIG_FOUND}</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">message</span>(<span class="ot">FATAL_ERROR</span> <span class="st">&quot;Missing pkg-config!&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">endif</span>()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(CODEC <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libavcodec)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(DEVICE <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libavdevice)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(FILTER <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libavfilter)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(FORMAT <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libavformat)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(UTIL <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libavutil)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(POSTPROC <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libpostproc)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(SWRESAMPLE <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libswresample)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg_check_modules</span>(SWSCALE <span class="ot">REQUIRED</span> <span class="ot">IMPORTED_TARGET</span> libswscale)</span></code></pre></div>
+<p>Then, for the executables that need it, they can include the libraries in
+their subdirectories:</p>
+<div class="sourceCode" id="cb2" class="codeblock"><pre
+class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">target_link_libraries</span>(<span class="bn">myExecutable</span> <span class="ot">PRIVATE</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bn">PkgConfig::UTIL</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bn">PkgConfig::SWSCALE</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>In the face of all this complexity, I have been able to get my software
+building and learn quite a bit in the process. Greatly simplifying, the basic
+setup of a program using libav boils down to:</p>
+<ol type="1">
 <li>Provide hints about what you want to encode or decode</li>
-<li>Open the input or output device in the <code>InputContext</code> or <code>OutputContext</code></li>
+<li>Open the input or output device in the <code>InputContext</code> or
+<code>OutputContext</code></li>
 <li>Find the stream you want matching the format you want</li>
 <li>Allocate a <code>CodecContext</code></li>
-<li>Copy the codec parameters to the context (the parameters from
-your discovered stream)</li>
+<li>Copy the codec parameters to the context (the parameters from your
+discovered stream)</li>
 <li>Load the decoder you want</li>
 <li>Start reading/writing data</li>
 </ol>
-<p>If I were to write out a complete example, it would probably end up being in the ballpark of 500-1000 lines, so I'll abbreviate. A few relevant calls for this are:</p>
-<ol>
+<p>If I were to write out a complete example, it would probably end up being
+in the ballpark of 500-1000 lines, so I&#x2019;ll abbreviate. A few relevant calls
+for this are:</p>
+<ol type="1">
 <li><code>av_dict_set</code>; <code>av_find_*_format</code></li>
 <li><code>avformat_open_input</code></li>
 <li><code>avformat_find_stream_info</code></li>
 <li><code>avcodec_alloc_context</code></li>
 <li><code>avcodec_parameters_to_context</code></li>
-<li><code>av_find_encoder</code>/<code>av_find_decoder</code>; <code>avcodec_open2</code></li>
+<li><code>av_find_encoder</code>/<code>av_find_decoder</code>;
+<code>avcodec_open2</code></li>
 <li><code>av_read_frame</code></li>
 </ol>
-<p>Anyways, what I'm trying to say is that using FFMPEG is a laborious process. I find that using it is comparable to how Gentoo describes configuring a kernel:</p>
+<p>Anyways, what I&#x2019;m trying to say is that using FFMPEG is a laborious
+process. I find that using it is comparable to how Gentoo describes
+configuring a kernel:</p>
 <blockquote>
-<p>Manually configuring a kernel is often seen as the most difficult procedure a Linux user ever has to perform. Nothing is less true -- after configuring a couple of kernels you don't even remember that it was difficult ;) <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>Manually configuring a kernel is often seen as the most difficult procedure
+a Linux user ever has to perform. Nothing is less true &#x2013; after configuring a
+couple of kernels you don&#x2019;t even remember that it was difficult ;) <a
+href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a></p>
 </blockquote>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>And what a mess it is!</p>
-<ul>
-<li><a href="https://video.stackexchange.com/questions/15346/libav-x264-failed-to-compile-with-hi422p-profile-and-mp4-container-support#comment20623_15346">https://video.stackexchange.com/questions/15346/libav-x264-failed-to-compile-with-hi422p-profile-and-mp4-container-support#comment20623_15346</a></li>
-<li><a href="https://stackoverflow.com/questions/25716829/using-ffmpeg-and-libav">https://stackoverflow.com/questions/25716829/using-ffmpeg-and-libav</a></li>
-</ul>
- <a href="#fnref1" class="footnote-backref">↩︎</a></li>
-<li id="fn2" class="footnote-item"><p><a href="https://ffmpeg.org/doxygen/trunk/structAVChannelLayout.html">https://ffmpeg.org/doxygen/trunk/structAVChannelLayout.html</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p><a href="https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel">https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>And what a mess it is! -
+https://video.stackexchange.com/questions/15346/libav-x264-failed-to-compile-with-hi422p-profile-and-mp4-container-support#comment20623_15346
+- https://stackoverflow.com/questions/25716829/using-ffmpeg-and-libav<a
+href="#fnref1" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn2"><p>https://ffmpeg.org/doxygen/trunk/structAVChannelLayout.html<a
+href="#fnref2" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li
+id="fn3"><p>https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel<a
+href="#fnref3" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
 </ol>
-</section>
+</aside>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>

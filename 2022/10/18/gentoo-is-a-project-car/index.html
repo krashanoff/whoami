@@ -1,46 +1,255 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Gentoo is a project car</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Gentoo is a project car</h1>
-  <small><date>Oct 18, 2022</date> | <span class="wordcount">1647 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/thoughts">#thoughts</a></li>
-    
-    
-    
-    <li><a href="/tag/server">#server</a></li>
-    
-    
-  </ul>
-  <p>Gentoo, Gentoo. Ah yes, Gentoo. Gentoo is my favorite Linux &quot;distribution&quot;. I've mentioned it before!</p>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2022-10-18" />
+  <title>Gentoo is a project car</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Gentoo is a project car</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>18 October 2022</date>
+</p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/thoughts">thoughts</a>
+    <a href="/tags/server">server</a>
+  </p>
+</div>
+
+</header>
+<p>Gentoo, Gentoo. Ah yes, Gentoo. Gentoo is my favorite Linux &#x201C;distribution&#x201D;.
+I&#x2019;ve mentioned it before!</p>
 <blockquote>
-<p>Manually configuring a kernel is often seen as the most difficult procedure a Linux user ever has to perform. Nothing is less true -- after configuring a couple of kernels you don't even remember that it was difficult ;) <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>Manually configuring a kernel is often seen as the most difficult procedure
+a Linux user ever has to perform. Nothing is less true &#x2013; after configuring a
+couple of kernels you don&#x2019;t even remember that it was difficult ;) <a
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></p>
 </blockquote>
 <blockquote>
-<p>...consider Gentoo's behemoth <a href="https://wiki.gentoo.org/wiki/Portage"><code>portage(5)</code></a>.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>&#x2026;consider Gentoo&#x2019;s behemoth <a href="https://wiki.gentoo.org/wiki/Portage"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>portage(5)</code></a>.<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 </blockquote>
-<p>That last one is a little underhanded. Not for calling <code>portage</code> &quot;behemoth&quot; -- I think that anybody who has used Gentoo knows exactly what I'm talking about.</p>
-<pre><code>$ man portage
+<p>That last one is a little underhanded. Not for calling <code>portage</code>
+&#x201C;behemoth&#x201D; &#x2013; I think that anybody who has used Gentoo knows exactly what I&#x2019;m
+talking about.</p>
+<pre class="codeblock"><code>$ man portage
 PORTAGE(5)                          Portage                         PORTAGE(5)
 
 NAME
@@ -50,69 +259,195 @@ DESCRIPTION
        The  current portage code uses many different configuration files, most
        of which are unknown to users and normal developers.  Here we will  try
        to  collect  all the odds and ends so as to help users more effectively
-       utilize portage.  This is a reference only for files which do  not  al‐
-       ready have a man page.
-</code></pre>
-<p>No, you see, for Gentoo, they <strong>need</strong> a behemoth like <code>portage</code>, because Gentoo is hardly a distribution at all. It's more like a collection of tools that people can use to help ease the headache that would be maintaining their own Linux From Scratch (LFS) installation.</p>
-<p>The biggest selling point is its toolchain for compiling everything in your system from source, with all the relevant configuration options you might have in mind. You can build all your applications without the dependencies for functionality that you don't need. Better yet, you can build your applications without that functionality altogether! For me, a nice one here is compiling GNOME keyring<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> without any of the GUI components on my server. Its dependency on <a href="https://packages.gentoo.org/packages/app-crypt/pinentry">pinentry</a> is obliterated, and so is the seemingly endless list of Qt5 codependencies.</p>
-<p>Another big one is that changes to configuration files between versions are actually obvious and handled well. I find that when I use a Ubuntu-like distribution, it's a serious mess trying to figure out what changes with each upgrade; and especially difficult to find out what is new in my <strong>configuration file</strong>. With Gentoo it's just a matter of running <a href="https://wiki.gentoo.org/wiki/Handbook:X86/Portage/Tools#dispatch-conf"><code>dispatch-conf</code></a> and paging through the changes.</p>
-<p>It's also good if you're concerned about the freedom of software. You can specify which packages are available to you <a href="https://wiki.gentoo.org/wiki/License_groups">by which license they use</a>. Don't want <a href="https://www.gnu.org/software/libc/">GNU</a>/Linux? Then just compile all your software with <a href="https://musl.libc.org/">musl</a>!<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>Using open-source to build your system leads to some really neat paradigms that you don't see in other distributions. The great one is that your whole system is viewed as a source tree, hence the semantics of the command <code>emerge</code>. It makes things fairly reproducible so long as you version your config files.</p>
-<p>There are many things about this approach that irk people, though. For the true Gentoo experience, you compile everything from source. <u>Everything.</u></p>
-<p>An <em>actual, official part of the installation process</em> that the manual really likes to encourage is compiling a custom Linux kernel for your system. Think about it: you can create your perfect, purpose-built system! Its kernel is designed with you in mind, because you are the one who configured it! Think of the possibilities!</p>
+       utilize portage.  This is a reference only for files which do  not  al&#x2010;
+       ready have a man page.</code></pre>
+<p>No, you see, for Gentoo, they <strong>need</strong> a behemoth like
+<code>portage</code>, because Gentoo is hardly a distribution at all. It&#x2019;s
+more like a collection of tools that people can use to help ease the headache
+that would be maintaining their own Linux From Scratch (LFS) installation.</p>
+<p>The biggest selling point is its toolchain for compiling everything in your
+system from source, with all the relevant configuration options you might have
+in mind. You can build all your applications without the dependencies for
+functionality that you don&#x2019;t need. Better yet, you can build your applications
+without that functionality altogether! For me, a nice one here is compiling
+GNOME keyring<a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a> without any of the GUI components on my
+server. Its dependency on <a
+href="https://packages.gentoo.org/packages/app-crypt/pinentry"
+rel="noopener noreferrer" referrerpolicy="no-referrer">pinentry</a> is
+obliterated, and so is the seemingly endless list of Qt5 codependencies.</p>
+<p>Another big one is that changes to configuration files between versions are
+actually obvious and handled well. I find that when I use a Ubuntu-like
+distribution, it&#x2019;s a serious mess trying to figure out what changes with each
+upgrade; and especially difficult to find out what is new in my
+<strong>configuration file</strong>. With Gentoo it&#x2019;s just a matter of running
+<a
+href="https://wiki.gentoo.org/wiki/Handbook:X86/Portage/Tools#dispatch-conf"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>dispatch-conf</code></a> and paging through
+the changes.</p>
+<p>It&#x2019;s also good if you&#x2019;re concerned about the freedom of software. You can
+specify which packages are available to you <a
+href="https://wiki.gentoo.org/wiki/License_groups" rel="noopener noreferrer"
+referrerpolicy="no-referrer">by which license they use</a>. Don&#x2019;t want <a
+href="https://www.gnu.org/software/libc/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">GNU</a>/Linux? Then just compile all your
+software with <a href="https://musl.libc.org/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">musl</a>!<a href="#fn4" class="footnote-ref"
+id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>Using open-source to build your system leads to some really neat paradigms
+that you don&#x2019;t see in other distributions. The great one is that your whole
+system is viewed as a source tree, hence the semantics of the command
+<code>emerge</code>. It makes things fairly reproducible so long as you
+version your config files.</p>
+<p>There are many things about this approach that irk people, though. For the
+true Gentoo experience, you compile everything from source.
+<u>Everything.</u></p>
+<p>An <em>actual, official part of the installation process</em> that the
+manual really likes to encourage is compiling a custom Linux kernel for your
+system. Think about it: you can create your perfect, purpose-built system! Its
+kernel is designed with you in mind, because you are the one who configured
+it! Think of the possibilities!</p>
 <ul>
-<li><a href="https://developer.apple.com/documentation/ios-ipados-release-notes/ios-16_1-release-notes">Zero memory on-free like iOS does now</a></li>
+<li><a
+href="https://developer.apple.com/documentation/ios-ipados-release-notes/ios-16_1-release-notes"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Zero memory on-free
+like iOS does now</a></li>
 <li>Poison the stack returning from a kernel call (every time)</li>
-<li>Remove support for filesystems that you don't care about</li>
-<li>Make functionality that you personally deem non-essential into a module</li>
-<li>Remove support for emulating 32-bit binaries... Maybe you have a special reason.</li>
-<li>Round-robin scheduling for processes...?</li>
+<li>Remove support for filesystems that you don&#x2019;t care about</li>
+<li>Make functionality that you personally deem non-essential into a
+module</li>
+<li>Remove support for emulating 32-bit binaries&#x2026; Maybe you have a special
+reason.</li>
+<li>Round-robin scheduling for processes&#x2026;?</li>
 </ul>
-<p>For most desktop users, that last one is just comedy. There is something to be said, though: installing Gentoo and configuring a kernel was the first real exposure I had to the different scheduling algorithms and memory fragmentation mitigation techniques I was learning in university. You really can use round-robin scheduling if you build the kernel yourself. Whether that's a good idea is up to you.</p>
-<p>But let's take a step back and enjoy a cool, refreshing glass of <strong>perspective</strong>. Should we really be having people configure their own kernels?</p>
-<p><strong>No. We really shouldn't, in my opinion. Maybe not even developers.</strong> I view kernel configuration in the same way that I view hand-rolling cryptography: it's something that really only a qualified expert should be doing. There's so many ways that you can absolutely botch your system by configuring something in your kernel wrong. I did so in my first Gentoo installation many, many years ago trying to set up Docker. A few wrong configuration options and suddenly my system is running significantly slower than it did post-install. Networking, especially, was behaving strangely. I hadn't kept any notes and, consequently, had no luck retracing my steps. I'm willing to bet the average amateur OS enthusiast distro-hopping left and right would make the same mistakes.</p>
-<p>There's a few small parts that are fine to tweak, like the ones I mentioned above (zero-on-free, less filesystems, more modules, etc.), but past those is nothing but suffering. Configuring a kernel to support virtualization is a minefield. Even setting up something like <a href="https://wiki.gentoo.org/wiki/Iptables#Kernel"><code>iptables</code></a> can be a pain to get right.</p>
-<p>Even the argument that compiling all your software yourself will significantly improve performance might be misguided. Removing support for certain big features like Xorg might improve performance on a server that I only want to use for a few applications, but for the average enthusiast desktop user with their Xorg and their BSPWM or Dunst, I don't anticipate much improvement over the same DE on Arch or Artix.</p>
-<p>Where the most improvement might be seen in that case is in really complicated software -- something like a web browser, but then you start running into compilation time issues. Even if your hardware is high-end, compiling Firefox from source is so notoriously laborious that Gentoo had to add a <a href="https://packages.gentoo.org/packages/www-client/firefox-bin">binary package</a>. I tried compiling it once on my i7-4770K desktop, and a few <strong>hours</strong><sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> into it I decided to bite the bullet and download the binary.</p>
-<p>But, this might be getting off track. I like Gentoo. No -- I <strong>LOVE</strong> Gentoo. Seriously.</p>
-<p>It's absolutely a contradiction. Even with all the time it takes to install. Even with the inevitable problems you'll encounter when upgrading. For all the compilation time for relatively minimal gain. There's not too great an argument for why people use it. It's flashy and brutish; it's impractical; it's trading on the margin for pennies; it's just shy of unusable for anyone else and if you change one environment variable it might all crumble to pieces. You know what that sounds like to me? <strong>A project car.</strong></p>
-<p>People love project cars! They tinker with them to learn, lovingly fix them when they're broken, and they drive them because it's <em>fun</em>.</p>
-<p>If there is such a thing as the &quot;Murciélago of Linux&quot;, then Gentoo is like the Datsun 500 you've had sitting in your garage for the last 10 years. Absolutely impractical for the average user, more maintainable than a high-end sports car, but still just as fun.</p>
-<p>Looking at it this way, it becomes less about performance and &quot;cool points&quot; and becomes much more focused on enjoyment of the user.</p>
-<p>For enthusiasts with enough wherewithall, I don't think it's a bad hobby to manage your system at the level Gentoo demands. If anything, it's educative. Years ago when I absolutely butchered my daily driver's network connectivity by messing up my kernel when installing Docker, I was frustrated, but I had fun figuring out what went wrong with minimal information to go off of. That's a skill that ended up serving me well after graduating.</p>
-<p>For an uninitiated user just looking for a cool system, though, the Gentoo manual can be like a guide to Frankenstein's monster. <strong>If you didn't understand the risks going into it, you'll sure as hell understand them coming out of it.</strong></p>
-<p>But it's ultimately your project. You don't need to justify why you're doing it.</p>
-<hr>
-<p>...and, there's certainly a case to be made for checking your system <code>htop</code> output to see a comically low number of tasks at idle.</p>
-<p><img src="/static/img/gentoo/htop.png" alt="17 threads at idle"></p>
+<p>For most desktop users, that last one is just comedy. There is something to
+be said, though: installing Gentoo and configuring a kernel was the first real
+exposure I had to the different scheduling algorithms and memory fragmentation
+mitigation techniques I was learning in university. You really can use
+round-robin scheduling if you build the kernel yourself. Whether that&#x2019;s a good
+idea is up to you.</p>
+<p>But let&#x2019;s take a step back and enjoy a cool, refreshing glass of
+<strong>perspective</strong>. Should we really be having people configure
+their own kernels?</p>
+<p><strong>No.&#xA0;We really shouldn&#x2019;t, in my opinion. Maybe not even
+developers.</strong> I view kernel configuration in the same way that I view
+hand-rolling cryptography: it&#x2019;s something that really only a qualified expert
+should be doing. There&#x2019;s so many ways that you can absolutely botch your
+system by configuring something in your kernel wrong. I did so in my first
+Gentoo installation many, many years ago trying to set up Docker. A few wrong
+configuration options and suddenly my system is running significantly slower
+than it did post-install. Networking, especially, was behaving strangely. I
+hadn&#x2019;t kept any notes and, consequently, had no luck retracing my steps. I&#x2019;m
+willing to bet the average amateur OS enthusiast distro-hopping left and right
+would make the same mistakes.</p>
+<p>There&#x2019;s a few small parts that are fine to tweak, like the ones I mentioned
+above (zero-on-free, less filesystems, more modules, etc.), but past those is
+nothing but suffering. Configuring a kernel to support virtualization is a
+minefield. Even setting up something like <a
+href="https://wiki.gentoo.org/wiki/Iptables#Kernel" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>iptables</code></a> can be a pain to get
+right.</p>
+<p>Even the argument that compiling all your software yourself will
+significantly improve performance might be misguided. Removing support for
+certain big features like Xorg might improve performance on a server that I
+only want to use for a few applications, but for the average enthusiast
+desktop user with their Xorg and their BSPWM or Dunst, I don&#x2019;t anticipate much
+improvement over the same DE on Arch or Artix.</p>
+<p>Where the most improvement might be seen in that case is in really
+complicated software &#x2013; something like a web browser, but then you start
+running into compilation time issues. Even if your hardware is high-end,
+compiling Firefox from source is so notoriously laborious that Gentoo had to
+add a <a href="https://packages.gentoo.org/packages/www-client/firefox-bin"
+rel="noopener noreferrer" referrerpolicy="no-referrer">binary package</a>. I
+tried compiling it once on my i7-4770K desktop, and a few
+<strong>hours</strong><a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a> into it I decided to bite the bullet and
+download the binary.</p>
+<p>But, this might be getting off track. I like Gentoo. No &#x2013; I
+<strong>LOVE</strong> Gentoo. Seriously.</p>
+<p>It&#x2019;s absolutely a contradiction. Even with all the time it takes to
+install. Even with the inevitable problems you&#x2019;ll encounter when upgrading.
+For all the compilation time for relatively minimal gain. There&#x2019;s not too
+great an argument for why people use it. It&#x2019;s flashy and brutish; it&#x2019;s
+impractical; it&#x2019;s trading on the margin for pennies; it&#x2019;s just shy of unusable
+for anyone else and if you change one environment variable it might all
+crumble to pieces. You know what that sounds like to me? <strong>A project
+car.</strong></p>
+<p>People love project cars! They tinker with them to learn, lovingly fix them
+when they&#x2019;re broken, and they drive them because it&#x2019;s <em>fun</em>.</p>
+<p>If there is such a thing as the &#x201C;Murci&#xE9;lago of Linux&#x201D;, then Gentoo is like
+the Datsun 500 you&#x2019;ve had sitting in your garage for the last 10 years.
+Absolutely impractical for the average user, more maintainable than a high-end
+sports car, but still just as fun.</p>
+<p>Looking at it this way, it becomes less about performance and &#x201C;cool points&#x201D;
+and becomes much more focused on enjoyment of the user.</p>
+<p>For enthusiasts with enough wherewithall, I don&#x2019;t think it&#x2019;s a bad hobby to
+manage your system at the level Gentoo demands. If anything, it&#x2019;s educative.
+Years ago when I absolutely butchered my daily driver&#x2019;s network connectivity
+by messing up my kernel when installing Docker, I was frustrated, but I had
+fun figuring out what went wrong with minimal information to go off of. That&#x2019;s
+a skill that ended up serving me well after graduating.</p>
+<p>For an uninitiated user just looking for a cool system, though, the Gentoo
+manual can be like a guide to Frankenstein&#x2019;s monster. <strong>If you didn&#x2019;t
+understand the risks going into it, you&#x2019;ll sure as hell understand them coming
+out of it.</strong></p>
+<p>But it&#x2019;s ultimately your project. You don&#x2019;t need to justify why you&#x2019;re
+doing it.</p>
+<hr />
+<p>&#x2026;and, there&#x2019;s certainly a case to be made for checking your system
+<code>htop</code> output to see a comically low number of tasks at idle.</p>
+<figure>
+<img src="/static/img/gentoo/htop.png" loading="lazy"
+alt="17 threads at idle" />
+<figcaption aria-hidden="true">17 threads at idle</figcaption>
+</figure>
 <blockquote>
-<p>I'm just going to say it - I get excited when my system breaks.</p>
-<p>Oh? What's that? The sweet siren's call beckons me once again? What amusements await us this time? Unsatisfied dependencies? Slot conflicts? Perhaps, I daresay, a circular dependency or two? Nothing gives me a jolt like watching portage spew forth a slew of errors in beautiful 256, knowing that my baby needs me. Pop the hood, interlock fingers &amp;&amp; flex, and get to work. The satisfaction after resolving blocked updates and seeing the packages that were previously taunting you getting emerged is comparable only to the most worldly and carnal pleasures. When I see that there is a new news item, there's a decent chance that I may literally scream with excitement. I woke up in a hospital after receiving word of the 17.0 -&gt; 17.1 profile upgrade. They had to sedate me because of the blind rage I flew into knowing that my system was unattended, rotting away on the ancient and deprecated 17.0 profile. Nobody knows your system like you, and the bond that I've developed with my distro over the years is irreplaceable. I'll never go back.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p>I&#x2019;m just going to say it - I get excited when my system breaks.</p>
+<p>Oh? What&#x2019;s that? The sweet siren&#x2019;s call beckons me once again? What
+amusements await us this time? Unsatisfied dependencies? Slot conflicts?
+Perhaps, I daresay, a circular dependency or two? Nothing gives me a jolt like
+watching portage spew forth a slew of errors in beautiful 256, knowing that my
+baby needs me. Pop the hood, interlock fingers &amp;&amp; flex, and get to
+work. The satisfaction after resolving blocked updates and seeing the packages
+that were previously taunting you getting emerged is comparable only to the
+most worldly and carnal pleasures. When I see that there is a new news item,
+there&#x2019;s a decent chance that I may literally scream with excitement. I woke up
+in a hospital after receiving word of the 17.0 -&gt; 17.1 profile upgrade.
+They had to sedate me because of the blind rage I flew into knowing that my
+system was unattended, rotting away on the ancient and deprecated 17.0
+profile. Nobody knows your system like you, and the bond that I&#x2019;ve developed
+with my distro over the years is irreplaceable. I&#x2019;ll never go back.<a
+href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a></p>
 </blockquote>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://krashanoff.com/2022/06/30/libav-is-complicated/">https://krashanoff.com/2022/06/30/libav-is-complicated/</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a href="https://krashanoff.com/2021/09/24/exploring-openbsd/">https://krashanoff.com/2021/09/24/exploring-openbsd/</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>And I'm <strong>glad</strong> they killed it in RHEL 8! Ding dong the witch is dead. <a href="https://access.redhat.com/solutions/4491691">https://access.redhat.com/solutions/4491691</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p><a href="https://www.reddit.com/r/copypasta/comments/gs715n/i_use_linux_as_my_operating_system/">https://www.reddit.com/r/copypasta/comments/gs715n/i_use_linux_as_my_operating_system/</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Yes, hours! I let it run most of the day before giving up. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p><a href="https://www.reddit.com/r/Gentoo/comments/bzyc3f/im_just_going_to_say_it_i_get_excited_when_my/">https://www.reddit.com/r/Gentoo/comments/bzyc3f/im_just_going_to_say_it_i_get_excited_when_my/</a> <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>https://krashanoff.com/2022/06/30/libav-is-complicated/<a
+href="#fnref1" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn2"><p>https://krashanoff.com/2021/09/24/exploring-openbsd/<a
+href="#fnref2" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn3"><p>And I&#x2019;m <strong>glad</strong> they killed it in RHEL 8! Ding
+dong the witch is dead. https://access.redhat.com/solutions/4491691<a
+href="#fnref3" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li
+id="fn4"><p>https://www.reddit.com/r/copypasta/comments/gs715n/i_use_linux_as_my_operating_system/<a
+href="#fnref4" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn5"><p>Yes, hours! I let it run most of the day before giving up.<a
+href="#fnref5" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li
+id="fn6"><p>https://www.reddit.com/r/Gentoo/comments/bzyc3f/im_just_going_to_say_it_i_get_excited_when_my/<a
+href="#fnref6" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
 </ol>
-</section>
+</aside>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>

@@ -1,44 +1,345 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>krashanoff | Virtualizing a Minecraft Server on OpenBSD</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The website of Leo Krashanoff">
-    <link
-      rel="icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
-      type="image/png"
-    />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-  </head>
-  <body>
-    
-<a href="/">krashanoff</a>
-<article>
-  <h1 id="title">Virtualizing a Minecraft Server on OpenBSD</h1>
-  <small><date>Jan 29, 2022; last updated Sep 9, 2022</date> | <span class="wordcount">1545 words</span></small>
-  <ul class="tags">
-    
-    
-    
-    
-    <li><a href="/tag/server">#server</a></li>
-    
-    
-  </ul>
-  <p>Addendum 08 September 2022: as of OpenBSD 7.0, later versions of OpenJDK are supported, which means you can now natively run the Minecraft server that this post was setting up. This was brought to my attention by <a href="https://www.lifewaza.com/">Gabriel Guzman</a>; thanks for the feedback!</p>
-<hr>
-<p><em>&quot;Thinking quickly, Dave constructs a homemade megaphone using only some string, a squirrel,
-and a megaphone.&quot;</em><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>Minecraft recently got its bump to version 1.18.1, and my girlfriend and I have been looking
-for a way to play without running the server locally on my machine. I have an OpenBSD box (see
-<a href="/2021/09/24/exploring-openbsd/">my previous post</a>) that I have been using for my remote
-needs, so I figured I could run the server on it fairly easily.</p>
-<h2 id="the-hardware" tabindex="-1">The Hardware</h2>
-<p>First, let's meet the lambo I plan to have running this:</p>
-<pre><code># top
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2022-01-29" />
+  <title>Virtualizing a Minecraft Server on OpenBSD</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Virtualizing a Minecraft Server on OpenBSD</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    Published:
+    <date>29 January 2022</date>
+</p>
+<p class="date">Last Updated: <date>08 September 2022</date></p>
+
+
+<div class="tags">
+<p>
+  Tagged:
+    <a href="/tags/server">server</a>
+  </p>
+</div>
+
+</header>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">Table of Contents</h2>
+<ul>
+<li><a href="#the-hardware" id="toc-the-hardware"><span
+class="toc-section-number">1</span> The Hardware</a></li>
+<li><a href="#the-software" id="toc-the-software"><span
+class="toc-section-number">2</span> The Software</a></li>
+<li><a href="#enter-vmm4" id="toc-enter-vmm4"><span
+class="toc-section-number">3</span> Enter: <code>vmm(4)</code></a></li>
+<li><a href="#nat" id="toc-nat"><span class="toc-section-number">4</span>
+NAT</a></li>
+<li><a href="#setup-alpine" id="toc-setup-alpine"><span
+class="toc-section-number">5</span> <code>setup-alpine</code></a></li>
+<li><a href="#on-boot" id="toc-on-boot"><span
+class="toc-section-number">6</span> On-Boot</a></li>
+<li><a href="#limit-testing" id="toc-limit-testing"><span
+class="toc-section-number">7</span> Limit Testing</a></li>
+<li><a href="#performance" id="toc-performance"><span
+class="toc-section-number">8</span> Performance</a></li>
+<li><a href="#conclusions-and-future-considerations"
+id="toc-conclusions-and-future-considerations"><span
+class="toc-section-number">9</span> Conclusions and Future
+Considerations</a></li>
+</ul>
+</nav>
+<p>Addendum 08 September 2022: as of OpenBSD 7.0, later versions of OpenJDK
+are supported, which means you can now natively run the Minecraft server that
+this post was setting up. This was brought to my attention by <a
+href="https://www.lifewaza.com/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Gabriel Guzman</a>; thanks for the feedback!</p>
+<hr />
+<p><em>&#x201C;Thinking quickly, Dave constructs a homemade megaphone using only some
+string, a squirrel, and a megaphone.&#x201D;</em><a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Minecraft recently got its bump to version 1.18.1, and my girlfriend and I
+have been looking for a way to play without running the server locally on my
+machine. I have an OpenBSD box (see [my previous post]({{
+&#x2018;/2021/09/24/exploring-openbsd/&#x2019; | url }})) that I have been using for my
+remote needs, so I figured I could run the server on it fairly easily.</p>
+<section id="the-hardware" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> The
+Hardware</h1>
+<p>First, let&#x2019;s meet the lambo I plan to have running this:</p>
+<pre class="codeblock"><code># top
 
 ...
 CPU0 states:  ...
@@ -50,65 +351,95 @@ Memory: Real: 82M/1782M act/tot Free: 6024M Cache: 1084M Swap: 0K/2818M
 Filesystem     Size    Used   Avail Capacity  Mounted on
 /dev/ab0x      986M    107M    830M    11%    /
 ...
-/dev/ab0y      9.4G    936M    8.1G    10%    /home
-</code></pre>
-<p>Oh hell yes. Two cores. Like 8G of RAM. <em>Maybe</em> 8G of disk space. We're gonna make this
-thing work like Atlas.</p>
-<h2 id="the-software" tabindex="-1">The Software</h2>
-<p>To get a Minecraft server running, all you need is the latest version of the JRE. For most
-machines, this really isn't a problem. Java <em>does</em> run on 3 billion devices<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, after
-all. How bad could it be? Let's go ahead and check <a href="http://ports.su/devel/jdk">ports</a>:</p>
-<p><img src="/static/img/mcbsd/jdkports.png" alt="jdk 1.8 in openbsd ports"></p>
-<p>3 billion, it would seem, does not include OpenBSD. Well, not the latest version of Java, at least.
-OpenBSD doesn't really have much in the way of modern luxury when it comes to Java. This is
-in line with their philosophy, I mean think about how many damn licenses are sitting on a JRE.</p>
-<p>This said, I am not so headstrong as to port my own OpenJDK, not so eager to find a way to
-use <a href="https://openports.se/devel/jdk/17">OpenPorts</a>, and not so foolish as to use some weird hacky
-stuff for running a <code>jar</code>, so what's the solution here?</p>
-<p><strong>Isn't it so obvious? Just virtualize a Linux box!</strong></p>
-<h2 id="enter%3A-vmm(4)" tabindex="-1">Enter: <code>vmm(4)</code></h2>
-<p>I decided to virtualize a lightweight Linux distribution inside of my OpenBSD box to run the latest
-server, then NAT Minecraft clients to it.</p>
-<p>It's easier to virtualize hardware on OpenBSD than you might think. <a href="https://man.openbsd.org/vmm.4"><code>vmm(4)</code></a>
-provides capability in spades. All we need to do to enable it is add a line to our
-<a href="https://man.openbsd.org/rc.conf"><code>rc.conf.local(8)</code></a>.</p>
-<pre><code class="language-sh">echo &quot;vmd_flags=&quot; &gt;&gt; /etc/rc.conf.local
-</code></pre>
-<p>Let's go ahead and create our working directory and its virtual disk with <a href="https://man.openbsd.org/vmctl.8"><code>vmctl(8)</code></a>.</p>
-<pre><code># useradd -m -s /sbin/nologin /home/minecraft
+/dev/ab0y      9.4G    936M    8.1G    10%    /home</code></pre>
+<p>Oh hell yes. Two cores. Like 8G of RAM. <em>Maybe</em> 8G of disk space.
+We&#x2019;re gonna make this thing work like Atlas.</p>
+</section>
+<section id="the-software" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The
+Software</h1>
+<p>To get a Minecraft server running, all you need is the latest version of
+the JRE. For most machines, this really isn&#x2019;t a problem. Java <em>does</em>
+run on 3 billion devices<a href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a>, after all. How bad could it be? Let&#x2019;s go
+ahead and check <a href="http://ports.su/devel/jdk" rel="noopener noreferrer"
+referrerpolicy="no-referrer">ports</a>:</p>
+<figure>
+<img src="/static/img/mcbsd/jdkports.png" loading="lazy"
+alt="jdk 1.8 in openbsd ports" />
+<figcaption aria-hidden="true">jdk 1.8 in openbsd ports</figcaption>
+</figure>
+<p>3 billion, it would seem, does not include OpenBSD. Well, not the latest
+version of Java, at least. OpenBSD doesn&#x2019;t really have much in the way of
+modern luxury when it comes to Java. This is in line with their philosophy, I
+mean think about how many damn licenses are sitting on a JRE.</p>
+<p>This said, I am not so headstrong as to port my own OpenJDK, not so eager
+to find a way to use <a href="https://openports.se/devel/jdk/17"
+rel="noopener noreferrer" referrerpolicy="no-referrer">OpenPorts</a>, and not
+so foolish as to use some weird hacky stuff for running a <code>jar</code>, so
+what&#x2019;s the solution here?</p>
+<p><strong>Isn&#x2019;t it so obvious? Just virtualize a Linux box!</strong></p>
+</section>
+<section id="enter-vmm4" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Enter:
+<code>vmm(4)</code></h1>
+<p>I decided to virtualize a lightweight Linux distribution inside of my
+OpenBSD box to run the latest server, then NAT Minecraft clients to it.</p>
+<p>It&#x2019;s easier to virtualize hardware on OpenBSD than you might think. <a
+href="https://man.openbsd.org/vmm.4" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>vmm(4)</code></a> provides capability in
+spades. All we need to do to enable it is add a line to our <a
+href="https://man.openbsd.org/rc.conf" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>rc.conf.local(8)</code></a>.</p>
+<div class="sourceCode" id="cb2" class="codeblock"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;vmd_flags=&quot;</span> <span class="op">&gt;&gt;</span> /etc/rc.conf.local</span></code></pre></div>
+<p>Let&#x2019;s go ahead and create our working directory and its virtual disk with
+<a href="https://man.openbsd.org/vmctl.8" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>vmctl(8)</code></a>.</p>
+<pre class="codeblock"><code># useradd -m -s /sbin/nologin /home/minecraft
 # cd /home/minecraft
 # vmctl create -s 5G minecraft.qcow2
-vmctl: qcow2 imagefile created
-</code></pre>
-<p>All we have to do now is just pick a Linux distribution to run on our (admittedly sparing) disk
-space. All I really need is <a href="https://www.alpinelinux.org/">Alpine</a>, since it supports the latest
-JDK and keeps things tidy. After fetching the boot disk, the startup command isn't so bad:</p>
-<pre><code># vmctl start -m 2G -L -i 1 -r alpine-virt-x86_64.iso \
+vmctl: qcow2 imagefile created</code></pre>
+<p>All we have to do now is just pick a Linux distribution to run on our
+(admittedly sparing) disk space. All I really need is <a
+href="https://www.alpinelinux.org/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Alpine</a>, since it supports the latest JDK and
+keeps things tidy. After fetching the boot disk, the startup command isn&#x2019;t so
+bad:</p>
+<pre class="codeblock"><code># vmctl start -m 2G -L -i 1 -r alpine-virt-x86_64.iso \
   -d minecraft.qcow2 minecraft
-vmctl: started vm 1 successfully, tty /dev/ttyp1
-</code></pre>
+vmctl: started vm 1 successfully, tty /dev/ttyp1</code></pre>
 <ul>
 <li><code>-m 2G</code>: 2G of memory.</li>
-<li><code>-L</code>: link over network. Basically spin up a subnet for the VM.</li>
+<li><code>-L</code>: link over network. Basically spin up a subnet for the
+VM.</li>
 <li><code>-i 1</code>: one network interface.</li>
 <li><code>-r</code>: boot from an image.</li>
 </ul>
 <p>All set.</p>
-<pre><code># vmctl show
+<pre class="codeblock"><code># vmctl show
    ID   PID VCPUS  MAXMEM  CURMEM     TTY        OWNER    STATE NAME
-    1 24772     1    2.0G   96.4M   ttyp1         root  running minecraft
-</code></pre>
-<p>I won't lie, a 5G disk might be a bit pessimistic for how small we can get this thing, and 2G of memory
-might be pushing it for a machine that's rocking the base amount that you'd expect out of a nicer
-Chromebook<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. We'll limit test later, though. Right now, there are more important matters to tend
+    1 24772     1    2.0G   96.4M   ttyp1         root  running minecraft</code></pre>
+<p>I won&#x2019;t lie, a 5G disk might be a bit pessimistic for how small we can get
+this thing, and 2G of memory might be pushing it for a machine that&#x2019;s rocking
+the base amount that you&#x2019;d expect out of a nicer Chromebook<a href="#fn3"
+class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. We&#x2019;ll
+limit test later, though. Right now, there are more important matters to tend
 to.</p>
-<h2 id="nat" tabindex="-1">NAT</h2>
-<p>Before we can use our machine to reach the internet, we've got to redirect traffic to it.
-Time for <a href="https://man.openbsd.org/pf"><code>pf(4)</code></a> to go to work. We add a rule to redirect traffic in
-on port 25565, and allow outbound traffic.</p>
-<p>I don't run my server as a DNS cache, so the third rule (pulled from <a href="https://xosc.org/vmm.html">xhr's post</a>)
-maps DNS to <a href="https://1.1.1.1/">Cloudflare</a>.</p>
-<pre><code>match out on egress from $minecraft to any \
+</section>
+<section id="nat" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> NAT</h1>
+<p>Before we can use our machine to reach the internet, we&#x2019;ve got to redirect
+traffic to it. Time for <a href="https://man.openbsd.org/pf"
+rel="noopener noreferrer" referrerpolicy="no-referrer"><code>pf(4)</code></a>
+to go to work. We add a rule to redirect traffic in on port 25565, and allow
+outbound traffic.</p>
+<p>I don&#x2019;t run my server as a DNS cache, so the third rule (pulled from <a
+href="https://xosc.org/vmm.html" rel="noopener noreferrer"
+referrerpolicy="no-referrer">xhr&#x2019;s post</a>) maps DNS to <a
+href="https://1.1.1.1/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Cloudflare</a>.</p>
+<pre class="codeblock"><code>match out on egress from $minecraft to any \
     nat-to egress
 pass out on egress from $minecraft to any \
     nat-to egress
@@ -118,107 +449,148 @@ pass in proto udp from $minecraft to any port \
 pass in on egress proto tcp from any to (egress) \
     port { 25565 } rdr-to $minecraft
 pass in on egress proto udp from any to (egress) \
-    port { 25565 } rdr-to $minecraft
-</code></pre>
-<p>Before putting these rules into action, make sure that we have IP forwarding enabled in
-<a href="https://man.openbsd.org/sysctl.conf.5"><code>sysctl(5)</code></a>:</p>
-<pre><code># sysctl net.inet.ip.forwarding
-net.inet.ip.forwarding=1
-</code></pre>
-<p>Networking is ready for our VM. Let's get to work.</p>
-<h2 id="setup-alpine" tabindex="-1"><code>setup-alpine</code></h2>
-<p>Time to get our virtual machine set up. We can hop into the VM's console, login as <code>root</code>, and
-run <a href="https://wiki.alpinelinux.org/wiki/Installation"><code>setup-alpine</code></a> as usual.</p>
-<pre><code># vmctl console minecraft
-Connected to /dev/ttyp1 (speed 115200)
-</code></pre>
-<p>Alpine's install is streamlined like OpenBSD's. Just page through with sane defaults and we're
-set. Surprisingly, the arduous portion of this operation was just waiting for it to ping mirrors,
-start chrony, all that good stuff.</p>
-<p>After that's all set, we have to install dependencies. The only dependency we really need to run
-our Minecraft server is <a href="https://pkgs.alpinelinux.org/package/edge/community/aarch64/openjdk17">openjdk17</a>.</p>
-<p>Since this is available in community, we install it by specifying the repository:</p>
-<pre><code class="language-sh">apk add openjdk17 --repository=https://pkgs.alpinelinux.org/package/edge/community/aarch64/openjdk17
-</code></pre>
-<p>Once that's done, we can check our version of the JRE.</p>
-<pre><code># java --version
+    port { 25565 } rdr-to $minecraft</code></pre>
+<p>Before putting these rules into action, make sure that we have IP
+forwarding enabled in <a href="https://man.openbsd.org/sysctl.conf.5"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>sysctl(5)</code></a>:</p>
+<pre class="codeblock"><code># sysctl net.inet.ip.forwarding
+net.inet.ip.forwarding=1</code></pre>
+<p>Networking is ready for our VM. Let&#x2019;s get to work.</p>
+</section>
+<section id="setup-alpine" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span>
+<code>setup-alpine</code></h1>
+<p>Time to get our virtual machine set up. We can hop into the VM&#x2019;s console,
+login as <code>root</code>, and run <a
+href="https://wiki.alpinelinux.org/wiki/Installation"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>setup-alpine</code></a> as usual.</p>
+<pre class="codeblock"><code># vmctl console minecraft
+Connected to /dev/ttyp1 (speed 115200)</code></pre>
+<p>Alpine&#x2019;s install is streamlined like OpenBSD&#x2019;s. Just page through with sane
+defaults and we&#x2019;re set. Surprisingly, the arduous portion of this operation
+was just waiting for it to ping mirrors, start chrony, all that good
+stuff.</p>
+<p>After that&#x2019;s all set, we have to install dependencies. The only dependency
+we really need to run our Minecraft server is <a
+href="https://pkgs.alpinelinux.org/package/edge/community/aarch64/openjdk17"
+rel="noopener noreferrer" referrerpolicy="no-referrer">openjdk17</a>.</p>
+<p>Since this is available in community, we install it by specifying the
+repository:</p>
+<div class="sourceCode" id="cb9" class="codeblock"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apk</span> add openjdk17 <span class="at">--repository</span><span class="op">=</span>https://pkgs.alpinelinux.org/package/edge/community/aarch64/openjdk17</span></code></pre></div>
+<p>Once that&#x2019;s done, we can check our version of the JRE.</p>
+<pre class="codeblock"><code># java --version
 openjdk 17.0.2 2022-01-18
 OpenJDK Runtime Environment (build 17.0.2+8-alpine-r0)
-OpenJDK 64-Bit Server VM (build 17.0.2+8-alpine-r0, mixed mode, sharing)
-</code></pre>
-<p>Looking good. After downloading the latest Minecraft server <code>jar</code> and prepping our server directory,
-we just add the driver script for our preferred <code>java</code> command as a start script in <code>/etc/local.d/</code>.</p>
-<h2 id="on-boot" tabindex="-1">On-Boot</h2>
-<p>If we want to let this run automatically, we're going to have to set up our VM to start on boot. This
-is accomplished through <a href="https://man.openbsd.org/vm.conf"><code>vm.cfg(5)</code></a>.</p>
-<pre><code>vm &quot;minecraft&quot; {
+OpenJDK 64-Bit Server VM (build 17.0.2+8-alpine-r0, mixed mode, sharing)</code></pre>
+<p>Looking good. After downloading the latest Minecraft server
+<code>jar</code> and prepping our server directory, we just add the driver
+script for our preferred <code>java</code> command as a start script in
+<code>/etc/local.d/</code>.</p>
+</section>
+<section id="on-boot" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> On-Boot</h1>
+<p>If we want to let this run automatically, we&#x2019;re going to have to set up our
+VM to start on boot. This is accomplished through <a
+href="https://man.openbsd.org/vm.conf" rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>vm.cfg(5)</code></a>.</p>
+<pre class="codeblock"><code>vm &quot;minecraft&quot; {
     memory 2G
     enable
     disk /home/minecraft/minecraft.qcow2
     local interface
     owner minecraft
-}
-</code></pre>
-<p>Now when we reboot, the machine will run at boot and run under the <code>minecraft</code> user.</p>
-<h2 id="limit-testing" tabindex="-1">Limit Testing</h2>
-<p>Surprisingly, the entire Alpine + JDK install only comes out to about 345MiB. The size of the minecraft
-server installation on my Windows disk is about 391MB. So what we <em>really</em> require in disk space is about
-3G. If we really wanted to push it, we could go to about 2G.</p>
-<p>The amount of RAM the VM sips at idle is about ~300MB, so we could shove its RAM consumption down to
-about 1.5G.</p>
-<pre><code>athome# vmctl show minecraft
-   ID   PID VCPUS  MAXMEM  CURMEM     TTY        OWNER    STATE NAME
-    1 28555     1    1.5G    1.5G   ttyp1         root  running minecraft
-</code></pre>
-<p>...okay maybe we can't. I went ahead and upped the memory to around 3G and that seemed to do the trick
-for the stock server command that grants the <code>jar</code> about 1G of RAM.</p>
-<h2 id="performance" tabindex="-1">Performance</h2>
-<p>And so comes the question: is it fast? Well, not really.</p>
-<p>I tested it out and saw a pretty <em>okay</em> TPS, but it's clear that a Minecraft server wasn't meant to be
-run on a virtual machine with meager resources allocated to it on an already-resource-limited host.
-Notably, the whole server would eat dirt when transitioning between the Overworld and the Nether.</p>
-<p>Once chunks were loaded, performance wasn't an issue on the local network. Player activity was fairly
-snappy. This said, the chunk load time being painful made me uncomfortable taking this Frankenstein
-out of the lab. I just stuck with my own machine.</p>
-<h2 id="conclusions-and-future-considerations" tabindex="-1">Conclusions and Future Considerations</h2>
-<p>Running a Minecraft server on a virtualized Alpine machine isn't a bad idea if you have the hardware
-for it. I do not.</p>
-<p>In the future, I'd like to upgrade my server hardware and try this again, experimenting with ways of
-storing the Minecraft world folder in a host-system accessible folder. On any other virtualization
-solution, this wouldn't be too hard, but OpenBSD's virtualization daemon doesn't support hardware
-passthrough yet<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>.</p>
-<p>Network passthrough is a breeze with <a href="https://man.openbsd.org/pf"><code>pf(4)</code></a>, but the only viable option
-for file-sharing between the two is through a network share like <a href="https://linux.die.net/man/8/smbd"><code>smbd(8)</code></a>.
-That would kill performance.</p>
-<p>I think that if I were to get this set up, I'd just have a cronjob on the VM that periodically backs
-up the Minecraft world at regular intervals over SSH to an S3 bucket with <a href="https://rclone.org/"><code>rclone(1)</code></a>.</p>
-<pre><code class="language-sh">#!/bin/sh
-NAME=&quot;backup-$(date +%D).tar.gz&quot;
-tar -czf $NAME /root/server
-rclone copy $NAME s3:/minecraftWorlds/
-</code></pre>
-<p>Anyways, this was a fun little project and an educative experience. I may return to it to see if I
-can improve performance on the little server that could™.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://www.youtube.com/watch?v=d59J78yhwtg">https://www.youtube.com/watch?v=d59J78yhwtg</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a href="https://skeptics.stackexchange.com/a/9873">https://skeptics.stackexchange.com/a/9873</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>You'd expect to see around 8GB in newer models. <a href="https://zipso.net/chromebook-specs-comparison-table/">https://zipso.net/chromebook-specs-comparison-table/</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p><a href="https://www.reddit.com/r/openbsd/comments/ih4vns/pci_passthrough_on_vmm/">https://www.reddit.com/r/openbsd/comments/ih4vns/pci_passthrough_on_vmm/</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
+}</code></pre>
+<p>Now when we reboot, the machine will run at boot and run under the
+<code>minecraft</code> user.</p>
 </section>
+<section id="limit-testing" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Limit
+Testing</h1>
+<p>Surprisingly, the entire Alpine + JDK install only comes out to about
+345MiB. The size of the minecraft server installation on my Windows disk is
+about 391MB. So what we <em>really</em> require in disk space is about 3G. If
+we really wanted to push it, we could go to about 2G.</p>
+<p>The amount of RAM the VM sips at idle is about ~300MB, so we could shove
+its RAM consumption down to about 1.5G.</p>
+<pre class="codeblock"><code>athome# vmctl show minecraft
+   ID   PID VCPUS  MAXMEM  CURMEM     TTY        OWNER    STATE NAME
+    1 28555     1    1.5G    1.5G   ttyp1         root  running minecraft</code></pre>
+<p>&#x2026;okay maybe we can&#x2019;t. I went ahead and upped the memory to around 3G and
+that seemed to do the trick for the stock server command that grants the
+<code>jar</code> about 1G of RAM.</p>
+</section>
+<section id="performance" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span>
+Performance</h1>
+<p>And so comes the question: is it fast? Well, not really.</p>
+<p>I tested it out and saw a pretty <em>okay</em> TPS, but it&#x2019;s clear that a
+Minecraft server wasn&#x2019;t meant to be run on a virtual machine with meager
+resources allocated to it on an already-resource-limited host. Notably, the
+whole server would eat dirt when transitioning between the Overworld and the
+Nether.</p>
+<p>Once chunks were loaded, performance wasn&#x2019;t an issue on the local network.
+Player activity was fairly snappy. This said, the chunk load time being
+painful made me uncomfortable taking this Frankenstein out of the lab. I just
+stuck with my own machine.</p>
+</section>
+<section id="conclusions-and-future-considerations" class="level1"
+data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Conclusions
+and Future Considerations</h1>
+<p>Running a Minecraft server on a virtualized Alpine machine isn&#x2019;t a bad idea
+if you have the hardware for it. I do not.</p>
+<p>In the future, I&#x2019;d like to upgrade my server hardware and try this again,
+experimenting with ways of storing the Minecraft world folder in a host-system
+accessible folder. On any other virtualization solution, this wouldn&#x2019;t be too
+hard, but OpenBSD&#x2019;s virtualization daemon doesn&#x2019;t support hardware passthrough
+yet<a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a>.</p>
+<p>Network passthrough is a breeze with <a href="https://man.openbsd.org/pf"
+rel="noopener noreferrer" referrerpolicy="no-referrer"><code>pf(4)</code></a>,
+but the only viable option for file-sharing between the two is through a
+network share like <a href="https://linux.die.net/man/8/smbd"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>smbd(8)</code></a>. That would kill
+performance.</p>
+<p>I think that if I were to get this set up, I&#x2019;d just have a cronjob on the
+VM that periodically backs up the Minecraft world at regular intervals over
+SSH to an S3 bucket with <a href="https://rclone.org/"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>rclone(1)</code></a>.</p>
+<div class="sourceCode" id="cb13" class="codeblock"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="va">NAME</span><span class="op">=</span><span class="st">&quot;backup-</span><span class="va">$(</span><span class="fu">date</span> +%D<span class="va">)</span><span class="st">.tar.gz&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-czf</span> <span class="va">$NAME</span> /root/server</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rclone</span> copy <span class="va">$NAME</span> s3:/minecraftWorlds/</span></code></pre></div>
+<p>Anyways, this was a fun little project and an educative experience. I may
+return to it to see if I can improve performance on the little server that
+could&#x2122;.</p>
+</section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>https://www.youtube.com/watch?v=d59J78yhwtg<a href="#fnref1"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn2"><p>https://skeptics.stackexchange.com/a/9873<a href="#fnref2"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn3"><p>You&#x2019;d expect to see around 8GB in newer models.
+https://zipso.net/chromebook-specs-comparison-table/<a href="#fnref3"
+class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li
+id="fn4"><p>https://www.reddit.com/r/openbsd/comments/ih4vns/pci_passthrough_on_vmm/<a
+href="#fnref4" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+</ol>
+</aside>
 
-</article>
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+</footer>
 
-
-    <footer>
-      Copyright &copy; 2023 Leonid Krashanoff
-    </footer>
-
-  </body>
+</body>
 </html>
