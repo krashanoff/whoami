@@ -27,11 +27,12 @@ import yaml
 import multiprocessing as mp
 import uuid
 
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-
 MODE=os.getenv("MODE") or "dev"
 SERVER_MODE=MODE.upper() != "BUILD"
+
+if SERVER_MODE:
+  from watchdog.observers import Observer
+  from watchdog.events import FileSystemEventHandler
 
 BASE_URL="https://krashanoff.com"
 SITE_OUT="_site"
@@ -367,17 +368,19 @@ def process_all():
   end_time = datetime.now()
   print(f"Processed all files in {end_time - processing_start_at}")
 
-class ReprocessHandler(FileSystemEventHandler):
-  def on_any_event(self, _event):
-    process_all()
+# cursed python jutsu
+if SERVER_MODE:
+  class ReprocessHandler(FileSystemEventHandler):
+    def on_any_event(self, _event):
+      process_all()
 
-def register_observer():
-  observer = Observer()
-  reprocess_handler = ReprocessHandler()
-  observer.schedule(reprocess_handler, "src", True)
-  observer.schedule(reprocess_handler, "pandoc", True)
-  observer.start()
-  return observer
+  def register_observer():
+    observer = Observer()
+    reprocess_handler = ReprocessHandler()
+    observer.schedule(reprocess_handler, "src", True)
+    observer.schedule(reprocess_handler, "pandoc", True)
+    observer.start()
+    return observer
 
 class Handler(http.server.SimpleHTTPRequestHandler):
   def __init__(self, *args, **kwargs):
@@ -392,6 +395,8 @@ def main(observe = True):
   """Watch src for changes and reprocess as necessary"""
 
   process_all()
+  if not SERVER_MODE:
+    return
 
   # Start server for the output directory
   http_server = mp.Process(target=file_server)
