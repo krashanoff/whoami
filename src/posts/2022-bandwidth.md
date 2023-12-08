@@ -1,6 +1,6 @@
 ---
 title: Bandwidth vs. Quality of Life
-date: 2022-05-24T21:00:00-08:00
+date: 2022-05-25T21:00:00-08:00
 tags:
   - thoughts
 toc: false

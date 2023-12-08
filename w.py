@@ -1,7 +1,9 @@
 #!/bin/python3
 
 """
-Builds and runs the site. Bless this mess.
+(✿◕‿◕) bless this mess (✿◕‿◕)
+
+Builds and serves the site.
 
 Dependencies (Python libraries):
 * `watchdog`
@@ -9,9 +11,6 @@ Dependencies (Python libraries):
 
 Dependencies (binary):
 * `pandoc` with Lua support
-
-I didn't need an SSG and you probably don't
-either.
 """
 
 import os
@@ -96,8 +95,18 @@ TAG_STYLE_PREAMBLE="""
   </style>
 """
 
+REPLACE_CHARS={
+  ",\":.()[]": "",
+  " ": "-",
+}
+
 def slugify(title: str):
-  return title.lower().replace(",", "").replace("\"", "").replace(" ", "-")
+  """Replace characters to slugify the title of an article"""
+  result = title
+  for key, val in REPLACE_CHARS.items():
+    for c in key:
+      result = result.replace(c, val)
+  return result.lower()
 
 def get_temp_path():
   """
@@ -309,7 +318,7 @@ def process_all():
       frontmatter["date"],
       f"""
         <li>
-          <a href="{pathified_date}" tabindex="0">{frontmatter["title"]}</a>
+          <a href="{pathified_date.removesuffix('index.html')}" tabindex="0">{frontmatter["title"]}</a>
           <small><time>{date_plain}</time></small>
         </li>
       """,

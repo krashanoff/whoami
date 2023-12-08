@@ -1,6 +1,6 @@
 ---
 title: Unresponsive web design
-date: 2022-08-19T22:00:00-08:00
+date: 2022-08-20T22:00:00-08:00
 tags:
   - web
 toc: false

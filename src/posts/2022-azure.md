@@ -1,7 +1,7 @@
 ---
 title: Run-time dynamic linking in Azure Functions
-date: 2022-07-18T21:48:00-08:00
-updated: 2022-11-13T21:48:00-08:00
+date: 2022-07-19T21:48:00-08:00
+updated: 2022-12-07T21:48:00-08:00
 tags:
   - software
   - reverse_engineering

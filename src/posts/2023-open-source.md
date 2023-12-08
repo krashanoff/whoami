@@ -1,6 +1,6 @@
 ---
 title: Release Your "Open" "Source"
-date: 2023-06-19T21:19:00-08:00
+date: 2023-06-20T21:19:00-08:00
 tags:
   - rant
 toc: false
