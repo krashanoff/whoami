@@ -17,7 +17,7 @@ jobs:
           sudo npm install -g mermaid-filter
       - name: Build
         run: |
-          python3-pip install pyyaml
+          pip3 install pyyaml
           MODE=build python3 w.py
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
