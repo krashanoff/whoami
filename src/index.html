@@ -1,28 +1,111 @@
----
-layout: layouts/default.njk
----
+<!DOCTYPE html>
+<html>
 
-<h1 id="title">Leonid Krashanoff</h1>
-<figure>
-  <img src="/static/img/pfp/lain.png" alt="profile picture" width="80%" />
-  <figcaption><i>Everyone is connected...</i></figcaption>
-</figure>
-<p>
-  I am a software engineer at <a href="https://www.regrello.com/">Regrello</a>, formerly <a
-    href="https://www.boozallen.com/">Booz Allen Hamilton</a>. I am especially interested in protocols,
-  programming languages, and older software.
-</p>
-<p>
-  You can find me on GitHub as <a href="https://github.com/krashanoff"><code>krashanoff</code></a>. You may review my
-  resume at <a href="/resume"><code>/resume</code></a>. If you'd like to
-  get in touch with me, email
-  <code>hello</code> at this address.
-</p>
-<ol class="no-list">
-  {%- for post in collections.posts -%}
-  <li>
-    <a href="{{ post.url }}">{{ post.data.title }}</a>
-    <small><time>{{ post.data.date | datePlain }}</time></small>
-  </li>
-  {%- endfor -%}
-</ol>
+<head>
+  <title>krashanoff</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Leonid Krashanoff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <style>
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      line-height: 1.5;
+      margin: 0 auto;
+      max-width: 36em;
+      padding: 0.5rem;
+    }
+
+    nav {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      gap: 1rem;
+      padding-bottom: 2rem;
+      border-bottom: solid 1px #0b0b0b;
+    }
+
+    details {
+      border-left: 5px solid #0b0b0b;
+      padding-left: 1rem;
+    }
+
+    figure {
+      border: 0.5px solid #0b0b0b;
+      padding: 1rem;
+      max-width: 80%;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    img {
+      padding-bottom: 1rem;
+    }
+
+    .no-list {
+      list-style: none;
+      list-style-type: none;
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 id="title">Leonid Krashanoff</h1>
+
+  <figure>
+    <img src="/static/img/pfp/lain.png" alt="frame from serial experiments lain" width="80%" />
+    <figcaption><i>Everyone is connected...</i></figcaption>
+  </figure>
+
+  <p>
+    I am a software engineer at <a href="https://www.regrello.com/">Regrello</a>, and previously at <a
+      href="https://www.boozallen.com/">Booz Allen Hamilton</a>. I am especially interested in protocols,
+    programming languages, and legacy software.
+  </p>
+  <p>
+    You can find me on GitHub as <a href="https://github.com/krashanoff"><code>krashanoff</code></a>. You may review my
+    resume at <a href="/resume"><code>/resume</code></a>. If you'd like to
+    get in touch with me directly, email the user
+    <code>hello</code> at this address.
+  </p>
+
+  <h2>Blog Posts</h2>
+
+  <p>
+    I write from time to time. You may review past posts as linked below.
+  </p>
+
+  <ul class="no-list">
+    {{ post_list }}
+  </ul>
+
+  <h2>Can't find what you're searching for?</h2>
+
+  <p>
+    I used to host an impromptu reading list and some incomplete notes on cybersecurity policy here. If, by chance, you
+    are looking for them, you can find the original documents in the Git repository for this website at commit SHA
+    <code>e070a1545f43f118750b171e70872756b1c91d2e</code>. <a
+      href="https://github.com/krashanoff/whoami/tree/e070a1545f43f118750b171e70872756b1c91d2e">Link for your
+      convenience</a>.
+  </p>
+
+  <h2>What is the source for this page's image?</h2>
+
+  <p>
+    The only image on this page is a screenshot from episode 3 of <a
+      href="https://en.wikipedia.org/wiki/Serial_Experiments_Lain">Serial Experiments Lain</a>.
+  </p>
+
+  <footer>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </footer>
+</body>

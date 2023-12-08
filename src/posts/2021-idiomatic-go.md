@@ -34,7 +34,7 @@ func RequestBodyTo(r *http.Request, i interface{}) error {
 
 This is one of those things that -- while I was learning Go -- I had wished the language didn’t take so strongly to. Now that I’ve spent more time with the language, though, and worked on some larger projects, I’ve come to a point where I feel comfortable talking about these design decisions and how they reflect on everything else. You see...
 
-## Go wants to force you to write code the designers like.
+# Go wants to force you to write code the designers like.
 
 I think that this is the paradigm that makes everyone so uneasy. We aren’t presented with the amount of rigidity introduced to Go in any programming language that I know of, except for maybe Scratch, but that’s hardly a use case.
 
@@ -67,7 +67,7 @@ func getValue(db *MyDB, username string) string {
 
 ...Go just tries to make that as painful a process as possible.
 
-## Where is my ternary?
+# Where is my ternary?
 
 Well, it isn't there. It's gone forever in Go. They threw it out because it was deemed unclear or confusing. Let’s go through a few features that **C and C++ have, but Go doesn’t.** I want you to glance through them and think about which features you absolutely loved having.
 

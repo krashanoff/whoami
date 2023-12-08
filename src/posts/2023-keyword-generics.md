@@ -1,8 +1,7 @@
 ---
 title: Keyword generics seem intimidating
-
-# decrements by one
-date: 2023-03-14
+date: 2023-03-13T00:00:00-07:00
+toc: false
 ---
 
 You ever read ["What Color is Your Function"](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)? A pretty good lot of people have.
@@ -122,6 +121,7 @@ impl<'a, T> Thing<'a, T>
 I realize this is an unfair observation. Any language can look gnarly when you're fishing for an example of how incomprehensible it can be. But, in the case of Rust, it can be pretty easy to find said examples. In any case, I'm not sure where I'm going with this one other than "it seems like learning Rust as a complete beginner is only going to get harder and harder going forward," and, "I hope Rust doesn't evolve into the very thing it sought to destroy".
 
 And with that, I'll leave the reader with some interesting reads on Rust's function coloring problem that can be readily organized into the [five stages of grief](https://www.washington.edu/counseling/2020/06/08/the-stages-of-grief-accepting-the-unacceptable/), ignoring their dates of publication:
+
 1. Denial, "Rust's async isn't colored!": https://www.hobofan.com/blog/2021-03-10-rust-async-colored/
 2. Anger, critique of async Rust: https://eta.st/2017/08/04/async-rust.html
 3. Bargaining, "Colored functions are good, actually": https://www.thecodedmessage.com/posts/async-colors/

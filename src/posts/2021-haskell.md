@@ -6,6 +6,8 @@ tags:
   - thoughts
 ---
 
+# Introduction
+
 Haskell is a very strange programming language. I have never had a particular reason to
 learn the language in the same way I needed Go for my clubs projects or Rust for understanding
 a few open-source projects. I'm not writing any math-heavy research papers, and even then I
@@ -17,7 +19,7 @@ then give up when I get to parts about monads and all this other category theory
 This October, I took another dive into it after getting burnt out writing a *lot* of
 Rust. For whatever reason, this time, it made a lot more sense to me.
 
-## Learning Struggles
+# Learning Struggles
 
 I think the thing that it boiled down to for me while struggling to learn is the syntax of the
 language. Yeah, it's functional, so it's pretty unfamiliar, but even if you're coming from
@@ -91,7 +93,7 @@ In nontrivial codebases, the voice of the author determines its maintainability 
 will be. For more complicated Haskell programs, functions can reach tens of lines. Doesn't sound
 like much, except each line comes with this same exceptional information density.
 
-## Rust Parallels
+# Rust Parallels
 
 Looking over these functions after writing a ton of Rust, though, I realized these semantics reminded me
 of a fundamental example.
@@ -153,7 +155,7 @@ Others have written about the more direct similarities between Haskell and Rust[
 but I'd like to quickly talk about two trade-offs Rust has made to inherit some of their
 ideas beyond syntax.
 
-## Currying and Fluency
+# Currying and Fluency
 
 Haskell is built around currying. Applying a parameter to a function produces a new
 function that simply takes one less parameter:
@@ -194,7 +196,7 @@ let myfile = OpenOptions::new()
 
 This adopts a functional approach to object-oriented operations.
 
-## Monads vs. Results + Options
+# Monads vs. Results + Options
 
 I pinned down monads as a container type in the same vein as `Option<T>`. Let's compare
 `Option<T>` to `Maybe`:
@@ -217,6 +219,7 @@ I'm starting to understand why Haskell is well-liked by its developers. It just 
 a small change in perspective.
 
 [^1]: Others have written about more direct similarities between Rust and Haskell:
+
       * http://xion.io/post/programming/rust-into-haskell.html
       * https://www.fpcomplete.com/blog/2018/11/haskell-and-rust/
 [^2]: There is a crate for currying functions in Rust. https://peppe.rs/posts/auto-currying_rust_functions/

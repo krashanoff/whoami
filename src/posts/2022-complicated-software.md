@@ -31,7 +31,7 @@ lingua-franca for the two to communicate with one another on the wire. I
 settled on QUIC-transported protobufs for speed and security. The rest of this entry will be some
 thoughts on how I built this toolchain on Windows and Mac, and the hardships I encountered throughout.
 
-## On QUIC
+# On QUIC
 
 Choosing QUIC was a good call. QUIC is secure by default and designed with speed in mind. It enforces use of
 TLS, and keeps things speedy by modeling network communications between computers as multiple simultaneous, uni-or-bidirectional
@@ -48,7 +48,25 @@ The big thing I didn't anticipate is that **QUIC has weird libraries!** QUIC is 
 to be testable, which means that all the libraries out there are Bring Your Own IO. The problem with this is that
 libraries are pretty pigeonholed into working something like this:
 
-[![](https://mermaid.ink/img/pako:eNqdkr9OAzEMxl8l8lSk8gI3VELAwIgQ2y1W4juiXuw0cVqhqu9OruQqEB2ADBn8ff75y58jWHEEHWTaFWJLDx7HhKFnU1fEpN76iKzmLsafxefXp_vP6iQSDTrjefDstTSCmftuN5u6dyaR3Q9JwurmuzhTzir5Pbk6wG5JF8ssXjwxiaWcr1mWIdfQI6lhOtRwVoLn8dzRIPkXlJYerRqVStKDpO31QUwJ9XKI_OeIUnSU_0bMxE5l9bW1XXUVYA2BUkDv6nMf53IP-kaBeqgwcDRgmbSHnk_VWqKr53h0XiVBN-CUaQ1YVF7e2UKnqdBial-muU4fqdK4sQ)](https://mermaid.live/edit#pako:eNqdkr9OAzEMxl8l8lSk8gI3VELAwIgQ2y1W4juiXuw0cVqhqu9OruQqEB2ADBn8ff75y58jWHEEHWTaFWJLDx7HhKFnU1fEpN76iKzmLsafxefXp_vP6iQSDTrjefDstTSCmftuN5u6dyaR3Q9JwurmuzhTzir5Pbk6wG5JF8ssXjwxiaWcr1mWIdfQI6lhOtRwVoLn8dzRIPkXlJYerRqVStKDpO31QUwJ9XKI_OeIUnSU_0bMxE5l9bW1XXUVYA2BUkDv6nMf53IP-kaBeqgwcDRgmbSHnk_VWqKr53h0XiVBN-CUaQ1YVF7e2UKnqdBial-muU4fqdK4sQ)
+```mermaid
+sequenceDiagram
+    participant App
+    participant QUIC
+    loop ad infinitum
+      App->>App: recvfrom()
+      App->>QUIC: received packet
+      QUIC->>QUIC: process packet
+      QUIC-->>App: 
+      App->>QUIC: get new incoming QUIC packets
+      QUIC-->>App: 
+      App->>App: react to network
+      App->>QUIC: generated packets
+      QUIC-->>App: 
+      App->>QUIC: get new outgoing QUIC packets
+      QUIC-->>App: 
+      App->>App: sendto(QUIC packets)
+    end
+```
 
 There were a few libraries that handle the IO for you, but there really weren't
 enough **high-level, easy to use libraries** out there in the same way that there are for protocols like RTMP.
@@ -69,7 +87,7 @@ Name | Language(s) | Review
 [aioquic](https://github.com/aiortc/aioquic) | Python | Confusing
 [MsQuic](https://github.com/microsoft/msquic) | C/C++ | OK, but the use of a function table and registry is confusing
 
-## On Protobufs
+# On Protobufs
 
 Again, the right call was protobufs. The serialization format is well-defined and easily interoperable
 with other languages like Python and Go. There are also unofficial extensions to allow protobufs to
@@ -137,7 +155,7 @@ brand new thing `QMediaCaptureSession`, and they *really* want you to use their 
 videos and stuff. The problem is that there's almost **zero** extensibility in the `QMediaRecorder` class. There's no
 way for the developer to implement their own. I had middling success implementing a `QVideoSink` and `QAudioSink` to catch the recording output, but I think I'd just use `ffmpeg` instead.
 
-## Takeaways
+# Takeaways
 
 I didn't really do much! I just kinda explored a bunch of different technologies and tried - to varying levels of success - to use them all together. GUI is hard; capturing A/V from C++ is hard; emerging protocols are still getting their footing.
 
@@ -149,7 +167,7 @@ I like the ideas in Qt - conceptually they are powerful - however the lack of ex
 
 This project will likely be retired, but in any case, it was a good experience being able to explore new technologies and tying heterogeneous programs together.
 
-[^1]: https://www.networkstraining.com/what-is-quic-protocol/
+<!-- [^1]: https://www.networkstraining.com/what-is-quic-protocol/ -->
 [^2]: Both of these quotes are from the Qt wiki, actually. https://wiki.qt.io/Threads_Events_QObjects
 [^4]: https://github.com/cloudflare/quiche/pull/1085
 [^5]: https://gankra.github.io/blah/c-isnt-a-language/

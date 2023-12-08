@@ -1,11 +1,13 @@
 ---
 title: Fish rocks
 date: 2023-04-29T02:13:00-08:00
+toc: false
 ---
 
 "The command line is a programmer's home", or so they say.[^3] I find much truth in this. In the average work day, I probably spend a solid hour or two in the command line building stuff, troubleshooting stuff, or reorganizing stuff. There's nice clients for Git, but I think that it's easier to work with Git through the command line in most cases. I use my VSCode debugger usually, but when I was a student I loved nothing more than GDB. And for a sysadmin, you are _always_ in the terminal. While I'm not a sysadmin, lately, I've been working more and more with Kubernetes. That means I spend _even more_ time in the terminal.
 
 For a long while, I used Zsh, which I didn't know was short for "Z Shell" until a few years ago. Zsh is good because:
+
 1. It is reverse-compatible with Bash
 2. It has good scripting extensions to Bash
 3. It has a huge community behind it
@@ -84,6 +86,7 @@ echo -ns "Current namespace: (cat $HOME/.kube_currentns)"
 ```
 
 But that lack of POSIX-compatibility is a real zinger. Most people lean on it quite a bit. From regular use, I've only really had issue with it in two common cases:
+
 1. Wildcard expansion
 2. Version managers
 

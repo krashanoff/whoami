@@ -4,6 +4,7 @@ date: 2022-10-18T00:00:00-07:00
 tags:
     - thoughts
     - server
+toc: false
 ---
 
 Gentoo, Gentoo. Ah yes, Gentoo. Gentoo is my favorite Linux "distribution". I've mentioned it before!
@@ -82,7 +83,7 @@ But it's ultimately your project. You don't need to justify why you're doing it.
 
 ...and, there's certainly a case to be made for checking your system `htop` output to see a comically low number of tasks at idle.
 
-![17 threads at idle]({{ '/static/img/gentoo/htop.png' | url }})
+![17 threads at idle](src/static/img/gentoo/htop.png)
 
 > I'm just going to say it - I get excited when my system breaks.
 >

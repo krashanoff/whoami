@@ -3,6 +3,7 @@ title: Unresponsive web design
 date: 2022-08-19T22:00:00-08:00
 tags:
   - web
+toc: false
 ---
 
 *Responsive web design is good, but if you need to use HTML/CSS to format a document for print, the funky real-life units come in handy.*
@@ -11,11 +12,11 @@ tags:
 
 I used a Google Doc to create my resume for quite some time. It was the basic two-column template that shows up on the homepage.
 
-![google docs default resume template]({{ '/static/img/resume/gdoc.png' | url }})
+![google docs default resume template](src/static/img/resume/gdoc.png)\
 
 I also tried using LaTeX to format my resume. There's a slew of templates online. You can imagine how that one went:
 
-![latex template]({{ '/static/img/resume/latex.png' | url }})
+![latex template](src/static/img/resume/latex.png)\
 
 But there's all sorts of specific units in CSS. There's `em`, `px`, `vw`, `vh`, ... There's also `pt`, `in`, or `cm`. Imagine that: *inches* in **web design**! That would absolutely butcher the webpage between viewports. What about vertical monitors? I don't even want to think about cell phones. Responsive design is the name of the game in the era of flexbox and SPAs. There is no place for `<table>`s for formatting or inches as a unit of measure. Not in the HTML/CSS era I grew up in.
 

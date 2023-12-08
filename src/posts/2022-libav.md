@@ -3,6 +3,7 @@ title: "Libav is complicated"
 date: 2022-06-30T00:00:00-07:00
 tags:
   - software
+toc: false
 ---
 
 Libav is the crustiest library I have ever used. In a cruel paradox, it is also the state of the art in multimedia processing. Nothing comes close in performance and capability. I have been trying to write a program using it and have since gained an understanding of how to use it (kind of). With use, I feel my appreciation swelling for it, but it is still quite the complicated beast.
@@ -15,7 +16,7 @@ Normally, when a fork of a major project ceases development, it's no big deal, b
 
 Another complicated part: the eager developer might run into is that the documentation of the actual libav is terse. It is so distilled, so crystallized, that it takes a lot of careful inference and/or luck to get the hang of. There's also quite a few structure-specific quirks. For example, `AVChannelLayout` is a member of a few different data structures, and is initialized with some predefined initializers. Unlike structures in libav initialized with predefined constants, though, it must be copied with a specific function, and uninitialized with another.[^2]
 
-![documentation for avchannel]({{ '/static/img/libav/avchannel.png' | url }})
+![documentation for avchannel](src/static/img/libav/avchannel.png)
 
 There are also a few missing features from the library. For one, [there is no way to programmatically enumerate devices](https://trac.ffmpeg.org/wiki/DirectShow#Howtoprogrammaticallyenumeratedevices). Instead, the programmer could either shell out to `ffmpeg`, defeating the purpose of using libav in most cases, or install a log capture handler via [`log_set_callback()`](https://ffmpeg.org/doxygen/trunk/group__lavu__log.html#ga14034761faf581a8b9ed6ef19b313708).
 

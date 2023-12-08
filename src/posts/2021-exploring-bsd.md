@@ -18,7 +18,7 @@ true to the original Unix philosophy, and remain as free as they possibly
 can without sacrificing quality. Why not start, then, by dipping our toes into the
 water with the OS that claims to be ["all free"](https://www.openbsd.org/faq/faq1.html)?
 
-## OpenBSD
+# OpenBSD
 
 ...or maybe it was a leap.
 
@@ -38,7 +38,7 @@ introduced [W^X](https://en.wikipedia.org/wiki/W%5EX), and opportunistically int
 throughout. The team isn't afraid to tote this around -- they even have a page
 basically [flipping off a few governments](https://www.openbsd.org/crypto.html).
 
-## UX
+# UX
 
 Post-download, I imaged a flash drive, spun up the years-old hardware destined
 to become our temporary router, and dove right in.
@@ -77,7 +77,7 @@ filter would drop a few packets for maybe a half-second, even using the default
 configuration. Time to resolve this problem: we put down our manpages. We turn
 to Google.
 
-## Community
+# Community
 
 Googling around for a fix for that little half-second packet drop issue took
 me almost two days of inconclusive results, but I was *not* about to hop on
@@ -99,7 +99,7 @@ mailing lists, past answers may not be as readily available. Mix these two
 together and you have a situation akin to the Linux mailing lists, but with
 less margin for discussion.
 
-## Freedom and Software
+# Freedom and Software
 
 If I had to pick a straw that might break the camel's back for an OpenBSD
 novice like me, it's probably OpenBSD's lack of software.
@@ -124,7 +124,7 @@ They also discourage use of proprietary drivers.
 That is, OpenBSD seems to place its focus in expanding the freedom of software,
 sometimes at expense of the user's freedom of choice.
 
-## Purpose Built; Proper Abstractions
+# Purpose Built; Proper Abstractions
 
 OpenBSD is an operating system that is built to run on hardware,
 [not virtualized](https://www.virtualbox.org/ticket/639).
