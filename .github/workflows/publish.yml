@@ -14,7 +14,7 @@ jobs:
           sudo apt install -y curl python3.9 python3.9-venv
           curl -LSso pandoc-amd64.deb https://github.com/jgm/pandoc/releases/download/3.1.9/pandoc-3.1.9-1-amd64.deb
           sudo dpkg -i pandoc-amd64.deb
-          sudo npm install -g mermaid-filter
+          sudo npm install -g mermaid-filter@1.4.6
       - name: Pandoc version
         run: |
           which pandoc
