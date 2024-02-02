@@ -97,7 +97,7 @@ TAG_STYLE_PREAMBLE="""
 """
 
 REPLACE_CHARS={
-  ",\":.()[]": "",
+  "',\":.()[]": "",
   " ": "-",
 }
 
@@ -371,8 +371,20 @@ def process_all():
 # cursed python jutsu
 if SERVER_MODE:
   class ReprocessHandler(FileSystemEventHandler):
-    def on_any_event(self, _event):
-      process_all()
+    def on_any_event(self, event):
+      path = event.src_path
+      if path.endswith("md"):
+        # TODO: lift this behavior elsewhere pls :)
+        frontmatter = get_frontmatter(path)
+        pathified_date = pathify_date(frontmatter["date"], path, frontmatter)
+        site_target_path = f"{SITE_OUT}/{pathified_date}"
+        print(f"WRITING PANDOC OUTPUT TO: {site_target_path}")
+        pandoc_output_path = pandoc_on_path(path)
+        postprocess(pandoc_output_path)
+        copy(pandoc_output_path, site_target_path)
+        os.remove(pandoc_output_path)
+      else:
+        process_all()
 
   def register_observer():
     observer = Observer()
@@ -394,8 +406,8 @@ def file_server():
 def main(observe = True):
   """Watch src for changes and reprocess as necessary"""
 
-  process_all()
   if not SERVER_MODE:
+    process_all()
     return
 
   # Start server for the output directory

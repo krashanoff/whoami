@@ -51,6 +51,12 @@ $endif$
       overflow-wrap: unset !important;
       white-space: unset;
     }
+
+    @media print {
+      .print-display-none {
+        display: none;
+      }
+    }
   </style>
 $for(css)$
   <link rel="stylesheet" href="$css$" />
@@ -79,7 +85,7 @@ $for(include-before)$
 $include-before$
 $endfor$
 
-<a href="/">Back to home</a>
+<a class="print-display-none" href="/">Back to home</a>
 
 $if(title)$
 <header id="title-block-header">
@@ -138,6 +144,9 @@ $endfor$
 <footer>
   <p>
     Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+  <p>
+    Questions? Corrections? Comments? Write me an email.
   </p>
 </footer>
 
