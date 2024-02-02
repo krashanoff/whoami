@@ -199,6 +199,12 @@
       overflow-wrap: unset !important;
       white-space: unset;
     }
+
+    @media print {
+      .print-display-none {
+        display: none;
+      }
+    }
   </style>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -212,7 +218,7 @@
 </head>
 <body>
 
-<a href="/">Back to home</a>
+<a class="print-display-none" href="/">Back to home</a>
 
 <header id="title-block-header">
 <h1 class="title">I updated my website</h1>
@@ -232,6 +238,9 @@ let me know. I may write a post about it in the near future.</p>
 <footer>
   <p>
     Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+  <p>
+    Questions? Corrections? Comments? Write me an email.
   </p>
 </footer>
 

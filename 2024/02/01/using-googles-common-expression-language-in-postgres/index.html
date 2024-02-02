@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Leonid Krashanoff" />
+  <meta name="dcterms.date" content="2024-02-01" />
+  <title>Using Google&#x2019;s Common Expression Language in Postgres</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    figure {
+      padding: 1rem;
+      border: 1px solid #0b0b0b;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    figcaption {
+      margin-top: 1rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+
+    .codeblock {
+      overflow: auto;
+      overflow-wrap: normal;
+      border: 1px solid black;
+      padding: 1rem;
+    }
+
+    .codeblock > code {
+      overflow-wrap: unset !important;
+      white-space: unset;
+    }
+
+    @media print {
+      .print-display-none {
+        display: none;
+      }
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+  <link
+    rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAADElEQVQImWOoX/UGAAPBAhajZVPkAAAAAElFTkSuQmCC"
+    type="image/png"
+  />
+</head>
+<body>
+
+<a class="print-display-none" href="/">Back to home</a>
+
+<header id="title-block-header">
+<h1 class="title">Using Google&#x2019;s Common Expression Language in Postgres</h1>
+<p class="author">Leonid Krashanoff</p>
+<p class="date">
+    <date>01 February 2024</date>
+</p>
+
+
+
+</header>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">Table of Contents</h2>
+<ul>
+<li><a href="#introduction" id="toc-introduction"><span
+class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#writing-the-function" id="toc-writing-the-function"><span
+class="toc-section-number">2</span> Writing the function</a>
+<ul>
+<li><a href="#postgres-user-defined-functions"
+id="toc-postgres-user-defined-functions"><span
+class="toc-section-number">2.1</span> Postgres&#x2019; user-defined
+functions</a></li>
+<li><a href="#making-sense-of-googles-code"
+id="toc-making-sense-of-googles-code"><span
+class="toc-section-number">2.2</span> Making sense of Google&#x2019;s code</a></li>
+</ul></li>
+<li><a href="#building-the-extension" id="toc-building-the-extension"><span
+class="toc-section-number">3</span> Building the extension</a>
+<ul>
+<li><a href="#approach-1-do-it-all-in-bazel"
+id="toc-approach-1-do-it-all-in-bazel"><span
+class="toc-section-number">3.1</span> Approach #1: do it all in Bazel</a></li>
+<li><a href="#approach-2-do-half-of-it-in-bazel-and-the-rest-in-make"
+id="toc-approach-2-do-half-of-it-in-bazel-and-the-rest-in-make"><span
+class="toc-section-number">3.2</span> Approach #2: do half of it in Bazel, and
+the rest in Make</a></li>
+<li><a href="#approach-3-do-it-all-in-bazel-again"
+id="toc-approach-3-do-it-all-in-bazel-again"><span
+class="toc-section-number">3.3</span> Approach #3: do it all in Bazel
+(again)</a></li>
+</ul></li>
+<li><a href="#conclusions" id="toc-conclusions"><span
+class="toc-section-number">4</span> Conclusions</a>
+<ul>
+<li><a href="#performance-measurements"
+id="toc-performance-measurements"><span class="toc-section-number">4.1</span>
+Performance measurements</a></li>
+<li><a href="#portability-and-deployment-considerations"
+id="toc-portability-and-deployment-considerations"><span
+class="toc-section-number">4.2</span> Portability and deployment
+considerations</a></li>
+</ul></li>
+</ul>
+</nav>
+<p>As a disclaimer, the following is not intended as a code-complete example.
+I gloss over some low-level details, but tried to keep enough context so the
+reader can follow along. I may update this page with more code snippets or
+publish the complete source after cleaning it up, but for now it shall live as
+a brief discussion.</p>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span>
+Introduction</h1>
+<p>You may already have some familiarity with Google&#x2019;s <a
+href="https://github.com/google/cel-spec" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Common Expression Language (CEL)</a>. It is the
+language that drives things like the <a
+href="https://cloud.google.com/logging/docs/view/building-queries"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Log Explorer&#x2019;s search
+feature</a>. In brief, it evaluates expressions like
+<code>someIntVariable &lt;= 4 &amp;&amp; someIntVariable in someListVariable</code>
+within an evaluation environment. It was designed for use in
+performance-critical application paths, and is intentionally Turing
+incomplete.</p>
+<p>I have been living in Postgres for the past week, and thought that
+user-supplied conditions for filtering criteria would be a perfect use case
+for a high-performance expression language. For example, consider the
+following schema:</p>
+<div class="sourceCode" id="cb1" class="codeblock"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> supported_location <span class="kw">AS</span> ENUM (<span class="st">&#39;us&#39;</span>, <span class="st">&#39;ca&#39;</span>, <span class="st">&#39;intl&#39;</span>);</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="fu">user</span> (</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">id</span> <span class="dt">INT</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> <span class="kw">GENERATED</span> ALWAYS <span class="kw">AS</span> IDENTITY,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  name <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  location_name supported_location</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="st">&#39;us&#39;</span>:<span class="ch">:supported_location</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  last_active TIMESTAMPTZ <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_TIMESTAMP</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="dt">object</span> (</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">id</span> <span class="dt">INT</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  visible_if TEXT</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p>Say we want to insert an object that is only visible to users in the United
+States (i.e., <code>user.location_name = 'us'</code>), and whose name starts
+with the letter &#x2018;a&#x2019;. If we pass the row containing the user we are querying on
+the behalf of as a parameter <code>user</code>, then we could express this
+condition in Google&#x2019;s CEL as:</p>
+<pre class="plaintext" class="codeblock"><code>user.location_name == &quot;us&quot; &amp;&amp; user.name.startsWith(&#39;a&#39;)</code></pre>
+<p>Then, we would be able to query for all objects the current user can read
+through something like:</p>
+<div class="sourceCode" id="cb3" class="codeblock"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> current_user_tuple <span class="kw">AS</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> <span class="fu">user</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="dt">object</span> o</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  o.visible_if <span class="kw">IS</span> <span class="kw">NULL</span> <span class="kw">OR</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  evaluate_cel(o.visible_if, current_user_tuple)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>;</span></code></pre></div>
+<p>We could express this in pure SQL through use of a set of join tables, but
+this approach is more accommodating to any custom conditional logic that users
+may want to create. Say in the above example we also wanted the object to only
+be visible only if the user was last active in December. Assuming we pass the
+column <code>last_active</code> as a proper protobuf timestamp, we can take
+advantage of the <a
+href="https://github.com/google/cel-spec/blob/master/doc/langdef.md#list-of-standard-definitions"
+rel="noopener noreferrer" referrerpolicy="no-referrer">built-in helpers</a>
+and write:</p>
+<pre class="plaintext" class="codeblock"><code>user.location_name == &quot;us&quot; &amp;&amp;
+user.name.startsWith(&#39;a&#39;) &amp;&amp;
+user.last_active.getMonth() == 11</code></pre>
+<p>The query wouldn&#x2019;t need to change at all, only the contents of the
+<code>visible_if</code> column in the object&#x2019;s row.</p>
+<div class="sourceCode" id="cb5" class="codeblock"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> <span class="dt">object</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> visible_if <span class="op">=</span> <span class="st">&#39;...the expression...&#39;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
+<p>This is especially valuable when users are expected to be providing the
+input: as long as we don&#x2019;t expose any dangerous custom functions to the
+evaluation context and Google implemented the language evaluator correctly,
+there&#x2019;s no need to sanitize user input.</p>
+<p>So, to spell out our goals clearly, we want to provide a way for PostgreSQL
+to evaluate Google CEL expressions by exposing a user-defined function
+(UDF).</p>
+</section>
+<section id="writing-the-function" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Writing the
+function</h1>
+<section id="postgres-user-defined-functions" class="level2"
+data-number="2.1">
+<h2 data-number="2.1"><span class="header-section-number">2.1</span> Postgres&#x2019;
+user-defined functions</h2>
+<p><a href="https://www.postgresql.org/docs/current/xfunc-c.html"
+rel="noopener noreferrer" referrerpolicy="no-referrer">Postgres provides a way
+of writing custom functions in C.</a> A simple example looks like:</p>
+<div class="sourceCode" id="cb6" class="codeblock"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;postgres.h&quot;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;string.h&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;fmgr.h&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;utils/geo_decls.h&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;varatt.h&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>PG_MODULE_MAGIC<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>PG_FUNCTION_INFO_V1<span class="op">(</span>returns_true<span class="op">);</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>Datum</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>returns_true<span class="op">(</span>PG_FUNCTION_ARGS<span class="op">)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    PG_RETURN_BOOL<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This means that if we expose CEL as a simple wrapper around its <a
+href="https://github.com/google/cel-cpp" rel="noopener noreferrer"
+referrerpolicy="no-referrer">C++ implementation</a> as a shared object, then
+Postgres will be able to use it.</p>
+</section>
+<section id="making-sense-of-googles-code" class="level2" data-number="2.2">
+<h2 data-number="2.2"><span class="header-section-number">2.2</span> Making
+sense of Google&#x2019;s code</h2>
+<p>The source for CEL is classic Google.<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a> It uses <a
+href="https://github.com/abseil/abseil-cpp" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Abseil</a> and provides any documentation inline
+with the code &#x2013; in my experience, usually you have to hunt around through
+random files for the right function or data type on initial read. Because it
+uses an atypical build system, Intellisense can&#x2019;t pick up symbols for
+autosuggest.<a href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a></p>
+<p>Thankfully, the developers have included a Codelab in the repo. Copying
+their example in the first Codelab entry, we can write up a quick function to
+evaluate an expression. The following example elides much information, but it
+can be found nearly verbatim in <a
+href="https://github.com/google/cel-cpp/blob/master/codelab/solutions/exercise1.cc"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>exercise1.cc</code> in the Codelab</a>.</p>
+<div class="sourceCode" id="cb7" class="codeblock"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>InterpreterOptions options<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> builder <span class="op">=</span> CreateCelExpressionBuilder<span class="op">(</span>options<span class="op">);</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>RegisterBuiltinFunctions<span class="op">(</span>builder<span class="op">-&gt;</span>GetRegistry<span class="op">(),</span> options<span class="op">);</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>protobuf<span class="op">::</span>Arena arena<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Activation activation<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="al">TODO</span><span class="co">: populate activation with various `CelValue`s...</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">// Assumes expression has already been parsed.</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>CEL_ASSIGN_OR_RETURN<span class="op">(</span>CelValue result<span class="op">,</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  expression_plan<span class="op">-&gt;</span>Evaluate<span class="op">(</span>activation<span class="op">,</span> <span class="op">&amp;</span>arena<span class="op">));</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> bool_result <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>result<span class="op">.</span>GetValue<span class="op">&lt;</span><span class="dt">bool</span><span class="op">&gt;(&amp;</span>bool_result<span class="op">);</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> bool_result<span class="op">;</span></span></code></pre></div>
+<p>From here, we have the scaffold for our Postgres function:</p>
+<div class="sourceCode" id="cb8" class="codeblock"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// All the Google includes, pretty much anything</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">// in the /public folders...</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>absl<span class="op">::</span>StatusOr<span class="op">&lt;</span><span class="dt">bool</span><span class="op">&gt;</span> Evaluate<span class="op">(</span>absl<span class="op">::</span>string_view expr<span class="op">);</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef __cplusplus</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">extern</span> <span class="st">&quot;C&quot;</span> <span class="op">{</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;postgres.h&quot;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;string.h&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;fmgr.h&quot;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;utils/geo_decls.h&quot;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;varatt.h&quot;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>PG_MODULE_MAGIC<span class="op">;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>PG_FUNCTION_INFO_V1<span class="op">(</span>evaluate_cel<span class="op">);</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>Datum</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>evaluate_cel<span class="op">(</span>PG_FUNCTION_ARGS<span class="op">)</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Convert the args to a friendlier data type. */</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Return the result of calling Evaluate. */</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef __cplusplus</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>absl<span class="op">::</span>StatusOr<span class="op">&lt;</span><span class="dt">bool</span><span class="op">&gt;</span> Evaluate<span class="op">(</span>absl<span class="op">::</span>string_view expr<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* Do the conversion. */</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+</section>
+</section>
+<section id="building-the-extension" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Building the
+extension</h1>
+<p>In my experience usually the trickiest parts of any sufficiently
+complicated C++ application are:</p>
+<ol type="1">
+<li>Building it for yourself</li>
+<li>Building it for other people</li>
+</ol>
+<p>When I first tried building a WebRTC native C++ application locally, for
+example, I really struggled with using their toolchain to compile everything.
+I ended up having to build my software in-tree. CEL wasn&#x2019;t as bad as WebRTC
+because it uses <a href="https://bazel.build/" rel="noopener noreferrer"
+referrerpolicy="no-referrer">Bazel</a> instead of Chromium&#x2019;s <a
+href="https://gn.googlesource.com/gn/+/main/docs/reference.md"
+rel="noopener noreferrer" referrerpolicy="no-referrer">gn</a>.</p>
+<p>I tried a few different approaches building the C-compatible Postgres
+extension.</p>
+<section id="approach-1-do-it-all-in-bazel" class="level2" data-number="3.1">
+<h2 data-number="3.1"><span class="header-section-number">3.1</span> Approach
+#1: do it all in Bazel</h2>
+<p>Neglecting to read Bazel&#x2019;s docs carefully, I originally thought I could get
+by with just building a shared library in Bazel by adding it as a target. I
+would then load this into the database.</p>
+<pre class="bazel" class="codeblock"><code>cc_library(
+  name = &quot;pg_test&quot;,
+  srcs = [ ... ],
+  deps = [
+    &quot;@libpq//:all&quot;,
+    &quot;@cel//...:...
+  ],
+)</code></pre>
+<p>This required a dependency on <code>libpq</code> that was established
+through an <a href="https://bazel.build/rules/lib/repo/http#http_archive"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>http_archive</code></a> target in the
+<code>WORKSPACE</code> file to get the files, and a <a
+href="https://bazelbuild.github.io/rules_foreign_cc/main/configure_make.html"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>configure_make</code></a> target
+established in the <code>BUILD</code> file. I tried this a few times but
+eventually conceded and just shoved in some extra directories to the target&#x2019;s
+<code>include</code> property. This is acceptable, since the headers are just
+there for declarations. This attempt did not build, though, since the
+declarations in Postgres&#x2019; library were missing their corresponding
+declarations from the perspective of Bazel&#x2019;s sandbox during the build.</p>
+</section>
+<section id="approach-2-do-half-of-it-in-bazel-and-the-rest-in-make"
+class="level2" data-number="3.2">
+<h2 data-number="3.2"><span class="header-section-number">3.2</span> Approach
+#2: do half of it in Bazel, and the rest in Make</h2>
+<p>For my second try, I did half of it in Bazel by attempting to build a
+statically linked wrapper library around CEL, then linking that to my Postgres
+user-defined function and building a shared object from it. For example, we&#x2019;d
+build the C++ library with some headers like:</p>
+<div class="sourceCode" id="cb10" class="codeblock"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef __cplusplus</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">extern</span> <span class="st">&quot;C&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> Evaluate<span class="op">(</span><span class="at">const</span> <span class="dt">char</span> <span class="op">*</span>expr<span class="op">);</span></span></code></pre></div>
+<p>Then move all the Postgres module functionality to its own, separate file
+for use as <em>another</em> library:</p>
+<div class="sourceCode" id="cb11" class="codeblock"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;postgres.h&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;string.h&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;fmgr.h&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;utils/geo_decls.h&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;varatt.h&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;my_cel_wrapper_lib.hh&quot;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>PG_MODULE_MAGIC<span class="op">;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>PG_FUNCTION_INFO_V1<span class="op">(</span>evaluate_cel<span class="op">);</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>Datum</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>evaluate_cel<span class="op">(</span>PG_FUNCTION_ARGS<span class="op">)</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Convert the args to a friendlier data type. */</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Return the result of calling Evaluate. */</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>My <code>Makefile</code> for the C portion looked something like:</p>
+<div class="sourceCode" id="cb12" class="codeblock"><pre
+class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dv">default:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="er">  </span><span class="ch">$(</span><span class="dt">CC</span><span class="ch">)</span> <span class="ch">$(</span><span class="dt">CFLAGS</span><span class="ch">)</span> <span class="ch">$(</span><span class="dt">LFLAGS</span><span class="ch">)</span> \</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="ch">-</span><span class="fu">shared -fPIC </span><span class="ch">\</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">  path/to/archive/output.a </span><span class="ch">\</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">  -o my_postgres.so </span><span class="ch">\</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">  my_postgres.c</span></span></code></pre></div>
+<p>I plugged in a bunch of flags to the Bazel library target to try and get a
+fully-statically linked archive file, too:</p>
+<pre class="bazel" class="codeblock"><code>cc_library(
+  # ...
+  linkopts = [&quot;-static&quot;, &quot;-fPIC&quot;],
+  copts = [&quot;-static&quot;],
+  # ...
+)</code></pre>
+<p>And then the build process was a simple
+<code>bazel build &amp;&amp; make</code>. This worked to output a shared
+object, but when I tried to load it into Postgres, the database would complain
+about a missing symbol! How mysterious that a library I had told Bazel
+explicitly to link statically, would be missing a symbol at compile time of my
+second wrapper library!</p>
+<p>We can investigate which symbols are missing with <code>nm</code>. The
+exact command I was using was
+<code>nm -gU path/to/output.a | grep -E '[0-9]+ V.+'</code> in order to find
+symbols that had been marked as <code>V</code>.<a href="#fn3"
+class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Indeed,
+<em>almost all of the symbols from cel-cpp were weak objects</em>.</p>
+<p>I didn&#x2019;t want to hack together an even more gross solution by catching the
+exact command from Bazel with the <code>-s</code> flag, so I decided to
+abandon this approach and try, once again, to use Bazel as much as I
+could.</p>
+</section>
+<section id="approach-3-do-it-all-in-bazel-again" class="level2"
+data-number="3.3">
+<h2 data-number="3.3"><span class="header-section-number">3.3</span> Approach
+#3: do it all in Bazel (again)</h2>
+<p>The astute reader likely instantly noticed my flaw in approach #1.
+Returning once again to the Bazel documentation for C/C++ targets, I found
+that I had been using the wrong one from the get-go. Instead of <a
+href="https://bazel.build/reference/be/c-cpp#cc_library"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>cc_library</code></a> to build a shared
+object, I needed to use a <a
+href="https://bazel.build/reference/be/c-cpp#cc_binary"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>cc_binary</code></a> type with the
+<code>linkshared</code> option set.</p>
+<p>To resolve the issue of building Postgres consistently, I resorted to
+simply throwing the header files that we&#x2019;d pull in from Postgres into a
+folder, and mass-renaming their include paths so that they respected their
+installed location. I should note that this is <strong>not maintainable at
+all!</strong> It relies heavily on the Postgres headers&#x2019; installed hierarchy
+being pure, such that anything in the <code>server</code> folder does not
+depend on anything in a parent folder. As of this writing while using Postgres
+16, this was not an issue, but it could change in the future! My primary
+motivation in taking this hacky route was to just build something that works
+first, then clean up the approach later if it performed well.</p>
+<pre class="bazel" class="codeblock"><code>cc_library(
+  name = &quot;pg_test&quot;,
+  linkstatic = 1,
+  linkshared = 1,
+  srcs = [
+    &quot;libpq/include/server/**/*.h&quot;,
+    &quot;my_file.hh&quot;,
+    &quot;my_file.cc&quot;,
+  ],
+  deps = [
+    &quot;@cel//...:...,
+  ],
+)</code></pre>
+<p>Finally, running <code>bazel build</code>, I was able to get an
+<code>.so</code> file that had no weak objects, and loaded into my database
+properly with:</p>
+<div class="sourceCode" id="cb15" class="codeblock"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">FUNCTION</span> evaluate_cel(TEXT) RETURNS <span class="dt">BOOLEAN</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>     <span class="kw">AS</span> <span class="st">&#39;/path/to/my/file.so&#39;</span>, <span class="st">&#39;evaluate_cel&#39;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>     LANGUAGE C STRICT;</span></code></pre></div>
+<p>Note that the signature accepts a single <code>TEXT</code> parameter, but
+my earlier use case took two. This is because this particular implementation
+was just a smoke test to see what the cost would be to run the CEL code in a
+<code>JOIN</code> or <code>WHERE</code> clause.</p>
+</section>
+</section>
+<section id="conclusions" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span>
+Conclusions</h1>
+<section id="performance-measurements" class="level2" data-number="4.1">
+<h2 data-number="4.1"><span class="header-section-number">4.1</span>
+Performance measurements</h2>
+<p>Now that I had my binary, I did some really rough performance measurements
+to see how the function would perform. I created a simple table and populated
+it with a couple dozen rows. Querying against one row alone with a simple
+expression, I saw about a 75-100ms query time increase. Against each row with
+a <code>SELECT * FROM SomeTable WHERE evaluate_cel('...')</code>, I saw about
+100ms of delay per-row.</p>
+<p>Given more time, I anticipate I&#x2019;d find the significant and consistent
+overhead here is from setting up the allocation arena and parser object, then
+building the AST and execution plan for the expression. Building a simple
+command line C program with the library had a similar &#x201C;warm-up&#x201D; time compared
+to its lightning fast parse time, so I think I&#x2019;m at least near the money in
+this estimate, if not on it.</p>
+<p>We could improve performance by doing the parsing ahead of time and writing
+it into another database column. To make this more ergonomic, we could add a
+<a href="https://www.postgresql.org/docs/current/plpgsql-trigger.html"
+rel="noopener noreferrer" referrerpolicy="no-referrer">trigger function</a> to
+build the expression&#x2019;s AST, then store the result back into a column as some
+<code>BYTEA</code> or similar. This would be borderline dark arts, though.</p>
+<p>A more effective approach would be to keep the arena in shared memory, and
+cache common expressions . This could be accomplished through use of Postgres&#x2019;
+<a
+href="https://www.postgresql.org/docs/current/xfunc-c.html#XFUNC-SHARED-ADDIN"
+rel="noopener noreferrer"
+referrerpolicy="no-referrer"><code>RequestAddinShmemSpace</code></a>, or some
+other mechanism like caching in Redis, since, to my knowledge, a C-language
+UDF can execute arbitrary code. A Redis plugin for Postgres, <a
+href="https://github.com/pg-redis-fdw/redis_fdw" rel="noopener noreferrer"
+referrerpolicy="no-referrer">imagine that :)</a></p>
+</section>
+<section id="portability-and-deployment-considerations" class="level2"
+data-number="4.2">
+<h2 data-number="4.2"><span class="header-section-number">4.2</span>
+Portability and deployment considerations</h2>
+<p>There are many downsides to this approach that make me think twice about
+investing too much time into it:</p>
+<ul>
+<li>Since this is compiled to a shared object, it must be compiled to the same
+architecture as the database host.</li>
+<li>In managed Postgres instances (e.g., AWS RDS, GCP Cloud SQL), it may be
+difficult or impossible to install unvetted extensions.
+<ul>
+<li>Even in Postgres instances that are self-hosted, you may still have to
+really work on your company admin to let you add this.</li>
+</ul></li>
+<li>The build toolchain may be orthogonal to other technology you use in your
+stack.</li>
+<li>This example ignored any discussion of converting to and from Postgres and
+CEL&#x2019;s data types in the adapter function. This could be an area with some
+nasty edge cases.</li>
+<li>Even if the function is written carefully, undefined behavior abounds. A
+crash in a function this close to the surface of the database could be
+dangerous.
+<ul>
+<li>To this end, using entirely unsanitized user input will always pose a
+danger in any code near your data model.</li>
+</ul></li>
+</ul>
+<p>Although this approach is pretty impractical and requires some reasonable
+lifting for performance optimization, it&#x2019;s also very cool that it works at
+all. The ergonomics at the data model level make it possible to eliminate lots
+of extra joins on bespoke tables for user-defined filtering criteria.</p>
+</section>
+</section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>From what I&#x2019;ve read, at least, in Google&#x2019;s WebRTC repo
+prior.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn2"><p>It uses Bazel, as I discuss later in the post. I&#x2019;m sure
+there&#x2019;s some trick to this that I am missing, or <a
+href="https://github.com/grailbio/bazel-compilation-database"
+rel="noopener noreferrer" referrerpolicy="no-referrer">some extension and
+toolchain</a> I need to set up in my editor, but no matter! People wrote code
+without autocomplete for decades.<a href="#fnref2" class="footnote-back"
+role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+<li id="fn3"><p>Any symbol marked as a weak object. See: <a
+href="https://linux.die.net/man/1/nm" class="uri" rel="noopener noreferrer"
+referrerpolicy="no-referrer">https://linux.die.net/man/1/nm</a>.<a
+href="#fnref3" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p></li>
+</ol>
+</aside>
+
+<footer>
+  <p>
+    Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+  <p>
+    Questions? Corrections? Comments? Write me an email.
+  </p>
+</footer>
+
+</body>
+</html>

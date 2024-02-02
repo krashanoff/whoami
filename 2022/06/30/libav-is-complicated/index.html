@@ -263,6 +263,12 @@
       overflow-wrap: unset !important;
       white-space: unset;
     }
+
+    @media print {
+      .print-display-none {
+        display: none;
+      }
+    }
   </style>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -276,7 +282,7 @@
 </head>
 <body>
 
-<a href="/">Back to home</a>
+<a class="print-display-none" href="/">Back to home</a>
 
 <header id="title-block-header">
 <h1 class="title">Libav is complicated</h1>
@@ -434,6 +440,9 @@ href="#fnref3" class="footnote-back" role="doc-backlink">&#x21A9;&#xFE0E;</a></p
 <footer>
   <p>
     Copyright &copy; 2023 Leonid Krashanoff
+  </p>
+  <p>
+    Questions? Corrections? Comments? Write me an email.
   </p>
 </footer>
 

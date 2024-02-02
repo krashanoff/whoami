@@ -3,13 +3,20 @@
                     <subtitle>The blog of Leonid Krashanoff.</subtitle>
                     <link href="https://krashanoff.com/feed.xml" rel="self"/>
                     <link href="https://krashanoff.com/"/>
-                    <updated>2023-12-07T11:26:00.000Z</updated>
+                    <updated>2024-02-01T21:35:00.000Z</updated>
                     <id>https://krashanoff.com/</id>
                     <author>
                       <name>Leonid Krashanoff</name>
                       <email>hello@krashanoff.com</email>
                     </author>
                    
+                    <entry>
+                      <title>Using Google's Common Expression Language in Postgres</title>
+                      <link href="https://krashanoff.com/2024/02/01/using-googles-common-expression-language-in-postgres/index.html"/>
+                      <updated>2024-02-01T21:35:00.000Z</updated>
+                      <id>https://krashanoff.com/2024/02/01/using-googles-common-expression-language-in-postgres/index.html</id>
+                    </entry>
+                     
                     <entry>
                       <title>I updated my website</title>
                       <link href="https://krashanoff.com/2023/12/07/i-updated-my-website/index.html"/>
