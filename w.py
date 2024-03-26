@@ -423,7 +423,7 @@ def main(observe = True):
       time.sleep(5)
   except KeyboardInterrupt:
     observer.stop()
-    http_server.join()
+    http_server.kill()
 
 if __name__ == '__main__':
   main()
