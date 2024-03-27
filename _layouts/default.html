@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: " en-US" }}">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="{{ site.baseurl }}/static/favicon.png">
+
+  <meta content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}" property="og:title" />
+  <meta content="{{ site.description }}" property="og:description" />
+  <meta content="{{ site.baseurl }}/static/favicon.png" property="og:image" />
+  <meta content="#7faaec" name="theme-color" />
+
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+
+  <link rel="stylesheet" type="text/css" href="{{ "/static/css/main.css" | relative_url }}">
+</head>
+
+<body>
+  {% if page.layout == "post" %}
+  <nav>
+    <a href="/">Home</a>
+    <a href="/tags">Tags</a>
+  </nav>
+  {% else %}
+  <h1 class="title">{{ site.title }}</h1>
+  {% endif %}
+
+  <main>
+    {{ content }}
+  </main>
+
+  <footer>
+    Copyright &copy; 2024 Leonid Krashanoff
+  </footer>
+</body>
+
+</html>

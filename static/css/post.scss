@@ -1,0 +1,60 @@
+@import "code";
+
+.post-meta {
+  border: solid 1px var(--black);
+  padding: 1rem;
+}
+
+.post-meta h1 {
+  font-size: 2em;
+  margin: 0;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  visibility: hidden;
+}
+
+h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a {
+  visibility: visible;
+}
+
+.post-meta p {
+  margin: 0;
+  font-size: 0.95em;
+}
+
+.tags {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
+}
+
+.footnotes {
+  border-top: 1px solid var(--black);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+/*
+In the future, these will be the styles for some minimal tooltips
+for a post's edit history.
+*/
+.edit-hint {
+  font-style: italic;
+}
+
+.edit-why {
+  position: relative;
+  display: inline-block;
+}
+
+.edit-why span {
+  z-index: 1;
+  position: absolute;
+
+  bottom: 1em;
+  right: 1em;
+  padding: 0.5em;
+  background: var(--white);
+  border: 1px solid var(--black);
+}

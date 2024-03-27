@@ -1,0 +1,47 @@
+url: "https://krashanoff.com"
+baseurl:
+title: "krashanoff"
+description: Leonid Krashanoff's Blog
+author: "Leonid Krashanoff"
+
+lang: en-US
+
+permalink: /:year/:month/:day/:slug
+
+sass:
+  style: compressed
+
+exclude:
+  - .gitignore
+  - _config.yml
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+
+collections:
+  posts:
+    output: true
+  tags:
+    output: true
+    permalink: /tags/:slug
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "tags"
+    values:
+      layout: "tag"
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  
+highlighter: rouge
+
+plugins:
+  - jekyll-feed

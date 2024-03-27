@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+<figure>
+  <img src="{{ "/static/img/pfp/lain-small.png" | relative_url }}" alt="frame from serial experiments lain"
+    width="80%" />
+  <figcaption><i>Everyone is connected...</i></figcaption>
+</figure>
+
+## Who are you?
+
+I am a software engineer at [Regrello](https://www.regrello.com/), and formerly a systems
+engineer [Booz Allen Hamilton](https://www.boozallen.com/). I attended
+[UCLA](https://www.ucla.edu/) for my bachelor's.
+
+Lately, I have been interested in databases, efficient computing, and legacy software.
+
+You can find me on GitHub as [`krashanoff`](https://github.com/krashanoff). If you'd like to get
+in touch with me directly, email [`hello@krashanoff.com`](mailto:hello@krashanoff.com).
+
+## Blog Posts
+
+I write from time to time. You may review past posts as linked below.
+
+<ul class="no-list">
+  {% assign postsSorted = site.posts | sort: "date" | reverse %}
+  {% for post in postsSorted %}
+  <li><a href="{{ post.url }}">{{ post.title }}</a> <span class="post-date">({{ post.date | date: "%B %d, %Y" }})</span></li>
+  {% endfor %}
+</ul>
+
+## Can't find what you're searching for?
+
+I used to host an impromptu reading list and some incomplete notes on cybersecurity policy and cryptographic module
+validation here (NIST 800-5X; FIPS 140-2 and 140-3). If, by chance, you
+are looking for them, you can find the original documents in the Git repository for this website at commit SHA
+`e070a1545f43f118750b171e70872756b1c91d2e`. [Link for your convenience](https://github.com/krashanoff/whoami/tree/e070a1545f43f118750b171e70872756b1c91d2e).
+
+## What is the source for this page's image?
+
+The only image on this page is a screenshot from episode 3 of 
+[Serial Experiments Lain](https://en.wikipedia.org/wiki/Serial_Experiments_Lain).

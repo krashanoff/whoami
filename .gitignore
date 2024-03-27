@@ -1,5 +1,4 @@
-.DS_Store
 _site/
-build/
-src/drafts/
-mermaid-filter.err
+_drafts/
+.jekyll-cache/
+.DS_Store
