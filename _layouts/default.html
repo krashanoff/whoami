@@ -6,9 +6,9 @@
   <meta charset="utf-8">
   <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
 
-  <meta content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}" property="og:title" />
+  <meta content="{% if page.title %}{{ page.title | replace '"', '&quot;' }} - {% endif %}{{ site.title }}" property="og:title" />
 
-  {% assign excerpt = content | strip_html | excerpt | truncatewords: 75 %}
+  {% assign excerpt = content | strip_html | excerpt | replace: '"', '&quot;' | truncatewords: 75 %}
   <meta name="description" content="{% if page.description %}{{ page.description }}{% elsif page.layout == "post" %}{{ excerpt }}{% else %}{{ site.description }}{% endif %}" />
 
   <meta content="#7faaec" name="theme-color" />
