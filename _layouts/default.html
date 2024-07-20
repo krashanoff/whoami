@@ -4,15 +4,17 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
-  <link rel="icon" type="image/png" href="{{ site.baseurl }}/static/favicon.png">
-
-  <meta content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}" property="og:title" />
-  <meta content="{{ site.description }}" property="og:description" />
-  <meta content="{{ site.baseurl }}/static/favicon.png" property="og:image" />
-  <meta content="#7faaec" name="theme-color" />
-
   <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
 
+  <meta content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}" property="og:title" />
+
+  {% assign excerpt = content | strip_html | excerpt | truncatewords: 75 %}
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% elsif page.layout == "post" %}{{ excerpt }}{% else %}{{ site.description }}{% endif %}" />
+
+  <meta content="#7faaec" name="theme-color" />
+  
+  <meta content="{{ site.baseurl }}/static/favicon.png" property="og:image" />
+  <link rel="icon" type="image/png" href="{{ site.baseurl }}/static/favicon.png">
   <link rel="stylesheet" type="text/css" href="{{ "/static/css/main.css" | relative_url }}">
 </head>
 

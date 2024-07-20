@@ -66,6 +66,11 @@ figure {
   align-items: center;
 }
 
+picture {
+  display: flex;
+  justify-content: center;
+}
+
 article img {
   margin-left: 1rem;
   margin-right: 1rem;
@@ -111,6 +116,10 @@ summary {
 
 .no-list > li:hover > .post-date {
   visibility: visible;
+}
+
+#coverimage {
+  max-width: 80%;
 }
 
 @media print {

@@ -3,8 +3,10 @@ layout: default
 ---
 
 <figure>
-  <img src="{{ "/static/img/pfp/lain-small.png" | relative_url }}" alt="frame from serial experiments lain"
-    width="80%" />
+  <picture>
+    <source type="image/webp" srcset="{{ "/static/img/pfp/lain.webp" | relative_url }}">
+    <img id="coverimage" src="{{ "/static/img/pfp/lain-small.png" | relative_url }}" alt="frame from serial experiments lain" />
+  </picture>
   <figcaption><i>Everyone is connected...</i></figcaption>
 </figure>
 
