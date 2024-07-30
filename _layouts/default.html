@@ -6,9 +6,9 @@
   <meta charset="utf-8">
 
   {% assign escaped_page_title = page.title | replace: '"', '&quot;' %}
-  <title>{% if escaped_page_title %}{{ escaped_page_title }} - {% endif %}{{ site.title }}</title>
+  <title>{% if escaped_page_title != '' %}{{ escaped_page_title }} - {% endif %}{{ site.title }}</title>
 
-  <meta content="{% if escaped_page_title %}{{ escaped_page_title }} - {% endif %}{{ site.title }}" property="title" />
+  <meta content="{% if escaped_page_title != '' %}{{ escaped_page_title }} - {% endif %}{{ site.title }}" property="title" />
 
   {% assign excerpt = content | strip_html | excerpt | replace: '"', '&quot;' | truncatewords: 75 %}
   <meta name="description" content="{% if page.description %}{{ page.description }}{% elsif page.layout == "post" %}{{ excerpt }}{% else %}{{ site.description }}{% endif %}" />
