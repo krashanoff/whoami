@@ -13,7 +13,7 @@ layout: default
 ## Who are you?
 
 I am a software engineer at [Regrello](https://www.regrello.com/), and formerly a systems
-engineer [Booz Allen Hamilton](https://www.boozallen.com/). I attended
+engineer at [Booz Allen Hamilton](https://www.boozallen.com/). I attended
 [UCLA](https://www.ucla.edu/) for my bachelor's.
 
 Lately, I have been interested in databases, efficient computing, and legacy software.

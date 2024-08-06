@@ -1,5 +1,6 @@
 ---
 title: "CS101: Time Complexity"
+layout: math_post
 slug: cs101-time-complexity
 tags:
   - cs101

@@ -30,6 +30,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+      footer_extra: "Opinions expressed do not reflect the beliefs of anyone save the author."
   - scope:
       path: ""
       type: "tags"
