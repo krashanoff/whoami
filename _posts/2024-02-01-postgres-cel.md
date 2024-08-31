@@ -2,6 +2,9 @@
 title: Using Google's Common Expression Language in Postgres
 slug: using-googles-common-expression-language-in-postgres
 date: 2024-02-01T21:35:00-07:00
+edits:
+  - when: 2024-08-30
+    why: My footnote about Intellisense was poorly-formatted.
 ---
 
 As a disclaimer, the following is not intended as a code-complete example. I gloss over some
@@ -132,7 +135,7 @@ Intellisense can't pick up symbols for autosuggest.[^intellisense]
 [^classic]: From what I've read, at least, in Google's WebRTC repo prior.
 
 [^intellisense]: It uses Bazel, as I discuss later in the post. I'm sure there's some trick to this
-that I am missing, or [some extension and toolchain](https://github.com/grailbio/bazel-compilation-database) I need to set up in my editor, but no matter! People wrote code without autocomplete for decades.
+    that I am missing, or [some extension and toolchain](https://github.com/grailbio/bazel-compilation-database) I need to set up in my editor, but no matter! People wrote code without autocomplete for decades.
 
 Thankfully, the developers have included a Codelab in the repo. Copying their
 example in the first Codelab entry, we can write up a quick function to evaluate an expression.

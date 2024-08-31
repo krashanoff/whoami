@@ -35,6 +35,26 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a {
   margin-top: 1rem;
 }
 
+details {
+  border: 1px solid var(--black);
+  padding: 1rem;
+}
+
+.post-meta > details {
+  border: 0;
+  padding: 0;
+  font-size: 0.75em;
+}
+
+.post-meta > details ol {
+  list-style: disc;
+  margin: 0;
+}
+
+summary {
+  cursor: pointer;
+}
+
 /*
 In the future, these will be the styles for some minimal tooltips
 for a post's edit history.
