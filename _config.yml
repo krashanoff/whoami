@@ -44,5 +44,9 @@ kramdown:
   
 highlighter: rouge
 
+# Use an arbitrarily high limit on the number of posts generated in the RSS feed
+# to ensure new subscribers can see the full post history.
 plugins:
   - jekyll-feed
+feed:
+  posts_limit: 1000
