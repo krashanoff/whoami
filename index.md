@@ -12,9 +12,9 @@ layout: default
 
 ## Who are you?
 
-I am a software engineer at [Ramp](https://ramp.com/). Formerly, I was a software engineer at
-[Regrello](https://www.regrello.com/), and a systems engineer at [Booz Allen Hamilton](https://www.boozallen.com/).
-I attended [UCLA](https://www.ucla.edu/) for my bachelor's.
+I am a software engineer at [Regrello](https://www.regrello.com/), and formerly a systems
+engineer at [Booz Allen Hamilton](https://www.boozallen.com/). I attended
+[UCLA](https://www.ucla.edu/) for my bachelor's.
 
 Lately, I have been interested in databases, efficient computing, and legacy software.
 
@@ -34,7 +34,7 @@ I write from time to time. You may review past posts as linked below.
 
 ## Can't find what you're searching for?
 
-There used to be an impromptu reading list and some incomplete notes on cybersecurity policy and cryptographic module
+I used to host an impromptu reading list and some incomplete notes on cybersecurity policy and cryptographic module
 validation here (NIST 800-5X; FIPS 140-2 and 140-3). If, by chance, you
 are looking for them, you can find the original documents in the Git repository for this website at commit SHA
 `e070a1545f43f118750b171e70872756b1c91d2e`. [Link for your convenience](https://github.com/krashanoff/whoami/tree/e070a1545f43f118750b171e70872756b1c91d2e).
