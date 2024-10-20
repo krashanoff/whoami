@@ -113,6 +113,14 @@ blockquote {
   max-width: 80%;
 }
 
+.print-only {
+  display: none;
+}
+
+.no-print {
+  display: inline-block;
+}
+
 @media print {
   body {
     width: 100%;
@@ -123,6 +131,14 @@ blockquote {
   }
 
   .tags {
+    display: none;
+  }
+
+  .print-only {
+    display: inline-block;
+  }
+
+  .no-print {
     display: none;
   }
 }

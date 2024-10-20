@@ -12,11 +12,11 @@ layout: default
 
 ## Who are you?
 
-I am a software engineer at [Ramp](https://ramp.com/). Formerly, I was a software engineer at
+I am a software engineer at [Ramp](https://ramp.com/). Previously, I was a software engineer at
 [Regrello](https://www.regrello.com/), and a systems engineer at [Booz Allen Hamilton](https://www.boozallen.com/).
 I attended [UCLA](https://www.ucla.edu/) for my bachelor's.
 
-Lately, I have been interested in databases, efficient computing, and legacy software.
+I love computers.
 
 You can find me on GitHub as [`krashanoff`](https://github.com/krashanoff). If you'd like to get
 in touch with me directly, email [`hello@krashanoff.com`](mailto:hello@krashanoff.com).

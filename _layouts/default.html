@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: " en-US" }}">
+{% assign pageLanguage = page.lang | default: "en-US" %}
+<html lang="{{ pageLanguage | default: site.lang }}">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,7 +40,7 @@
       Copyright &copy; 2024 Leonid Krashanoff.
     </p>
     
-    <p>Training AI with any content on this site is strictly prohibited. {% if page.footer_extra %}{{ page.footer_extra }}{% endif %}</p>
+    <p><span class="no-print">Training AI with any content on this site is strictly prohibited.</span> {% if page.footer_extra %}{{ page.footer_extra }}{% endif %}</p>
   </footer>
 </body>
 
