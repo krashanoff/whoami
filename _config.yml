@@ -21,6 +21,9 @@ exclude:
 collections:
   posts:
     output: true
+  film:
+    output: true
+    permalink: /film/:slug
   tags:
     output: true
     permalink: /tags/:slug
@@ -36,6 +39,11 @@ defaults:
       type: "tags"
     values:
       layout: "tag"
+  - scope:
+      path: ""
+      type: "film"
+    values:
+      layout: "post"
 
 markdown: kramdown
 kramdown:
