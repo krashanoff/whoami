@@ -28,7 +28,7 @@
     <a href="/tags">Tags</a>
   </nav>
   {% else %}
-  <h1 class="title">{{ site.title }}</h1>
+  <h1 class="title">{{ page.title | default: site.title }}</h1>
   {% endif %}
 
   <main>

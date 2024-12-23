@@ -1,11 +1,12 @@
 ---
 layout: default
 permalink: /film
+title: film
 ---
 
-# film
+Rather than film reviews, please consider these as loosely-organized thoughts that occurred to me while viewing. I make a best effort to omit spoilers from my posts, and focus more on the artistic aspects of the film. As a result, I tend not to get into the specifics of each film's plot.
 
-Posts are image-rich and unoptimized.
+Posts are image-rich and unoptimized. If you're on a poor Internet connection, please take heed.
 
 {% assign postsSorted = site.film | sort: "date" | reverse %}
 
