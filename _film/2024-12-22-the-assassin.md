@@ -1,5 +1,5 @@
 ---
-title: The Assassin (2015)
+title: The Assassin (Hsiao-Hsien, 2015)
 ---
 
 The Assassin (2015), directed by Hou Hsiao-Hsien, is a complex, quiet, and vibrant film. It was shot on 35mm.
