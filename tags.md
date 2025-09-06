@@ -1,6 +1,7 @@
 ---
 layout: default
 title: tags
+permalink: /tags/index.html
 ---
 
 {% assign tagsSorted = site.tags | sort: 'name' %}

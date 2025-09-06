@@ -6,7 +6,8 @@ author: "Leonid Krashanoff"
 
 lang: en-US
 
-permalink: /:year/:month/:day/:slug
+# Friendly for HTTP
+permalink: /:year/:month/:day/:slug/index.html
 
 sass:
   style: compressed
@@ -23,10 +24,10 @@ collections:
     output: true
   film:
     output: true
-    permalink: /film/:slug
+    permalink: /film/:slug/index.html
   tags:
     output: true
-    permalink: /tags/:slug
+    permalink: /tags/:slug/index.html
 defaults:
   - scope:
       path: ""

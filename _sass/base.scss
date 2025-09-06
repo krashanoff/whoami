@@ -3,6 +3,10 @@
   --grey: #444444;
   --white: #fefefe;
   --link: #4f55d1;
+  --hl: #cfd14f;
+  --blood: #ff3939;
+
+  --border-width: 0.1rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -57,7 +61,7 @@ table {
 }
 
 figure {
-  border: 1px solid var(--black);
+  border: var(--border-width) solid var(--black);
   padding: 1rem;
   display: flex;
   gap: 1rem;
@@ -76,14 +80,14 @@ article img {
   margin-right: 1rem;
   padding: 0.5rem;
   max-width: calc(100% - 5rem);
-  border: 1px solid var(--black);
+  border: var(--border-width) solid var(--black);
 }
 
 pre {
   overflow: auto;
   font-size: 1rem;
   padding: 0.5rem;
-  border: 1px solid var(--black);
+  border: var(--border-width) solid var(--black);
 }
 
 blockquote {
@@ -141,4 +145,8 @@ blockquote {
   .no-print {
     display: none;
   }
+}
+
+.blood {
+  color: var(--blood) !important;
 }

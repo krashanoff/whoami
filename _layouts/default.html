@@ -19,6 +19,8 @@
   <meta content="{{ site.baseurl }}/static/favicon.png" property="og:image" />
   <link rel="icon" type="image/png" href="{{ site.baseurl }}/static/favicon.png">
   <link rel="stylesheet" type="text/css" href="{{ "/static/css/main.css" | relative_url }}">
+
+  {% include analytics.html %}
 </head>
 
 <body>
@@ -37,10 +39,15 @@
 
   <footer>
     <p>
-      Copyright &copy; 2024 Leonid Krashanoff.
+      Copyright &copy; 2025 Leonid Krashanoff.
     </p>
-    
-    <p><span class="no-print">Training AI with any content on this site is strictly prohibited.</span> {% if page.footer_extra %}{{ page.footer_extra }}{% endif %}</p>
+    <p>
+      Training AI with any content on this site is strictly prohibited. Opinions expressed do not reflect the beliefs of anyone save the author.
+    </p>
+
+    <!--<p><span class="no-print"></span> {% if page.footer_extra %}{{ page.footer_extra }}{% endif %}</p>-->
+
+    <!-- <p><i>All tools solve a problem, but power and flexibility lay hand-in-hand with risk and harm. It is our duty as engineers to ensure the latter are more difficult to affect.</i></p> -->
   </footer>
 </body>
 

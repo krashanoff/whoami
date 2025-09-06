@@ -1,7 +1,7 @@
 @import "code";
 
 .post-meta {
-  border: solid 1px var(--black);
+  border: var(--border-width) solid var(--black);
   padding: 1rem;
 }
 
@@ -30,13 +30,13 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a {
 }
 
 .footnotes {
-  border-top: 1px solid var(--black);
+  border-top: var(--border-width) solid var(--black);
   padding-top: 1rem;
   margin-top: 1rem;
 }
 
 details {
-  border: 1px solid var(--black);
+  border: var(--border-width) solid var(--black);
   padding: 1rem;
 }
 
@@ -76,5 +76,35 @@ for a post's edit history.
   right: 1em;
   padding: 0.5em;
   background: var(--white);
-  border: 1px solid var(--black);
+  border: var(--border-width) solid var(--black);
 }
+
+aside {
+  padding: 1em;
+  border: var(--border-width) solid var(--hl);
+}
+
+aside > p {
+  margin: 0;
+}
+
+h1:has(+ .title-tl) {
+  margin-bottom: 0;
+  border-bottom: var(--border-width) solid var(--black);
+  width: fit-content;
+}
+
+.title-tl {
+  margin-top: 0;
+  width: fit-content;
+  font-size: 0.8em;
+}
+
+.jp {
+  writing-mode: vertical-rl;
+}
+
+.blood {
+  color: #ff3939;
+}
+
