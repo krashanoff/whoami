@@ -648,7 +648,7 @@ No problem, I have a VPN. I'd have to imagine that the ordinary traveler would n
 I can't purchase their official insurance for the six month duration since the company covers a maximum of 31 days. I had found myself at a deeply disatisfying juncture.
 
 # Faced with defeat
-<subtitle class="title-tl">敗北を視野に入れされる</subtitle>
+<subtitle class="title-tl">敗北を直面する</subtitle>
 
 Phew. And with those seven-to-eight thousand words, we've finally caught up to where I am now as of this writing: February 1st (T-40). I have reached a point where I need to assign "my last straw", because the more time I sink into this visa, the more negatively it impacts my determination to finish the process, let alone live in Japan. In fact, the more time that passes, the more of the bad I see in the visa and the idea of living abroad.
 
@@ -659,7 +659,7 @@ So I've given myself an ultimatum to protect my mental health and my own perspec
 I thought it prudent at this point to reflect on my own experience, lessons, and learnings up to this point.
 
 <aside>
-I really wrote this when I really was at this low point in my visa application process. Do take my thoughts with a grain of salt and a heaping tablespoon of empathy, please. I only thought to include them for completeness' sake.
+I wrote this when I really was at this low point in my visa application process. Do take my thoughts with a grain of salt and a heaping tablespoon of empathy, please. I only thought to include them for completeness' sake.
 </aside>
 
 ## On my mental state
@@ -675,18 +675,18 @@ At risk of making this far too personal, I have been in long-distance relationsh
 
 ## On immigration at large
 
-Overall, this has been my first real experience dealing with immigration officials in a foreign country, and it has given me a greater appreciation for those who immigrate to the United States in hopes of a better life, better employment opportunities, or for asylum. I realize that the process is expedited through employers and their immigration lawyers, but regardless, it is an arduous process that I should not be wished upon another person.
+Overall, this has been my first real experience dealing with immigration officials in a foreign country, and it has given me a greater appreciation for those who immigrate to the United States in hopes of a better life, better employment opportunities, or for asylum. I realize that the process is expedited through employers and their immigration lawyers, but regardless, it is an arduous process that should not be wished upon another human.
 
 # ...only to be met with victory
 <subtitle class="title-tl">優勝</subtitle>
 
-One fateful morning, I received an email from my employer's HR representatives. The document I requested had been produced without issue. I opened my employer's group life insurance certificate to find that two words had been added to two sentences in the document.
+Some days later, I received an email from my employer's HR representatives. The document I requested had been produced without issue. I opened my copy of the employer's group life insurance certificate to find that two words had been added to two sentences in the document.
 
 > ...in the United States **and Japan**...
 
 That was what they were looking for. I forwarded the document immediately, much to the dismay of the consulate representatives I had been bothering, no doubt. In fact, they were anything but communicative from this point on, it was complete radio silence.
 
-Complete radio silence, until, that is, I received my prepaid USPS envelope in the mail. It was so soon after I forwarded my updated information that I thought it must have been a fluke, but inside was my passport with a full-page Japanese visa.
+Radio silence, that is, until I received my prepaid USPS envelope in the mail. It was so soon after I forwarded my updated information that I thought it must have been a fluke, but inside was my passport with a full-page Japanese visa.
 
 Now, as I finish writing this blog post from a dingy little one-bedroom in Tokyo, working nights and living sleepless days, I struggle to recall any of the stressful points of this journey. All that's left is a sense of adventure.
 

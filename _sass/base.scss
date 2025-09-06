@@ -70,6 +70,11 @@ figure {
   align-items: center;
 }
 
+figcaption {
+  max-width: 80%;
+  text-align: center;
+}
+
 picture {
   display: flex;
   justify-content: center;

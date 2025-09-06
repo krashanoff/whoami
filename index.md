@@ -20,7 +20,7 @@ I love computers.
 
 If you'd like to get in touch, you may email me at [`hello@krashanoff.com`](mailto:hello@krashanoff.com).
 
-## Blog Posts
+## Posts
 
 I write from time to time. You may review past posts as linked below.
 

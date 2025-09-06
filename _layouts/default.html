@@ -21,6 +21,11 @@
   <link rel="stylesheet" type="text/css" href="{{ "/static/css/main.css" | relative_url }}">
 
   {% include analytics.html %}
+
+  {% if page.hasmap %}
+  <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+  {% endif %}
 </head>
 
 <body>
