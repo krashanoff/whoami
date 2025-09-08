@@ -239,7 +239,7 @@ get a hold of anyone at the SF consulate since that first phone call. Every time
 With no one to answer my questions, I soldiered on.
 
 # The first application
-<subtitle class="title-tl">1回目の応募</subtitle>
+<subtitle class="title-tl">初めての応募</subtitle>
 
 Before I knew it, December had rolled around. It was time for me to apply. I bought my prepaid, self-addressed USPS
 envelope and stuffed in my visa application form, complete with glue-sticked passport photo; my employment contract, a photo copy of my driver's license, copies
@@ -266,9 +266,18 @@ As I opened the application to confirm my passport was present, I wondered which
 > **"APPLY FOR COE BEFORE APPLYING FOR A VISA"**
 
 # ...the COE?
-<subtitle class="title-tl">在留資格認定証明書</subtitle>
+<subtitle class="title-tl">在留資格認定証明書について</subtitle>
 
-I thought that wasn't required![^translatorsnote] I had spoken with someone in the LA consulate who told me otherwise, what's going on?
+I thought that wasn't required! I had spoken with someone in the LA consulate who told me otherwise, what's going on?[^coetlnote]
+
+[^coetlnote]: Again, this information _is_ in the Japanese version of the page. I was not proficient enough at the time to identify this, but in the same page that I note in [^translatorsnote], it is captured in the following text:
+    > 在留資格認定証明書交付申請書　１通
+    >
+    > 以下からダウンロード可能です。
+    >
+    > ...
+    >
+    > ※申請書のうち、「所属機関等作成用１～３」の提出は不要です。
 
 [^translatorsnote]: As it turns out, this information _is_ actually captured in the Japanese version of the page. You can see here: <https://www.moj.go.jp/isa/applications/status/designatedactivities10_00001.html>. They state that they require _specifically_ travel insurance (or equivalent).
     > 死亡、負傷及び疾病に係る海外旅行傷害保険等の医療保険
@@ -528,8 +537,8 @@ A blatant slap in the face. I set the phone quietly down on the table and read t
   <figcaption>"The Steves"</figcaption>
 </figure>
 
-# A silent prayer to the HR gods
-<subtitle class="title-tl">人事部の神様への黙祷</subtitle>
+# A prayer to the HR gods
+<subtitle class="title-tl">人事部の神様への祈り</subtitle>
 
 Clearly, I wasn't going to get anywhere with the insurance company without gaslighting every call center employee into transferring me to someone important, and then carefully playing my conversation cards with the internal department like a shitty dating sim.
 
@@ -600,7 +609,7 @@ What the hell?! So it **WAS** travel insurance this entire time! They just never
 </ol>
 </blockquote>
 
-Again, if you cock your head and squint, you can infer they mean "any insurance at all, even travel insurance", but I still feel this uses quite possibly the most imprecise terms available. Perhaps the intent is to keep it open-ended, and most applicants are expected to use travel insurance as a workaround?
+Again, if you cock your head and squint, you can infer they mean "any insurance at all, even travel insurance", but I still feel this uses quite possibly the most imprecise terms available. Perhaps the intent is to keep it open-ended, and most applicants are expected to use travel insurance as a workaround?[^translatorsnote]
 
 But I digress. I guess they meant travel insurance this whole time, which is fine, but now I have another problem: the AD&D amount covered by the travel insurance is allegedly insufficient. I apologized for all the headaches I was no doubt causing,[^headaches] bid the consulate employee farewell, and embarked on a search for travel insurance with more extensive AD&D.
 
