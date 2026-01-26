@@ -5,6 +5,9 @@ slug: cs101-time-complexity
 tags:
   - cs101
 date: 2022-09-15T00:00:00-08:00
+edits:
+  - when: 2026-01-26
+    why: Math on page was broken, pointed out by rwang
 toc: false
 ---
 
@@ -79,7 +82,7 @@ Some considerations:
 
 Prove: Given an arbitrary array of numbers $A$, the algorithm $B$ produces an array $R$ of numbers meeting the partial order $\leq$.
 
-1. That the loop terminates is trivial. For each iteration of array $A$, at least one element is removed. Since the outermost loop terminates when $|A| = 0$ , the loop will terminate after $|A|$ iterations.
+1. That the loop terminates is trivial. For each iteration of array $A$, at least one element is removed. Since the outermost loop terminates when $\|A\| = 0$ , the loop will terminate after $\|A\|$ iterations.
 2. That the algorithm is correct for iteration $i =0$ is also trivial. The sorted order of the first zero elements of $A$ is the empty set, $\emptyset$.
 3. Take some iteration $i$. Assume $R_i$ to be the first $i$ sorted elements of $A$, and $A_i$, the value of $A$ at iteration $i$, to be equal to $A \setminus R_i$.
 	1. The innermost loop finds the minimum element of $A_i$, and removes it from $A_i$ to produce $A_{i+1}$.
