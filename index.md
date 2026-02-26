@@ -12,9 +12,9 @@ layout: default
 
 ## Who are you?
 
-I am a software engineer at [Ramp](https://ramp.com/). Previously, I was a software engineer at
-[Regrello](https://www.regrello.com/), and a systems engineer at [Booz Allen Hamilton](https://www.boozallen.com/).
-I attended [UCLA](https://www.ucla.edu/) for my bachelor's.
+I am a software engineer at [Y Combinator](https://www.ycombinator.com/). Previously, I worked on
+the accounting product at [Ramp](https://ramp.com/) and was an early engineer at
+[Regrello](https://www.regrello.com/). I attended [UCLA](https://www.ucla.edu/) for my bachelor's.
 
 I love computers.
 
