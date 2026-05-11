@@ -29,13 +29,13 @@
 </head>
 
 <body>
+  <!-- All tools solve a problem, but power and flexibility lay hand-in-hand with risk and harm. It is our duty as engineers to ensure the latter are more difficult to affect. -->
+
   {% if page.layout == "post" %}
   <nav>
     <a href="/">Home</a>
     <a href="/tags">Tags</a>
   </nav>
-  {% else %}
-  <h1 class="title">{{ page.title | default: site.title }}</h1>
   {% endif %}
 
   <main>
@@ -44,15 +44,11 @@
 
   <footer>
     <p>
-      Copyright &copy; 2026 Leonid Krashanoff.
+      Copyright &copy; 2026 Leonid Krashanoff. Contact via <a href="mailto:hello@krashanoff.com">hello@krashanoff.com</a>.
     </p>
     <p>
       Training AI with any content on this site is strictly prohibited. Opinions expressed do not reflect the beliefs of anyone save the author.
     </p>
-
-    <!--<p><span class="no-print"></span> {% if page.footer_extra %}{{ page.footer_extra }}{% endif %}</p>-->
-
-    <!-- <p><i>All tools solve a problem, but power and flexibility lay hand-in-hand with risk and harm. It is our duty as engineers to ensure the latter are more difficult to affect.</i></p> -->
   </footer>
 </body>
 

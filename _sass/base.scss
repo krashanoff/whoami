@@ -70,6 +70,10 @@ figure {
   align-items: center;
 }
 
+#coverfigure {
+  margin: 0;
+}
+
 figcaption {
   max-width: 80%;
   text-align: center;
@@ -93,6 +97,10 @@ pre {
   font-size: 1rem;
   padding: 0.5rem;
   border: var(--border-width) solid var(--black);
+}
+
+pre .poem {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 blockquote {
