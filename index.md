@@ -4,8 +4,8 @@ layout: default
 
 <figure id="coverfigure">
   <picture>
-    <source type="image/webp" srcset="{{ "/static/img/pfp/lain.webp" | relative_url }}">
-    <img id="coverimage" src="{{ "/static/img/pfp/lain-small.png" | relative_url }}" alt="iwakura lain repairing a bulky computer in her nightgown" />
+    <source type="image/webp" srcset="{{ "/static/img/pfp/wired.webp" | relative_url }}">
+    <img id="coverimage" src="{{ "/static/img/pfp/wired.png" | relative_url }}" alt="iwakura lain repairing a bulky computer in her nightgown" />
   </picture>
   <figcaption><i>Everyone is connected...</i></figcaption>
 </figure>
